@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>signals &mdash; NeuroMANCER 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/tiny_dadaist.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NeuroMANCER
+          
+
+          
+            
+            <img src="../_static/dadaist.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dynamics.html">Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../activations.html">Activations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../blocks.html">Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estimators.html">Estimators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../loggers.html">Loggers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plot.html">Plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../problem.html">Problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rnn.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../signals.html">Signals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulators.html">Simulators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trainer.html">Trainer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visuals.html">Visuals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arg.html">Arg</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NeuroMANCER</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>signals</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for signals</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">signal generator components for training</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1"># machine learning data science imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">neuromancer.datasets</span> <span class="kn">import</span> <span class="n">FileDataset</span>
+<span class="kn">from</span> <span class="nn">neuromancer.data.normalization</span> <span class="kn">import</span> <span class="n">normalize_01</span> <span class="k">as</span> <span class="n">normalize</span>
+<span class="kn">import</span> <span class="nn">psl</span>
+<span class="kn">import</span> <span class="nn">dill</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+
+
+<div class="viewcode-block" id="freeze_weight"><a class="viewcode-back" href="../signals.html#signals.freeze_weight">[docs]</a><span class="k">def</span> <span class="nf">freeze_weight</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">module_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    [&#39;parent-&gt;child-&gt;child&#39;]</span>
+<span class="sd">    :param component:</span>
+<span class="sd">    :param module_names:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">modules</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">named_modules</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">module_names</span><span class="p">:</span>
+        <span class="n">freeze_path</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">freeze_path</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">modules</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="n">modules</span><span class="p">[</span><span class="n">freeze_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="n">freeze_weight</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;-&gt;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">freeze_path</span><span class="p">[</span><span class="mi">1</span><span class="p">:])])</span></div>
+
+
+<div class="viewcode-block" id="SignalGeneratorDynamics"><a class="viewcode-back" href="../signals.html#signals.SignalGeneratorDynamics">[docs]</a><span class="k">class</span> <span class="nc">SignalGeneratorDynamics</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamics</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;signal_dynamics&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        dynamics </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span> <span class="o">=</span> <span class="n">nsteps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nbatch</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">=</span> <span class="n">dynamics</span><span class="o">.</span><span class="n">nu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nd</span> <span class="o">=</span> <span class="n">dynamics</span><span class="o">.</span><span class="n">nd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ny</span> <span class="o">=</span> <span class="n">dynamics</span><span class="o">.</span><span class="n">ny</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="n">dynamics</span><span class="o">.</span><span class="n">nx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_input_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">dynamics</span><span class="o">.</span><span class="n">input_keys</span> <span class="k">if</span> <span class="s1">&#39;x0&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator_input_keys</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">input_keys</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_dims_in</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">estimator</span><span class="o">.</span><span class="n">data_dims</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">estimator</span><span class="o">.</span><span class="n">input_keys</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">dynamics</span>
+        <span class="n">freeze_weight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">)</span>
+        <span class="n">freeze_weight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamics</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SignalGeneratorDynamics.forward"><a class="viewcode-back" href="../signals.html#signals.SignalGeneratorDynamics.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">current_nbatch</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbatch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nbatch</span> <span class="o">=</span> <span class="n">current_nbatch</span>
+            <span class="n">state_estimator_input</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">input_signal</span><span class="p">,</span> <span class="n">dim</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dims_in</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">numPeriods</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">numPeriods</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">:</span>
+                    <span class="n">numPeriods</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span>
+                <span class="n">sample</span> <span class="o">=</span> <span class="n">psl</span><span class="o">.</span><span class="n">Periodic</span><span class="p">(</span><span class="n">nx</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">nsim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span>
+                                      <span class="n">numPeriods</span><span class="o">=</span><span class="n">numPeriods</span><span class="p">,</span>
+                                      <span class="n">xmax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xmin</span><span class="p">)</span>
+                <span class="n">state_estimator_input</span><span class="p">[</span><span class="n">input_signal</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+            <span class="n">estimator_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">(</span><span class="n">state_estimator_input</span><span class="p">)</span>
+            <span class="n">ysignals</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">dynamics_input</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="n">estimator_output</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;x0_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nbatch</span><span class="o">+</span><span class="mi">5</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">dim</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nd</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_input_keys</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">dim</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">dynamics_input</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">psl</span><span class="o">.</span><span class="n">Periodic</span><span class="p">(</span><span class="n">nx</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">nsim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span>
+                                                            <span class="n">numPeriods</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="o">//</span><span class="mi">4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="o">//</span><span class="mi">2</span><span class="p">),</span>
+                                                            <span class="n">xmax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xmin</span><span class="p">))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+                <span class="n">dynamics_input</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;x0_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x0</span>
+                <span class="n">dynamics_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics</span><span class="p">({</span><span class="o">**</span><span class="n">estimator_output</span><span class="p">,</span> <span class="o">**</span><span class="n">dynamics_input</span><span class="p">})</span>
+                <span class="n">x0</span> <span class="o">=</span> <span class="n">dynamics_output</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;X_pred_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamics</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">ysignals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dynamics_output</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;Y_pred_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamics</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbatch</span> <span class="o">==</span> <span class="n">current_nbatch</span><span class="p">:</span>
+                <span class="n">Yp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">ysignals</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbatch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">)</span>
+                <span class="n">Yf</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">ysignals</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbatch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">Yp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">ysignals</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">Yf</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">ysignals</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">end_step_Yp</span> <span class="o">=</span> <span class="n">Yp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span>
+                <span class="n">end_step_Yf</span> <span class="o">=</span> <span class="n">Yf</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span>
+                <span class="n">Yp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">Yp</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="p">:]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">end_step_Yp</span><span class="p">)])</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># nsteps X nsamples X nfeatures</span>
+                <span class="n">Yf</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">Yf</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="p">:]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">end_step_Yf</span><span class="p">)])</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># nsteps X nsamples X nfeatures</span>
+                <span class="n">Yp</span> <span class="o">=</span> <span class="n">Yp</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2993</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="n">Yf</span> <span class="o">=</span> <span class="n">Yf</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2993</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">return</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="n">Yp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="n">Yf</span><span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="SignalGenerator"><a class="viewcode-back" href="../signals.html#signals.SignalGenerator">[docs]</a><span class="k">class</span> <span class="nc">SignalGenerator</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;signal&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">nx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iter</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="viewcode-block" id="SignalGenerator.get_xmax"><a class="viewcode-back" href="../signals.html#signals.SignalGenerator.get_xmax">[docs]</a>    <span class="k">def</span> <span class="nf">get_xmax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmax</span></div>
+
+<div class="viewcode-block" id="SignalGenerator.get_xmin"><a class="viewcode-back" href="../signals.html#signals.SignalGenerator.get_xmin">[docs]</a>    <span class="k">def</span> <span class="nf">get_xmin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span></div>
+
+<div class="viewcode-block" id="SignalGenerator.forward"><a class="viewcode-back" href="../signals.html#signals.SignalGenerator.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">nsim</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span>
+        <span class="n">nbatch</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xmax</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xmin</span><span class="p">()</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_generator</span><span class="p">(</span><span class="n">nsim</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">)</span>
+        <span class="n">R</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+
+        <span class="n">Rp</span><span class="p">,</span> <span class="n">Rf</span> <span class="o">=</span> <span class="n">R</span><span class="p">[:</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">:]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nstep_batch_size</span> <span class="o">=</span> <span class="n">nbatch</span>
+        <span class="k">if</span> <span class="n">nbatch</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">nstep_batch_size</span><span class="p">:</span>
+            <span class="n">Rp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">Rp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">nbatch</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">Rf</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">Rf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">nbatch</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">end_step</span> <span class="o">=</span> <span class="n">Rp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span>
+            <span class="n">Rp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">Rp</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="p">:]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">end_step</span><span class="p">)])</span>  <span class="c1"># nchunks X nsteps X nfeatures</span>
+            <span class="n">Rp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">Rp</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>  <span class="c1"># nsteps X nsamples X nfeatures</span>
+            <span class="n">Rf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">Rf</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="p">:]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">end_step</span><span class="p">)])</span>  <span class="c1"># nchunks X nsteps X nfeatures</span>
+            <span class="n">Rf</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">Rf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>  <span class="c1"># nsteps X nsamples X nfeatures</span>
+        <span class="k">return</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="n">Rp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="n">Rf</span><span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="WhiteNoisePeriodicGenerator"><a class="viewcode-back" href="../signals.html#signals.WhiteNoisePeriodicGenerator">[docs]</a><span class="k">class</span> <span class="nc">WhiteNoisePeriodicGenerator</span><span class="p">(</span><span class="n">SignalGenerator</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">xmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">min_period</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_period</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;period&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nsteps</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">white_noise_generator</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">nsim</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">:</span> <span class="n">psl</span><span class="o">.</span><span class="n">WhiteNoise</span><span class="p">(</span><span class="n">nx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="n">nsim</span><span class="o">=</span><span class="n">nsim</span><span class="p">,</span>
+                                                                             <span class="n">xmax</span><span class="o">=</span><span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="n">xmin</span><span class="p">)[:</span><span class="n">nsim</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">period_generator</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">nsim</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">:</span> <span class="n">psl</span><span class="o">.</span><span class="n">Periodic</span><span class="p">(</span><span class="n">nx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="n">nsim</span><span class="o">=</span><span class="n">nsim</span><span class="p">,</span>
+                                                                      <span class="n">numPeriods</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">min_period</span><span class="p">,</span> <span class="n">max_period</span><span class="p">),</span>
+                                                                      <span class="n">xmax</span><span class="o">=</span><span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="n">xmin</span><span class="p">)[:</span><span class="n">nsim</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_generator</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">nsim</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">period_generator</span><span class="p">(</span><span class="n">nsim</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">white_noise_generator</span><span class="p">(</span><span class="n">nsim</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">xmax</span><span class="p">)</span>
+
+<div class="viewcode-block" id="WhiteNoisePeriodicGenerator.get_xmax"><a class="viewcode-back" href="../signals.html#signals.WhiteNoisePeriodicGenerator.get_xmax">[docs]</a>    <span class="k">def</span> <span class="nf">get_xmax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">xmax</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="PeriodicGenerator"><a class="viewcode-back" href="../signals.html#signals.PeriodicGenerator">[docs]</a><span class="k">class</span> <span class="nc">PeriodicGenerator</span><span class="p">(</span><span class="n">SignalGenerator</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">min_period</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_period</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;period&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nsteps</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_generator</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">nsim</span><span class="p">:</span> <span class="n">psl</span><span class="o">.</span><span class="n">Periodic</span><span class="p">(</span><span class="n">nx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="n">nsim</span><span class="o">=</span><span class="n">nsim</span><span class="p">,</span> <span class="n">numPeriods</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">min_period</span><span class="p">,</span> <span class="n">max_period</span><span class="p">),</span>
+                                                            <span class="n">xmax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xmin</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NoiseGenerator"><a class="viewcode-back" href="../signals.html#signals.NoiseGenerator">[docs]</a><span class="k">class</span> <span class="nc">NoiseGenerator</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;noise&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ratio</span> <span class="o">=</span> <span class="n">ratio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span>
+
+<div class="viewcode-block" id="NoiseGenerator.forward"><a class="viewcode-back" href="../signals.html#signals.NoiseGenerator.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">noisy_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">:</span>
+            <span class="n">noisy_data</span><span class="p">[</span><span class="n">key</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">noisy_data</span></div></div>
+
+
+<div class="viewcode-block" id="WhiteNoiseGenerator"><a class="viewcode-back" href="../signals.html#signals.WhiteNoiseGenerator">[docs]</a><span class="k">class</span> <span class="nc">WhiteNoiseGenerator</span><span class="p">(</span><span class="n">SignalGenerator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;period&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nsteps</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_generator</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">nsim</span><span class="p">:</span> <span class="n">psl</span><span class="o">.</span><span class="n">WhiteNoise</span><span class="p">(</span><span class="n">nx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="n">nsim</span><span class="o">=</span><span class="n">nsim</span><span class="p">,</span>
+                                                              <span class="n">xmax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xmin</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AddGenerator"><a class="viewcode-back" href="../signals.html#signals.AddGenerator">[docs]</a><span class="k">class</span> <span class="nc">AddGenerator</span><span class="p">(</span><span class="n">SignalGenerator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SG1</span><span class="p">,</span> <span class="n">SG2</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;period&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nsteps</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">SG1</span><span class="o">.</span><span class="n">nsteps</span> <span class="o">==</span> <span class="n">SG2</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="s1">&#39;Nsteps must match to compose sequence generators&#39;</span>
+        <span class="k">assert</span> <span class="n">SG1</span><span class="o">.</span><span class="n">nx</span> <span class="o">==</span> <span class="n">SG2</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="s1">&#39;Nx must match to compose sequence generators&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_generator</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">nsim</span><span class="p">:</span> <span class="n">SG1</span><span class="o">.</span><span class="n">sequence_generator</span><span class="p">(</span><span class="n">nsim</span><span class="p">)</span> <span class="o">+</span> <span class="n">SG2</span><span class="o">.</span><span class="n">sequence_generator</span><span class="p">(</span><span class="n">nsim</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NonlinearExpansion"><a class="viewcode-back" href="../signals.html#signals.NonlinearExpansion">[docs]</a><span class="k">class</span> <span class="nc">NonlinearExpansion</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;nlin_expand&#39;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cpu&#39;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_keys</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+
+<div class="viewcode-block" id="NonlinearExpansion.forward"><a class="viewcode-back" href="../signals.html#signals.NonlinearExpansion.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">nlin_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">:</span>
+            <span class="n">expansions</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span>
+                <span class="n">comb</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">combinations_with_replacement</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">r</span><span class="o">=</span><span class="n">o</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">comb</span><span class="p">):</span>
+                    <span class="n">subset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">index_select</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">))</span>
+                    <span class="n">subset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">expansions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
+            <span class="n">nlin_data</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">expansions</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">nlin_data</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="n">model_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">psl</span><span class="o">.</span><span class="n">resource_path</span><span class="p">,</span> <span class="s2">&quot;Flexy_air/ape_models/best_model.pth&quot;</span><span class="p">)</span>
+    <span class="n">load_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_file</span><span class="p">,</span> <span class="n">pickle_module</span><span class="o">=</span><span class="n">dill</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">))</span>
+    <span class="n">estimator</span> <span class="o">=</span> <span class="n">load_model</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dynamics</span> <span class="o">=</span> <span class="n">load_model</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dynamics</span><span class="o">.</span><span class="n">fyu</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">nsteps</span> <span class="o">=</span> <span class="mi">32</span>
+    <span class="n">ny</span> <span class="o">=</span> <span class="n">load_model</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fy</span><span class="o">.</span><span class="n">out_features</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">FileDataset</span><span class="p">(</span><span class="n">system</span><span class="o">=</span><span class="s1">&#39;flexy_air&#39;</span><span class="p">,</span> <span class="n">nsim</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                          <span class="n">norm</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">],</span> <span class="n">nsteps</span><span class="o">=</span><span class="n">nsteps</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymin&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymax&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">nsim</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">nu</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">new_sequences</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Y_max&#39;</span><span class="p">:</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="n">nsim</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="s1">&#39;Y_min&#39;</span><span class="p">:</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="n">nsim</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+                     <span class="s1">&#39;U_max&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="n">nsim</span><span class="p">,</span> <span class="n">nu</span><span class="p">]),</span> <span class="s1">&#39;U_min&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">nsim</span><span class="p">,</span> <span class="n">nu</span><span class="p">]),</span>
+                     <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">psl</span><span class="o">.</span><span class="n">Periodic</span><span class="p">(</span><span class="n">nx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nsim</span><span class="o">=</span><span class="n">nsim</span><span class="p">,</span> <span class="n">numPeriods</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)}</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">new_sequences</span><span class="p">)</span>
+    <span class="n">dynamics_generator</span> <span class="o">=</span> <span class="n">SignalGeneratorDynamics</span><span class="p">(</span><span class="n">dynamics</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Y_ctrl_&#39;</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">dynamics_generator</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_data</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;Y_ctrl_p&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Aaron Tuor, Jan Drgona, Elliott Skomski, Soumya Vasisht.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

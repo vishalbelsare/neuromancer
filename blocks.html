@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Blocks &mdash; NeuroMANCER 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/tiny_dadaist.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Datasets" href="datasets.html" />
+    <link rel="prev" title="Activations" href="activations.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NeuroMANCER
+          
+
+          
+            
+            <img src="_static/dadaist.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dynamics.html">Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activations.html">Activations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="estimators.html">Estimators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loggers.html">Loggers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot.html">Plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="problem.html">Problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rnn.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signals.html">Signals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulators.html">Simulators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trainer.html">Trainer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visuals.html">Visuals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arg.html">Arg</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NeuroMANCER</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Blocks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/blocks.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-blocks">
+<span id="blocks"></span><h1>Blocks<a class="headerlink" href="#module-blocks" title="Permalink to this headline">¶</a></h1>
+<p>Function approximators of various degrees of generality which implement a consistent block interface.
+Neural network module building blocks for neural state space models, state estimators and control policies.</p>
+<dl class="py class">
+<dt id="blocks.BasisLinear">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">BasisLinear</code><span class="sig-paren">(</span><em class="sig-param">insize, outsize, bias=True, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'neuromancer.activations.SoftExponential'&gt;, hsizes=[64], linargs={}, expand=Poly2()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#BasisLinear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.BasisLinear" title="Permalink to this definition">¶</a></dt>
+<dd><p>For mapping inputs to functional basis feature expansion. This could implement a dictionary of lifting functions.
+Takes a linear combination of the expanded features.</p>
+<dl class="py method">
+<dt id="blocks.BasisLinear.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#BasisLinear.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.BasisLinear.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – (torch.Tensor, shape=[batchsize, insize])</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(torch.Tensor, shape=[batchsize, outsize])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="blocks.BasisLinear.reg_error">
+<code class="sig-name descname">reg_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#BasisLinear.reg_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.BasisLinear.reg_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.BasisLinear.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.BasisLinear.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="blocks.BilinearTorch">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">BilinearTorch</code><span class="sig-paren">(</span><em class="sig-param">insize, outsize, bias=True, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'neuromancer.activations.SoftExponential'&gt;, hsizes=[64], linargs={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#BilinearTorch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.BilinearTorch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps torch.nn.Bilinear to be consistent with the blocks interface</p>
+<dl class="py method">
+<dt id="blocks.BilinearTorch.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#BilinearTorch.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.BilinearTorch.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="blocks.BilinearTorch.reg_error">
+<code class="sig-name descname">reg_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#BilinearTorch.reg_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.BilinearTorch.reg_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.BilinearTorch.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.BilinearTorch.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="blocks.Linear">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">Linear</code><span class="sig-paren">(</span><em class="sig-param">insize, outsize, bias=True, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'neuromancer.activations.SoftExponential'&gt;, hsizes=[64], linargs={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#Linear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.Linear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Linear map consistent with block interface</p>
+<dl class="py method">
+<dt id="blocks.Linear.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#Linear.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.Linear.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – (torch.Tensor, shape=[batchsize, insize])</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(torch.Tensor, shape=[batchsize, outsize])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="blocks.Linear.reg_error">
+<code class="sig-name descname">reg_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#Linear.reg_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.Linear.reg_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.Linear.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.Linear.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="blocks.MLP">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">MLP</code><span class="sig-paren">(</span><em class="sig-param">insize, outsize, bias=True, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'neuromancer.activations.SoftExponential'&gt;, hsizes=[64], linargs={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#MLP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.MLP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multi-Layer Perceptron consistent with blocks interface</p>
+<dl class="py method">
+<dt id="blocks.MLP.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#MLP.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.MLP.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – (torch.Tensor, shape=[batchsize, insize])</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(torch.Tensor, shape=[batchsize, outsize])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="blocks.MLP.reg_error">
+<code class="sig-name descname">reg_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#MLP.reg_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.MLP.reg_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.MLP.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.MLP.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="blocks.Poly2">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">Poly2</code><a class="reference internal" href="_modules/blocks.html#Poly2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.Poly2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Feature expansion of network to include pairwise multiplications of features.</p>
+<dl class="py method">
+<dt id="blocks.Poly2.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#Poly2.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.Poly2.forward" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param x</dt>
+<dd class="field-odd"><p>(torch.Tensor, shape=[batchsize, N]) Input tensor</p>
+</dd>
+<dt class="field-even">return</dt>
+<dd class="field-even"><p>(torch.Tensor, shape=[batchsize, :math:<a href="#id1"><span class="problematic" id="id2">`</span></a></p>
+</dd>
+</dl>
+</div></blockquote>
+<p>rac{N(N+1)}{2} + N`]) Feature expanded tensor</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.Poly2.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.Poly2.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="blocks.PytorchRNN">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">PytorchRNN</code><span class="sig-paren">(</span><em class="sig-param">insize, outsize, bias=True, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'neuromancer.activations.SoftExponential'&gt;, hsizes=[10], linargs={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#PytorchRNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.PytorchRNN" title="Permalink to this definition">¶</a></dt>
+<dd><p>This wraps the torch.nn.RNN class consistent with the blocks interface
+to give output which is a linear map from final hidden state.</p>
+<dl class="py method">
+<dt id="blocks.PytorchRNN.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#PytorchRNN.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.PytorchRNN.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – (torch.Tensor, shape=[nsteps, batchsize, dim]) Input sequence is expanded for order 2 tensors</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(torch.Tensor, shape=[batchsize, outsize]) Returns linear transform of final hidden state of RNN.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="blocks.PytorchRNN.reg_error">
+<code class="sig-name descname">reg_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#PytorchRNN.reg_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.PytorchRNN.reg_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.PytorchRNN.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.PytorchRNN.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="blocks.RNN">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">RNN</code><span class="sig-paren">(</span><em class="sig-param">insize, outsize, bias=True, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'neuromancer.activations.SoftExponential'&gt;, hsizes=[1], linargs={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#RNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.RNN" title="Permalink to this definition">¶</a></dt>
+<dd><p>This wraps the rnn.RNN class consistent with blocks interface to give output which is a linear map from final hidden state.</p>
+<dl class="py method">
+<dt id="blocks.RNN.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">hx</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#RNN.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.RNN.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>There is some logic here so that the RNN will still get context from state in open loop simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – (torch.Tensor, shape=[nsteps, batchsize, dim]) Input sequence is expanded for order 2 tensors</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(torch.Tensor, shape=[batchsize, outsize]) Returns linear transform of final hidden state of RNN.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="blocks.RNN.reg_error">
+<code class="sig-name descname">reg_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#RNN.reg_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.RNN.reg_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="blocks.RNN.reset">
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#RNN.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.RNN.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.RNN.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.RNN.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="blocks.ResMLP">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">ResMLP</code><span class="sig-paren">(</span><em class="sig-param">insize, outsize, bias=True, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'neuromancer.activations.SoftExponential'&gt;, hsizes=[64], linargs={}, skip=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#ResMLP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.ResMLP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Residual MLP consistent with the block interface.</p>
+<dl class="py method">
+<dt id="blocks.ResMLP.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#ResMLP.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.ResMLP.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – (torch.Tensor, shape=[batchsize, insize])</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(torch.Tensor, shape=[batchsize, outsize])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.ResMLP.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.ResMLP.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="blocks.get_modules">
+<code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">get_modules</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#get_modules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.get_modules" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="datasets.html" class="btn btn-neutral float-right" title="Datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="activations.html" class="btn btn-neutral float-left" title="Activations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Aaron Tuor, Jan Drgona, Elliott Skomski, Soumya Vasisht.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

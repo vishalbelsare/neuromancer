@@ -1,0 +1,529 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>simulators &mdash; NeuroMANCER 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/tiny_dadaist.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NeuroMANCER
+          
+
+          
+            
+            <img src="../_static/dadaist.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dynamics.html">Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../activations.html">Activations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../blocks.html">Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estimators.html">Estimators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../loggers.html">Loggers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plot.html">Plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../problem.html">Problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rnn.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../signals.html">Signals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulators.html">Simulators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trainer.html">Trainer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visuals.html">Visuals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arg.html">Arg</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NeuroMANCER</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>simulators</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for simulators</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">TODO: eval_metric - evaluate closed loop metric based on the simulation results</span>
+<span class="sd"># use the same interface for objectives as for the problem via _calculate_loss. if code is changed in problem possible mismatch</span>
+<span class="sd">TODO: overwrite past after n-steps, continuously in first n steps. In initial simulation period first n-steps are treated as 0s when only first needs to be a 0 vector</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">psl</span> <span class="kn">import</span> <span class="n">EmulatorBase</span>
+
+<span class="kn">from</span> <span class="nn">neuromancer.datasets</span> <span class="kn">import</span> <span class="n">EmulatorDataset</span><span class="p">,</span> <span class="n">FileDataset</span>
+<span class="kn">from</span> <span class="nn">neuromancer.data.normalization</span> <span class="kn">import</span> <span class="n">normalize_01</span> <span class="k">as</span> <span class="n">normalize</span><span class="p">,</span> <span class="n">denormalize_01</span> <span class="k">as</span> <span class="n">min_max_denorm</span>
+<span class="kn">from</span> <span class="nn">neuromancer.problem</span> <span class="kn">import</span> <span class="n">Problem</span>
+<span class="kn">from</span> <span class="nn">neuromancer.datasets</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataDict</span>
+
+
+<div class="viewcode-block" id="Simulator"><a class="viewcode-back" href="../simulators.html#simulators.Simulator">[docs]</a><span class="k">class</span> <span class="nc">Simulator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Problem</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">emulator</span><span class="p">:</span> <span class="n">EmulatorBase</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">eval_sim</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emulator</span> <span class="o">=</span> <span class="n">emulator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval_sim</span> <span class="o">=</span> <span class="n">eval_sim</span>
+
+<div class="viewcode-block" id="Simulator.dev_eval"><a class="viewcode-back" href="../simulators.html#simulators.Simulator.dev_eval">[docs]</a>    <span class="k">def</span> <span class="nf">dev_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_sim</span><span class="p">:</span>
+            <span class="n">dev_loop_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">dev_loop</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dev_loop_output</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">dev_loop_output</span></div>
+
+<div class="viewcode-block" id="Simulator.test_eval"><a class="viewcode-back" href="../simulators.html#simulators.Simulator.test_eval">[docs]</a>    <span class="k">def</span> <span class="nf">test_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">all_output</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">dname</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_loop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">dev_loop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">test_loop</span><span class="p">],</span>
+                               <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">]):</span>
+            <span class="n">all_output</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">all_output</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">data</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="n">all_output</span></div>
+
+<div class="viewcode-block" id="Simulator.simulate"><a class="viewcode-back" href="../simulators.html#simulators.Simulator.simulate">[docs]</a>    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="OpenLoopSimulator"><a class="viewcode-back" href="../simulators.html#simulators.OpenLoopSimulator">[docs]</a><span class="k">class</span> <span class="nc">OpenLoopSimulator</span><span class="p">(</span><span class="n">Simulator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Problem</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">emulator</span><span class="p">:</span> <span class="p">[</span><span class="n">EmulatorBase</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">eval_sim</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span> <span class="n">emulator</span><span class="o">=</span><span class="n">emulator</span><span class="p">,</span> <span class="n">eval_sim</span><span class="o">=</span><span class="n">eval_sim</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OpenLoopSimulator.simulate"><a class="viewcode-back" href="../simulators.html#simulators.OpenLoopSimulator.simulate">[docs]</a>    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MHOpenLoopSimulator"><a class="viewcode-back" href="../simulators.html#simulators.MHOpenLoopSimulator">[docs]</a><span class="k">class</span> <span class="nc">MHOpenLoopSimulator</span><span class="p">(</span><span class="n">Simulator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    moving horizon open loop simulator</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Problem</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">emulator</span><span class="p">:</span> <span class="p">[</span><span class="n">EmulatorBase</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">eval_sim</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span> <span class="n">emulator</span><span class="o">=</span><span class="n">emulator</span><span class="p">,</span> <span class="n">eval_sim</span><span class="o">=</span><span class="n">eval_sim</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MHOpenLoopSimulator.horizon_data"><a class="viewcode-back" href="../simulators.html#simulators.MHOpenLoopSimulator.horizon_data">[docs]</a>    <span class="k">def</span> <span class="nf">horizon_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        will work with open loop dataset</span>
+<span class="sd">        :param data:</span>
+<span class="sd">        :param i: i-th time step</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">step_data</span> <span class="o">=</span> <span class="n">DataDict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">step_data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">nsteps</span><span class="o">+</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+        <span class="n">step_data</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="n">step_data</span></div>
+
+<div class="viewcode-block" id="MHOpenLoopSimulator.simulate"><a class="viewcode-back" href="../simulators.html#simulators.MHOpenLoopSimulator.simulate">[docs]</a>    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">L</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="n">Yp</span><span class="p">,</span> <span class="n">Yf</span><span class="p">,</span> <span class="n">Xp</span><span class="p">,</span> <span class="n">Xf</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="n">yN</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Yp&#39;</span><span class="p">][:</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+        <span class="n">nsim</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Yp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsim</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">nsteps</span><span class="p">):</span>
+            <span class="n">step_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizon_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;Yp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">yN</span>
+            <span class="n">step_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">step_data</span><span class="p">)</span>
+            <span class="c1"># outputs</span>
+            <span class="n">y_key</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">step_output</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;Y_pred&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">step_output</span><span class="p">[</span><span class="n">y_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="n">yN</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">yN</span><span class="p">,</span> <span class="n">y</span><span class="p">])[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="n">yp_key</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">step_output</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;Yp&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">yp</span> <span class="o">=</span> <span class="n">step_output</span><span class="p">[</span><span class="n">yp_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">Yp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">yp</span><span class="p">)</span>
+            <span class="n">yf_key</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">step_output</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;Yf&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">yf</span> <span class="o">=</span> <span class="n">step_output</span><span class="p">[</span><span class="n">yf_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">Yf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">yf</span><span class="p">)</span>
+            <span class="c1"># states</span>
+            <span class="n">x_key</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">step_output</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;X_pred&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">step_output</span><span class="p">[</span><span class="n">x_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">xp_key</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">step_output</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;Xp&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">xp</span> <span class="o">=</span> <span class="n">step_output</span><span class="p">[</span><span class="n">xp_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">Xp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xp</span><span class="p">)</span>
+            <span class="n">xf_key</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">step_output</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;Xf&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">xf</span> <span class="o">=</span> <span class="n">step_output</span><span class="p">[</span><span class="n">xf_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">Xf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xf</span><span class="p">)</span>
+            <span class="n">loss_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">step_output</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;loss&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">loss_item</span> <span class="o">=</span> <span class="n">step_output</span><span class="p">[</span><span class="n">loss_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="n">L</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_item</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">tensor_list</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">Yp</span><span class="p">,</span> <span class="n">Yf</span><span class="p">,</span> <span class="n">Xp</span><span class="p">,</span> <span class="n">Xf</span><span class="p">],</span>
+                                     <span class="p">[</span><span class="n">x_key</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y_key</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">loss_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                      <span class="n">yp_key</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">yf_key</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                      <span class="n">xp_key</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xf_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]]):</span>
+            <span class="k">if</span> <span class="n">tensor_list</span><span class="p">:</span>
+                <span class="n">output</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">tensor_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">output</span><span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="MultiSequenceOpenLoopSimulator"><a class="viewcode-back" href="../simulators.html#simulators.MultiSequenceOpenLoopSimulator">[docs]</a><span class="k">class</span> <span class="nc">MultiSequenceOpenLoopSimulator</span><span class="p">(</span><span class="n">Simulator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Problem</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">emulator</span><span class="p">:</span> <span class="p">[</span><span class="n">EmulatorBase</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">eval_sim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span> <span class="n">emulator</span><span class="o">=</span><span class="n">emulator</span><span class="p">,</span> <span class="n">eval_sim</span><span class="o">=</span><span class="n">eval_sim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span> <span class="o">=</span> <span class="n">stack</span>
+
+<div class="viewcode-block" id="MultiSequenceOpenLoopSimulator.agg"><a class="viewcode-back" href="../simulators.html#simulators.MultiSequenceOpenLoopSimulator.agg">[docs]</a>    <span class="k">def</span> <span class="nf">agg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+        <span class="n">agg_outputs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">agg_outputs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">agg_outputs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">agg_outputs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">agg_outputs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">agg_outputs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">agg_outputs</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">:</span>
+                    <span class="n">agg_outputs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">agg_outputs</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">agg_outputs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">agg_outputs</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">agg_outputs</span></div>
+
+<div class="viewcode-block" id="MultiSequenceOpenLoopSimulator.simulate"><a class="viewcode-back" href="../simulators.html#simulators.MultiSequenceOpenLoopSimulator.simulate">[docs]</a>    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MultiSequenceOpenLoopSimulator.dev_eval"><a class="viewcode-back" href="../simulators.html#simulators.MultiSequenceOpenLoopSimulator.dev_eval">[docs]</a>    <span class="k">def</span> <span class="nf">dev_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_sim</span><span class="p">:</span>
+            <span class="n">dev_loop_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">dev_loop</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dev_loop_output</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">dev_loop_output</span></div></div>
+
+
+<div class="viewcode-block" id="ClosedLoopSimulator"><a class="viewcode-back" href="../simulators.html#simulators.ClosedLoopSimulator">[docs]</a><span class="k">class</span> <span class="nc">ClosedLoopSimulator</span><span class="p">(</span><span class="n">Simulator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Problem</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">policy</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">emulator</span><span class="p">:</span> <span class="p">[</span><span class="n">EmulatorBase</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span> <span class="n">emulator</span><span class="o">=</span><span class="n">emulator</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span> <span class="n">EmulatorBase</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span>  <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">),</span> \
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">emulator</span><span class="p">)</span><span class="si">}</span><span class="s1"> is not EmulatorBase or nn.Module.&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emulator</span> <span class="o">=</span> <span class="n">emulator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">policy</span> <span class="o">=</span> <span class="n">policy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ninit</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nsim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">nstep_data</span><span class="p">[</span><span class="s1">&#39;Yf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span> <span class="n">EmulatorBase</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">emulator</span><span class="o">.</span><span class="n">x0</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">emulator</span><span class="o">.</span><span class="n">nx</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ClosedLoopSimulator.select_step_data"><a class="viewcode-back" href="../simulators.html#simulators.ClosedLoopSimulator.select_step_data">[docs]</a>    <span class="k">def</span> <span class="nf">select_step_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        for closed loop we want to pick i-th batch of the nstep data nstep_data[item][:, k, :]</span>
+
+<span class="sd">        :param data:</span>
+<span class="sd">        :param i:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">step_data</span> <span class="o">=</span> <span class="n">DataDict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">step_data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">step_data</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="n">step_data</span></div>
+
+<div class="viewcode-block" id="ClosedLoopSimulator.eval_metric"><a class="viewcode-back" href="../simulators.html#simulators.ClosedLoopSimulator.eval_metric">[docs]</a>    <span class="k">def</span> <span class="nf">eval_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ClosedLoopSimulator.simulate"><a class="viewcode-back" href="../simulators.html#simulators.ClosedLoopSimulator.simulate">[docs]</a>    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">          # CL eval steps:</span>
+<span class="sd">          # 1, initialize emulator with initial conditions and initial input trajectories</span>
+<span class="sd">          # 2, obtain i-th simulation step batch of nstep data generated by emulator</span>
+<span class="sd">          # 3, forward pass i-th step batch through the model</span>
+<span class="sd">          # 4, receding horizon - slect only first sampling instant of the i-th batch control actions</span>
+<span class="sd">          # 5, simulate emulator with selected control actions and obtain new step batch - continue from step 2,</span>
+
+<span class="sd">        :param data:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nsim</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Yp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Yp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>  <span class="c1"># emulator trajectories</span>
+        <span class="n">Ymin</span><span class="p">,</span> <span class="n">Ymax</span><span class="p">,</span> <span class="n">Umin</span><span class="p">,</span> <span class="n">Umax</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="n">Y_pred</span><span class="p">,</span> <span class="n">X_pred</span><span class="p">,</span> <span class="n">U_pred</span><span class="p">,</span> <span class="n">U_opt</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>   <span class="c1"># model  trajectories</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsim</span><span class="p">):</span>
+            <span class="n">step_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_step_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># select current step disturbance, reference and constraints</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;Df&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;Df&#39;</span> <span class="ow">in</span> <span class="n">step_data</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;Rf&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;Rf&#39;</span> <span class="ow">in</span> <span class="n">step_data</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">ymin</span> <span class="o">=</span> <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;Y_minf&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;Y_minf&#39;</span> <span class="ow">in</span> <span class="n">step_data</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">ymax</span> <span class="o">=</span> <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;Y_maxf&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;Y_maxf&#39;</span> <span class="ow">in</span> <span class="n">step_data</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">umin</span> <span class="o">=</span> <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;U_minf&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;U_minf&#39;</span> <span class="ow">in</span> <span class="n">step_data</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">umax</span> <span class="o">=</span> <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;U_maxf&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;U_maxf&#39;</span> <span class="ow">in</span> <span class="n">step_data</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="s1">&#39;Y&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">norm</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">min_max_denorm</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymin&#39;</span><span class="p">],</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymax&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="n">ymin</span> <span class="o">=</span> <span class="n">min_max_denorm</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymin&#39;</span><span class="p">],</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymax&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">ymin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="n">ymax</span> <span class="o">=</span> <span class="n">min_max_denorm</span><span class="p">(</span><span class="n">ymax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymin&#39;</span><span class="p">],</span>
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymax&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">ymax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">norm</span><span class="p">:</span>
+                    <span class="n">umin</span> <span class="o">=</span> <span class="n">min_max_denorm</span><span class="p">(</span><span class="n">umin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Umin&#39;</span><span class="p">],</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Umax&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">umin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="n">umax</span> <span class="o">=</span> <span class="n">min_max_denorm</span><span class="p">(</span><span class="n">umax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Umin&#39;</span><span class="p">],</span>
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Umax&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">umax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="s1">&#39;D&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">norm</span><span class="p">:</span>
+                    <span class="n">d</span> <span class="o">=</span> <span class="n">min_max_denorm</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Dmin&#39;</span><span class="p">],</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Dmax&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="c1"># simulate 1 step of the emulator model</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emulator</span><span class="p">,</span> <span class="n">EmulatorBase</span><span class="p">):</span>
+                    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">emulator</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">ninit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">nsim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">U</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emulator</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+                    <span class="n">step_data_0</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                    <span class="n">step_data_0</span><span class="p">[</span><span class="s1">&#39;U_pred_policy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uopt</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="n">step_data_0</span><span class="p">[</span><span class="s1">&#39;x0_estim&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">step_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">step_data_0</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span>
+
+                    <span class="n">emulator_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">emulator</span><span class="p">(</span><span class="n">step_data_0</span><span class="p">)</span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">emulator_output</span><span class="p">[</span><span class="s1">&#39;X_pred_dynamics&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">y</span> <span class="o">=</span> <span class="n">emulator_output</span><span class="p">[</span><span class="s1">&#39;Y_pred_dynamics&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="s1">&#39;Y&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">norm</span><span class="p">:</span>
+                        <span class="n">y</span> <span class="o">=</span> <span class="n">min_max_denorm</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymin&#39;</span><span class="p">],</span>
+                                           <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymax&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="c1"># update u and y trajectory history</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;Y&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">norm</span><span class="p">:</span>
+                        <span class="n">Yp_np</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">:]),</span>
+                                                             <span class="n">Mmin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymin&#39;</span><span class="p">],</span>
+                                                             <span class="n">Mmax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Ymax&#39;</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">Yp_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">:])</span>
+                    <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;Yp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Yp_np</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">U_opt</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">:</span>
+                    <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;Up&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">U_opt</span><span class="p">[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">:],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+            <span class="c1"># control policy model</span>
+            <span class="c1"># step_output = self.model(step_data)</span>
+            <span class="n">step_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="p">(</span><span class="n">step_data</span><span class="p">)</span>
+
+            <span class="c1"># # model trajectories</span>
+            <span class="c1"># x_key = [k for k in step_output.keys() if &#39;X_pred&#39; in k]</span>
+            <span class="c1"># X_pred.append(step_output[x_key[0]])</span>
+            <span class="c1"># y_key = [k for k in step_output.keys() if &#39;Y_pred&#39; in k]</span>
+            <span class="c1"># Y_pred.append(step_output[y_key[0]])</span>
+            <span class="n">u_key</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">step_output</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;U_pred&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">U_pred</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step_output</span><span class="p">[</span><span class="n">u_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+            <span class="n">uopt</span> <span class="o">=</span> <span class="n">step_output</span><span class="p">[</span><span class="n">u_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+            <span class="n">U_opt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uopt</span><span class="p">)</span>
+
+            <span class="c1"># emulator trajectories</span>
+            <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">norm</span><span class="p">:</span>
+                <span class="n">u</span> <span class="o">=</span> <span class="n">min_max_denorm</span><span class="p">(</span><span class="n">uopt</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Umin&#39;</span><span class="p">],</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">min_max_norms</span><span class="p">[</span><span class="s1">&#39;Umax&#39;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">u</span> <span class="o">=</span> <span class="n">uopt</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">U</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+                <span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+                <span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emulator</span><span class="p">,</span> <span class="n">EmulatorBase</span><span class="p">)</span> <span class="k">else</span> <span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+                <span class="n">D</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">R</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">Ymin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ymin</span><span class="p">)</span> <span class="k">if</span> <span class="n">ymin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">Ymax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ymax</span><span class="p">)</span> <span class="k">if</span> <span class="n">ymax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">Umin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">umin</span><span class="p">)</span> <span class="k">if</span> <span class="n">umin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">Umax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">umax</span><span class="p">)</span> <span class="k">if</span> <span class="n">umax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">D</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">R</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;Ymin&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Ymin</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">Ymin</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;Ymax&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Ymax</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">Ymax</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;Umin&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Umin</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">Umin</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s1">&#39;Umax&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Umax</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">Umax</span> <span class="k">else</span> <span class="kc">None</span><span class="p">}</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="n">systems</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Reno_full&#39;</span><span class="p">:</span> <span class="s1">&#39;emulator&#39;</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">system</span><span class="p">,</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="n">systems</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;emulator&#39;</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">EmulatorDataset</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;datafile&#39;</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">FileDataset</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
+    <span class="n">nsim</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">nu</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Aaron Tuor, Jan Drgona, Elliott Skomski, Soumya Vasisht.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
