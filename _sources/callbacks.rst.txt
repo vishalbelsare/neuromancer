@@ -1,7 +1,7 @@
-Arg
-======
+Callbacks
+=========
 
-.. automodule:: arg
+.. automodule:: callbacks
    :members:
    :undoc-members:
    :special-members: __call__

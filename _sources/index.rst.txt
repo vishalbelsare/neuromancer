@@ -28,6 +28,8 @@ NeuroMANCER
    trainer.rst
    visuals.rst
    arg.rst
+   callbacks.rst
+
 
 
 
