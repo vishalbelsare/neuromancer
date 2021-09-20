@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -180,26 +180,61 @@
   <section id="module-simulators">
 <span id="simulators"></span><h1>Simulators<a class="headerlink" href="#module-simulators" title="Permalink to this headline">¶</a></h1>
 <p>TODO: eval_metric - evaluate closed loop metric based on the simulation results
-# use the same interface for objectives as for the problem via _calculate_loss. if code is changed in problem possible mismatch
-TODO: overwrite past after n-steps, continuously in first n steps. In initial simulation period first n-steps are treated as 0s when only first needs to be a 0 vector</p>
+# use the same interface for objectives as for the problem via _calculate_loss.</p>
 <dl class="py class">
 <dt id="simulators.ClosedLoopSimulator">
-<em class="property">class </em><code class="sig-prename descclassname">simulators.</code><code class="sig-name descname">ClosedLoopSimulator</code><span class="sig-paren">(</span><em class="sig-param">model: neuromancer.problem.Problem</em>, <em class="sig-param">dataset: neuromancer.datasets.Dataset</em>, <em class="sig-param">policy: torch.nn.modules.module.Module</em>, <em class="sig-param">emulator: [&lt;class 'psl.emulator.EmulatorBase'&gt;</em>, <em class="sig-param">&lt;class 'torch.nn.modules.module.Module'&gt;] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulators.</code><code class="sig-name descname">ClosedLoopSimulator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sim_data</span></em>, <em class="sig-param"><span class="n">policy</span><span class="p">:</span> <span class="n">torch.nn.modules.module.Module</span></em>, <em class="sig-param"><span class="n">system_model</span><span class="p">:</span> <span class="n">torch.nn.modules.module.Module</span></em>, <em class="sig-param"><span class="n">estimator</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>torch.nn.modules.module.Module<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">emulator</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>psl.emulator.EmulatorBase<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">emulator_output_keys</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">emulator_input_keys</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">nsim</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
-<dt id="simulators.ClosedLoopSimulator.eval_metric">
-<code class="sig-name descname">eval_metric</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator.eval_metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator.eval_metric" title="Permalink to this definition">¶</a></dt>
+<dt id="simulators.ClosedLoopSimulator.append_data">
+<code class="sig-name descname">append_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sim_data</span></em>, <em class="sig-param"><span class="n">step_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator.append_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator.append_data" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="simulators.ClosedLoopSimulator.select_step_data">
-<code class="sig-name descname">select_step_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">i</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator.select_step_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator.select_step_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>for closed loop we want to pick i-th batch of the nstep data nstep_data[item][:, k, :]</p>
-<dl class="field-list simple">
+<dt id="simulators.ClosedLoopSimulator.rhc">
+<code class="sig-name descname">rhc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">policy_out</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator.rhc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator.rhc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receding horizon control = select only first timestep of the control horizon
+:param policy_out:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="simulators.ClosedLoopSimulator.simulate">
+<code class="sig-name descname">simulate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nsim</span></em>, <em class="sig-param"><span class="n">use_emulator</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator.simulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator.simulate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="simulators.ClosedLoopSimulator.step_data_estimator">
+<code class="sig-name descname">step_data_estimator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator.step_data_estimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator.step_data_estimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>get one step input data for state estimator
+:param data:
+:param k:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="simulators.ClosedLoopSimulator.step_data_model">
+<code class="sig-name descname">step_data_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">k</span></em>, <em class="sig-param"><span class="n">input_keys</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator.step_data_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator.step_data_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>get one step input data for system model and emulator
+:param data:
+:param k:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="simulators.ClosedLoopSimulator.step_data_policy">
+<code class="sig-name descname">step_data_policy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator.step_data_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator.step_data_policy" title="Permalink to this definition">¶</a></dt>
+<dd><p>get one step input data for control policy
+:param data:
+:param k:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="simulators.ClosedLoopSimulator.step_emulator">
+<code class="sig-name descname">step_emulator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">step_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator.step_emulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator.step_emulator" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> – </p></li>
-<li><p><strong>i</strong> – </p></li>
-</ul>
+<dd class="field-odd"><p><strong>step_data</strong> – </p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p></p>
@@ -208,31 +243,25 @@ TODO: overwrite past after n-steps, continuously in first n steps. In initial si
 </dd></dl>
 
 <dl class="py method">
-<dt id="simulators.ClosedLoopSimulator.simulate">
-<code class="sig-name descname">simulate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator.simulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator.simulate" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p># CL eval steps:
-# 1, initialize emulator with initial conditions and initial input trajectories
-# 2, obtain i-th simulation step batch of nstep data generated by emulator
-# 3, forward pass i-th step batch through the model
-# 4, receding horizon - slect only first sampling instant of the i-th batch control actions
-# 5, simulate emulator with selected control actions and obtain new step batch - continue from step 2,</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-</dl>
+<dt id="simulators.ClosedLoopSimulator.test_eval">
+<code class="sig-name descname">test_eval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator.test_eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator.test_eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="simulators.ClosedLoopSimulator.update_sim_data">
+<code class="sig-name descname">update_sim_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sim_data</span></em>, <em class="sig-param"><span class="n">step_data</span></em>, <em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator.update_sim_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator.update_sim_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>update simulation data dictionary with new predicted values from step forward
+:param sim_data:
+:param step_data:
+:param k:
+:return:</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt id="simulators.MHOpenLoopSimulator">
-<em class="property">class </em><code class="sig-prename descclassname">simulators.</code><code class="sig-name descname">MHOpenLoopSimulator</code><span class="sig-paren">(</span><em class="sig-param">model: neuromancer.problem.Problem</em>, <em class="sig-param">dataset: neuromancer.datasets.Dataset</em>, <em class="sig-param">emulator: [&lt;class 'psl.emulator.EmulatorBase'&gt;</em>, <em class="sig-param">&lt;class 'torch.nn.modules.module.Module'&gt;] = None</em>, <em class="sig-param">eval_sim=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#MHOpenLoopSimulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.MHOpenLoopSimulator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulators.</code><code class="sig-name descname">MHOpenLoopSimulator</code><span class="sig-paren">(</span><em class="sig-param">model: neuromancer.problem.Problem</em>, <em class="sig-param">dataset</em>, <em class="sig-param">emulator: [&lt;class 'psl.emulator.EmulatorBase'&gt;</em>, <em class="sig-param">&lt;class 'torch.nn.modules.module.Module'&gt;] = None</em>, <em class="sig-param">eval_sim=True</em>, <em class="sig-param">device='cpu'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#MHOpenLoopSimulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.MHOpenLoopSimulator" title="Permalink to this definition">¶</a></dt>
 <dd><p>moving horizon open loop simulator</p>
 <dl class="py method">
 <dt id="simulators.MHOpenLoopSimulator.horizon_data">
@@ -252,7 +281,7 @@ TODO: overwrite past after n-steps, continuously in first n steps. In initial si
 
 <dl class="py class">
 <dt id="simulators.MultiSequenceOpenLoopSimulator">
-<em class="property">class </em><code class="sig-prename descclassname">simulators.</code><code class="sig-name descname">MultiSequenceOpenLoopSimulator</code><span class="sig-paren">(</span><em class="sig-param">model: neuromancer.problem.Problem</em>, <em class="sig-param">dataset: neuromancer.datasets.Dataset</em>, <em class="sig-param">emulator: [&lt;class 'psl.emulator.EmulatorBase'&gt;</em>, <em class="sig-param">&lt;class 'torch.nn.modules.module.Module'&gt;] = None</em>, <em class="sig-param">eval_sim=True</em>, <em class="sig-param">stack=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#MultiSequenceOpenLoopSimulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.MultiSequenceOpenLoopSimulator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulators.</code><code class="sig-name descname">MultiSequenceOpenLoopSimulator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">neuromancer.problem.Problem</span></em>, <em class="sig-param"><span class="n">train_data</span></em>, <em class="sig-param"><span class="n">dev_data</span></em>, <em class="sig-param"><span class="n">test_data</span></em>, <em class="sig-param"><span class="n">emulator</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>psl.emulator.EmulatorBase<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">eval_sim</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">stack</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">device</span><span class="o">=</span><span class="default_value">'cpu'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#MultiSequenceOpenLoopSimulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.MultiSequenceOpenLoopSimulator" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="simulators.MultiSequenceOpenLoopSimulator.agg">
 <code class="sig-name descname">agg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outputs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#MultiSequenceOpenLoopSimulator.agg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.MultiSequenceOpenLoopSimulator.agg" title="Permalink to this definition">¶</a></dt>
@@ -272,7 +301,7 @@ TODO: overwrite past after n-steps, continuously in first n steps. In initial si
 
 <dl class="py class">
 <dt id="simulators.OpenLoopSimulator">
-<em class="property">class </em><code class="sig-prename descclassname">simulators.</code><code class="sig-name descname">OpenLoopSimulator</code><span class="sig-paren">(</span><em class="sig-param">model: neuromancer.problem.Problem</em>, <em class="sig-param">dataset: neuromancer.datasets.Dataset</em>, <em class="sig-param">emulator: [&lt;class 'psl.emulator.EmulatorBase'&gt;</em>, <em class="sig-param">&lt;class 'torch.nn.modules.module.Module'&gt;] = None</em>, <em class="sig-param">eval_sim=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#OpenLoopSimulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.OpenLoopSimulator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulators.</code><code class="sig-name descname">OpenLoopSimulator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">neuromancer.problem.Problem</span></em>, <em class="sig-param"><span class="n">train_data</span></em>, <em class="sig-param"><span class="n">dev_data</span></em>, <em class="sig-param"><span class="n">test_data</span></em>, <em class="sig-param"><span class="n">emulator</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>psl.emulator.EmulatorBase<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">eval_sim</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">device</span><span class="o">=</span><span class="default_value">'cpu'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#OpenLoopSimulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.OpenLoopSimulator" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="simulators.OpenLoopSimulator.simulate">
 <code class="sig-name descname">simulate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#OpenLoopSimulator.simulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.OpenLoopSimulator.simulate" title="Permalink to this definition">¶</a></dt>
@@ -282,7 +311,7 @@ TODO: overwrite past after n-steps, continuously in first n steps. In initial si
 
 <dl class="py class">
 <dt id="simulators.Simulator">
-<em class="property">class </em><code class="sig-prename descclassname">simulators.</code><code class="sig-name descname">Simulator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">neuromancer.problem.Problem</span></em>, <em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">neuromancer.datasets.Dataset</span></em>, <em class="sig-param"><span class="n">emulator</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>psl.emulator.EmulatorBase<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">eval_sim</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#Simulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.Simulator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulators.</code><code class="sig-name descname">Simulator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">neuromancer.problem.Problem</span></em>, <em class="sig-param"><span class="n">train_data</span></em>, <em class="sig-param"><span class="n">dev_data</span></em>, <em class="sig-param"><span class="n">test_data</span></em>, <em class="sig-param"><span class="n">emulator</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>psl.emulator.EmulatorBase<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">eval_sim</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">device</span><span class="o">=</span><span class="default_value">'cpu'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#Simulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.Simulator" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="simulators.Simulator.dev_eval">
 <code class="sig-name descname">dev_eval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#Simulator.dev_eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.Simulator.dev_eval" title="Permalink to this definition">¶</a></dt>

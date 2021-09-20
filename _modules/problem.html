@@ -94,7 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../dynamics.html">Dynamics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../activations.html">Activations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../blocks.html">Blocks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../estimators.html">Estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../loggers.html">Loggers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../operators.html">Operators</a></li>
@@ -107,6 +107,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../visuals.html">Visuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../arg.html">Arg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../callbacks.html">Callbacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../component.html">Component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../constraint.html">Constraint</a></li>
 </ul>
 
             
@@ -183,86 +185,95 @@
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 
-
-<div class="viewcode-block" id="Objective"><a class="viewcode-back" href="../problem.html#problem.Objective">[docs]</a><span class="k">class</span> <span class="nc">Objective</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">loss</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;objective&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">        :param variable_names: List of str</span>
-<span class="sd">        :param loss: (callable) Number of arguments of the callable should equal the number of strings in variable names.</span>
-<span class="sd">                                Arguments to callable should be torch.Tensor and return type a 0-dimensional torch.Tensor</span>
-<span class="sd">        :param weight: (float) Weight of objective for calculating multi-objective loss function</span>
-<span class="sd">        :param name: (str) Name for tracking output</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span> <span class="o">=</span> <span class="n">variable_names</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-
-<div class="viewcode-block" id="Objective.forward"><a class="viewcode-back" href="../problem.html#problem.Objective.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">        :param variables: (dict, {str: torch.Tensor}) Should contain keys corresponding to self.variable_names</span>
-<span class="sd">        :return: 0-dimensional torch.Tensor that can be cast as a floating point number</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span><span class="p">])</span></div></div>
+<span class="kn">from</span> <span class="nn">neuromancer.constraint</span> <span class="kn">import</span> <span class="n">Variable</span><span class="p">,</span> <span class="n">Loss</span>
 
 
 <div class="viewcode-block" id="Problem"><a class="viewcode-back" href="../problem.html#problem.Problem">[docs]</a><span class="k">class</span> <span class="nc">Problem</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objectives</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Objective</span><span class="p">],</span> <span class="n">constraints</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Objective</span><span class="p">],</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objectives</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Loss</span><span class="p">],</span> <span class="n">constraints</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Loss</span><span class="p">],</span>
                  <span class="n">components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is similar in spirit to a nn.Sequential module. However,</span>
 <span class="sd">        by concatenating input and output dictionaries for each component</span>
 <span class="sd">        module we can represent arbitrary directed acyclic computation graphs.</span>
 <span class="sd">        In addition the Problem module takes care of calculating weighted multi-objective</span>
-<span class="sd">        loss functions via the lists of Objective objects (constraints and objectives) which calculate loss terms</span>
+<span class="sd">        loss functions via the lists of Loss objects (constraints and objectives) which calculate loss terms</span>
 <span class="sd">        from aggregated input and set of outputs from the component modules.</span>
 
-<span class="sd">        :param objectives: list of Objective objects</span>
-<span class="sd">        :param constraints: list of Objective objects</span>
-<span class="sd">        :param components: list of objects which implement the component interface</span>
+<span class="sd">        :param objectives: list of objects which implement the Loss interface (e.g. Objective, Loss, or Constraint)</span>
+<span class="sd">        :param constraints: list of objects which implement the Loss interface (e.g. Objective, Loss, or Constraint)</span>
+<span class="sd">        :param components: list of objects which implement the component interface (e.g. Function, Policy, Estimator)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">objectives</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span><span class="n">objectives</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span><span class="n">constraints</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_unique_names</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_calculate_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_check_unique_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">num_unique</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objectives</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">]))</span>
+        <span class="n">num_objectives</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objectives</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">num_unique</span> <span class="o">==</span> <span class="n">num_objectives</span><span class="p">,</span> <span class="s2">&quot;All objectives and constraints must have unique names.&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">objective</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objectives</span><span class="p">:</span>
-            <span class="n">outputs</span><span class="p">[</span><span class="n">objective</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
-            <span class="n">loss</span> <span class="o">+=</span> <span class="n">outputs</span><span class="p">[</span><span class="n">objective</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">input_dict</span><span class="p">[</span><span class="n">objective</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">input_dict</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">+=</span> <span class="n">input_dict</span><span class="p">[</span><span class="n">objective</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">:</span>
-            <span class="n">outputs</span><span class="p">[</span><span class="n">constraint</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">constraint</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
-            <span class="n">loss</span> <span class="o">+=</span> <span class="n">outputs</span><span class="p">[</span><span class="n">constraint</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="o">**</span><span class="n">outputs</span><span class="p">}</span>
+            <span class="n">input_dict</span><span class="p">[</span><span class="n">constraint</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">constraint</span><span class="p">(</span><span class="n">input_dict</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">+=</span> <span class="n">input_dict</span><span class="p">[</span><span class="n">constraint</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+        <span class="n">input_dict</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss</span>
 
 <div class="viewcode-block" id="Problem.forward"><a class="viewcode-back" href="../problem.html#problem.Problem.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-
         <span class="n">output_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">loss_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_loss</span><span class="p">(</span><span class="n">output_dict</span><span class="p">)</span>
-        <span class="n">output_dict</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">loss_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">output_dict</span><span class="p">}</span>
-        <span class="k">return</span> <span class="p">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">output_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_loss</span><span class="p">(</span><span class="n">output_dict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">output_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
 
 <div class="viewcode-block" id="Problem.step"><a class="viewcode-back" href="../problem.html#problem.Problem.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
             <span class="n">output_dict</span> <span class="o">=</span> <span class="n">component</span><span class="p">(</span><span class="n">input_dict</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_dict</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+                <span class="n">output_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">component</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">output_dict</span><span class="p">}</span>
             <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">output_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">input_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">output_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> \
                 <span class="sa">f</span><span class="s1">&#39;Name collision in input and output dictionaries, Input_keys: </span><span class="si">{</span><span class="n">input_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s1">,&#39;</span> \
                 <span class="sa">f</span><span class="s1">&#39;Output_keys: </span><span class="si">{</span><span class="n">output_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
             <span class="n">input_dict</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">input_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">output_dict</span><span class="p">}</span>
-        <span class="k">return</span> <span class="n">input_dict</span></div></div>
+        <span class="k">return</span> <span class="n">input_dict</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;### MODEL SUMMARY ###</span><span class="se">\n\n</span><span class="s2">COMPONENTS:&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot; none</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">CONSTRAINTS:&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot; none</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">OBJECTIVES:&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objectives</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objectives</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot; none</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="k">return</span> <span class="n">s</span></div>
 
 
-<div class="viewcode-block" id="MSELoss"><a class="viewcode-back" href="../problem.html#problem.MSELoss">[docs]</a><span class="k">class</span> <span class="nc">MSELoss</span><span class="p">(</span><span class="n">Objective</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_names</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ref_loss&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="MSELoss"><a class="viewcode-back" href="../problem.html#problem.MSELoss">[docs]</a><span class="k">class</span> <span class="nc">MSELoss</span><span class="p">(</span><span class="n">Loss</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_names</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mse_loss&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">variable_names</span><span class="p">,</span>
             <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">,</span>
@@ -271,7 +282,7 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="RegularizationLoss"><a class="viewcode-back" href="../problem.html#problem.RegularizationLoss">[docs]</a><span class="k">class</span> <span class="nc">RegularizationLoss</span><span class="p">(</span><span class="n">Objective</span><span class="p">):</span>
+<div class="viewcode-block" id="RegularizationLoss"><a class="viewcode-back" href="../problem.html#problem.RegularizationLoss">[docs]</a><span class="k">class</span> <span class="nc">RegularizationLoss</span><span class="p">(</span><span class="n">Loss</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_names</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reg_loss&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">variable_names</span><span class="p">,</span>

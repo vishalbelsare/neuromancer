@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -181,31 +181,28 @@
 <span id="trainer"></span><h1>Trainer<a class="headerlink" href="#module-trainer" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="trainer.Trainer">
-<em class="property">class </em><code class="sig-prename descclassname">trainer.</code><code class="sig-name descname">Trainer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">problem</span><span class="p">:</span> <span class="n">neuromancer.problem.Problem</span></em>, <em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">neuromancer.datasets.Dataset</span></em>, <em class="sig-param"><span class="n">optimizer</span><span class="p">:</span> <span class="n">torch.optim.optimizer.Optimizer</span></em>, <em class="sig-param"><span class="n">logger</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>neuromancer.loggers.BasicLogger<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">visualizer</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>neuromancer.visuals.Visualizer<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">simulator</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>neuromancer.simulators.Simulator<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lr_scheduler</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">eval_metric</span><span class="o">=</span><span class="default_value">'loop_dev_loss'</span></em>, <em class="sig-param"><span class="n">patience</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">warmup</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">clip</span><span class="o">=</span><span class="default_value">100.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trainer.html#Trainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trainer.Trainer" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<em class="property">class </em><code class="sig-prename descclassname">trainer.</code><code class="sig-name descname">Trainer</code><span class="sig-paren">(</span><em class="sig-param">problem: neuromancer.problem.Problem</em>, <em class="sig-param">train_data: torch.utils.data.dataloader.DataLoader</em>, <em class="sig-param">dev_data: torch.utils.data.dataloader.DataLoader</em>, <em class="sig-param">test_data: torch.utils.data.dataloader.DataLoader</em>, <em class="sig-param">optimizer: torch.optim.optimizer.Optimizer</em>, <em class="sig-param">logger: Optional[neuromancer.loggers.BasicLogger] = None</em>, <em class="sig-param">callback=&lt;neuromancer.callbacks.Callback object&gt;</em>, <em class="sig-param">lr_scheduler=False</em>, <em class="sig-param">epochs=1000</em>, <em class="sig-param">patience=5</em>, <em class="sig-param">warmup=0</em>, <em class="sig-param">train_metric='nstep_train_loss'</em>, <em class="sig-param">dev_metric='nstep_dev_loss'</em>, <em class="sig-param">test_metric='nstep_test_loss'</em>, <em class="sig-param">eval_metric='loop_dev_loss'</em>, <em class="sig-param">eval_mode='min'</em>, <em class="sig-param">clip=100.0</em>, <em class="sig-param">device='cpu'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trainer.html#Trainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trainer.Trainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class encapsulating boilerplate PyTorch training code. Training procedure is somewhat
+extensible through methods in Callback objects associated with training and evaluation
+waypoints.</p>
+<dl class="py method">
 <dt id="trainer.Trainer.evaluate">
 <code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">best_model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trainer.html#Trainer.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trainer.Trainer.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This method is deprecated. Use self.test instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="trainer.Trainer.test">
+<code class="sig-name descname">test</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">best_model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trainer.html#Trainer.test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trainer.Trainer.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the model on all data splits.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="trainer.Trainer.train">
 <code class="sig-name descname">train</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/trainer.html#Trainer.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trainer.Trainer.train" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dd><p>Optimize model according to train_metric and validate per-epoch according to eval_metric.
+Trains for self.epochs and terminates early if self.patience threshold is exceeded.</p>
 </dd></dl>
-
-<dl class="py class">
-<dt id="trainer.TrainerMPP">
-<em class="property">class </em><code class="sig-prename descclassname">trainer.</code><code class="sig-name descname">TrainerMPP</code><span class="sig-paren">(</span><em class="sig-param">problem: neuromancer.problem.Problem</em>, <em class="sig-param">dataset: neuromancer.datasets.Dataset</em>, <em class="sig-param">optimizer: torch.optim.optimizer.Optimizer</em>, <em class="sig-param">logger: Optional[neuromancer.loggers.BasicLogger] = None</em>, <em class="sig-param">visualizer=&lt;neuromancer.visuals.Visualizer object&gt;</em>, <em class="sig-param">epochs=1000</em>, <em class="sig-param">eval_metric='dev_loss'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trainer.html#TrainerMPP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trainer.TrainerMPP" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt id="trainer.TrainerMPP.evaluate">
-<code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">best_model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trainer.html#TrainerMPP.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trainer.TrainerMPP.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="trainer.TrainerMPP.train">
-<code class="sig-name descname">train</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/trainer.html#TrainerMPP.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trainer.TrainerMPP.train" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -219,8 +216,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="trainer.reset">
-<code class="sig-prename descclassname">trainer.</code><code class="sig-name descname">reset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">module</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trainer.html#reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trainer.reset" title="Permalink to this definition">¶</a></dt>
+<dt id="trainer.move_batch_to_device">
+<code class="sig-prename descclassname">trainer.</code><code class="sig-name descname">move_batch_to_device</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">batch</span></em>, <em class="sig-param"><span class="n">device</span><span class="o">=</span><span class="default_value">'cpu'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/trainer.html#move_batch_to_device"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#trainer.move_batch_to_device" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">

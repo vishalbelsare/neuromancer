@@ -94,7 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../dynamics.html">Dynamics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../activations.html">Activations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../blocks.html">Blocks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../estimators.html">Estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../loggers.html">Loggers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../operators.html">Operators</a></li>
@@ -107,6 +107,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../visuals.html">Visuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../arg.html">Arg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../callbacks.html">Callbacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../component.html">Component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../constraint.html">Constraint</a></li>
 </ul>
 
             
@@ -175,6 +177,7 @@
   <h1>Source code for trainer</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 
@@ -183,33 +186,40 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">neuromancer.loggers</span> <span class="kn">import</span> <span class="n">BasicLogger</span>
-<span class="kn">from</span> <span class="nn">neuromancer.visuals</span> <span class="kn">import</span> <span class="n">Visualizer</span>
 <span class="kn">from</span> <span class="nn">neuromancer.problem</span> <span class="kn">import</span> <span class="n">Problem</span>
-<span class="kn">from</span> <span class="nn">neuromancer.datasets</span> <span class="kn">import</span> <span class="n">Dataset</span>
-<span class="kn">from</span> <span class="nn">neuromancer.simulators</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="kn">from</span> <span class="nn">neuromancer.callbacks</span> <span class="kn">import</span> <span class="n">Callback</span>
 
 
-<div class="viewcode-block" id="reset"><a class="viewcode-back" href="../trainer.html#trainer.reset">[docs]</a><span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">modules</span><span class="p">():</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="s2">&quot;reset&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">mod</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">module</span><span class="p">:</span>
-            <span class="n">mod</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+<div class="viewcode-block" id="move_batch_to_device"><a class="viewcode-back" href="../trainer.html#trainer.move_batch_to_device">[docs]</a><span class="k">def</span> <span class="nf">move_batch_to_device</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">batch</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
 
 
 <div class="viewcode-block" id="Trainer"><a class="viewcode-back" href="../trainer.html#trainer.Trainer">[docs]</a><span class="k">class</span> <span class="nc">Trainer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class encapsulating boilerplate PyTorch training code. Training procedure is somewhat</span>
+<span class="sd">    extensible through methods in Callback objects associated with training and evaluation</span>
+<span class="sd">    waypoints.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">problem</span><span class="p">:</span> <span class="n">Problem</span><span class="p">,</span>
-        <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+        <span class="n">train_data</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">,</span>
+        <span class="n">dev_data</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">,</span>
+        <span class="n">test_data</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">,</span>
         <span class="n">optimizer</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="p">,</span>
         <span class="n">logger</span><span class="p">:</span> <span class="n">BasicLogger</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">visualizer</span><span class="p">:</span> <span class="n">Visualizer</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">simulator</span><span class="p">:</span> <span class="n">Simulator</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">callback</span><span class="o">=</span><span class="n">Callback</span><span class="p">(),</span>
         <span class="n">lr_scheduler</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-        <span class="n">eval_metric</span><span class="o">=</span><span class="s2">&quot;loop_dev_loss&quot;</span><span class="p">,</span>
         <span class="n">patience</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
         <span class="n">warmup</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">train_metric</span><span class="o">=</span><span class="s2">&quot;nstep_train_loss&quot;</span><span class="p">,</span>
+        <span class="n">dev_metric</span><span class="o">=</span><span class="s2">&quot;nstep_dev_loss&quot;</span><span class="p">,</span>
+        <span class="n">test_metric</span><span class="o">=</span><span class="s2">&quot;nstep_test_loss&quot;</span><span class="p">,</span>
+        <span class="n">eval_metric</span><span class="o">=</span><span class="s2">&quot;loop_dev_loss&quot;</span><span class="p">,</span>
+        <span class="n">eval_mode</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">,</span>
         <span class="n">clip</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+        <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -217,24 +227,28 @@
 <span class="sd">        :param dataset: Batched (over chunks of time if sequence data) dataset for non-stochastic gradient descent</span>
 <span class="sd">        :param optimizer: Pytorch optimizer</span>
 <span class="sd">        :param logger: Object for logging results</span>
-<span class="sd">        :param visualizer: Object for creating visualizations of the model during and after training</span>
-<span class="sd">        :param simulator: Object for simulating learned model for assessing performance</span>
 <span class="sd">        :param epochs: (int) Number of epochs to train</span>
-<span class="sd">        :param eval_metric: (str) Performance metric for model selection and early stopping</span>
 <span class="sd">        :param patience: (int) Number of epochs to allow no improvement before early stopping</span>
-<span class="sd">        :param warmstart: (int) How many epochs to wait before enacting early stopping policy</span>
+<span class="sd">        :param warmup: (int) How many epochs to wait before enacting early stopping policy</span>
+<span class="sd">        :param eval_metric: (str) Performance metric for model selection and early stopping</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">problem</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_data</span> <span class="o">=</span> <span class="n">train_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dev_data</span> <span class="o">=</span> <span class="n">dev_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_data</span> <span class="o">=</span> <span class="n">test_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="o">=</span> <span class="n">visualizer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span> <span class="o">=</span> <span class="n">simulator</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_metric</span> <span class="o">=</span> <span class="n">train_metric</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dev_metric</span> <span class="o">=</span> <span class="n">dev_metric</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_metric</span> <span class="o">=</span> <span class="n">test_metric</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">eval_metric</span> <span class="o">=</span> <span class="n">eval_metric</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_min</span> <span class="o">=</span> <span class="n">eval_mode</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">ReduceLROnPlateau</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">ReduceLROnPlateau</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">lr_scheduler</span>
             <span class="k">else</span> <span class="kc">None</span>
         <span class="p">)</span>
@@ -242,156 +256,104 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">warmup</span> <span class="o">=</span> <span class="n">warmup</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">badcount</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_devloss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">max</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eval_min</span> <span class="k">else</span> <span class="mf">0.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_model</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
 
 <div class="viewcode-block" id="Trainer.train"><a class="viewcode-back" href="../trainer.html#trainer.Trainer.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">best_devloss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
-        <span class="n">best_model</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Optimize model according to train_metric and validate per-epoch according to eval_metric.</span>
+<span class="sd">        Trains for self.epochs and terminates early if self.patience threshold is exceeded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="o">.</span><span class="n">begin_train</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1">#best_model = deepcopy(self.model.state_dict())</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">=</span> <span class="n">i</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_data</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;nstep_train_loss&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">t_batch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_data</span><span class="p">:</span>
+                <span class="n">t_batch</span> <span class="o">=</span> <span class="n">move_batch_to_device</span><span class="p">(</span><span class="n">t_batch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">t_batch</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+                <span class="n">output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">train_metric</span><span class="p">]</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+                <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">train_metric</span><span class="p">])</span>
+
+            <span class="n">output</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;mean_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">train_metric</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">losses</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="o">.</span><span class="n">begin_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;nstep_train_loss&quot;</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;mean_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">train_metric</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">])</span>
+
             <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-                <span class="n">dev_data_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">dev_data</span><span class="p">)</span>
-                <span class="n">dev_sim_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">dev_eval</span><span class="p">()</span>
-                <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">output</span><span class="p">,</span> <span class="o">**</span><span class="n">dev_data_output</span><span class="p">,</span> <span class="o">**</span><span class="n">dev_sim_output</span><span class="p">}</span>
-                <span class="k">if</span> <span class="n">output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_metric</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">best_devloss</span><span class="p">:</span>
-                    <span class="n">best_model</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
-                    <span class="n">best_devloss</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_metric</span><span class="p">]</span>
+                <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">d_batch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dev_data</span><span class="p">:</span>
+                    <span class="n">d_batch</span> <span class="o">=</span> <span class="n">move_batch_to_device</span><span class="p">(</span><span class="n">d_batch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                    <span class="n">eval_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">d_batch</span><span class="p">)</span>
+                    <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eval_output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dev_metric</span><span class="p">])</span>
+                <span class="n">eval_output</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;mean_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dev_metric</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">losses</span><span class="p">))</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">output</span><span class="p">,</span> <span class="o">**</span><span class="n">eval_output</span><span class="p">}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="o">.</span><span class="n">begin_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>  <span class="c1"># potential simulator</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_eval_min</span> <span class="ow">and</span> <span class="n">output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_metric</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_devloss</span><span class="p">)</span>\
+                        <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eval_min</span> <span class="ow">and</span> <span class="n">output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_metric</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_devloss</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">best_model</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">best_devloss</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_metric</span><span class="p">]</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">badcount</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">warmup</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">badcount</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">train_plot</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="o">.</span><span class="n">end_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>  <span class="c1"># visualizations</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="o">.</span><span class="n">end_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">badcount</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">patience</span><span class="p">:</span>
                 <span class="k">break</span>
 
-        <span class="n">plots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">train_output</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span>
-            <span class="p">{</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="s2">_best_model_state_dict.pth&quot;</span><span class="p">:</span> <span class="n">best_model</span><span class="p">,</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="s2">_best_model.pth&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
-                <span class="o">**</span><span class="n">plots</span><span class="p">,</span>
-            <span class="p">}</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">best_model</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="o">.</span><span class="n">end_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>  <span class="c1"># write training visualizations</span>
 
-    <span class="c1">########################################</span>
-    <span class="c1">########## EVALUATE MODEL ##############</span>
-    <span class="c1">########################################</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">({</span>
+            <span class="s2">&quot;best_model_state_dict.pth&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_model</span><span class="p">,</span>
+            <span class="s2">&quot;best_model.pth&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_model</span></div>
+
+<div class="viewcode-block" id="Trainer.test"><a class="viewcode-back" href="../trainer.html#trainer.Trainer.test">[docs]</a>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">best_model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate the model on all data splits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="o">.</span><span class="n">begin_test</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># setup simulator</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">dset</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">train_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dev_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_data</span><span class="p">],</span>
+                                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">train_metric</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dev_metric</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_metric</span><span class="p">]):</span>
+                <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dset</span><span class="p">:</span>
+                    <span class="n">batch</span> <span class="o">=</span> <span class="n">move_batch_to_device</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                    <span class="n">batch_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+                    <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_output</span><span class="p">[</span><span class="n">metric</span><span class="p">])</span>
+                <span class="n">output</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;mean_</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">losses</span><span class="p">))</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">output</span><span class="p">,</span> <span class="o">**</span><span class="n">batch_output</span><span class="p">}</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="o">.</span><span class="n">end_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>    <span class="c1"># simulator/visualizations/output concat</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">({</span><span class="sa">f</span><span class="s2">&quot;best_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+
+        <span class="k">return</span> <span class="n">output</span></div>
+
 <div class="viewcode-block" id="Trainer.evaluate"><a class="viewcode-back" href="../trainer.html#trainer.Trainer.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">best_model</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_model</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_model</span><span class="p">)</span>
-
-        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="c1">########################################</span>
-            <span class="c1">########### DATASET RESPONSE ###########</span>
-            <span class="c1">########################################</span>
-            <span class="n">all_output</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-            <span class="n">splits</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_data</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">dev_data</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="p">,</span>
-            <span class="p">]</span>
-            <span class="k">for</span> <span class="n">dset</span><span class="p">,</span> <span class="n">dname</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">splits</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;dev&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">]):</span>
-                <span class="n">all_output</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">all_output</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">dset</span><span class="p">)}</span>
-            <span class="c1">########################################</span>
-            <span class="c1">########## SIMULATOR RESPONSE ##########</span>
-            <span class="c1">########################################</span>
-            <span class="n">test_sim_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">test_eval</span><span class="p">()</span>
-            <span class="n">all_output</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">all_output</span><span class="p">,</span> <span class="o">**</span><span class="n">test_sim_output</span><span class="p">}</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">all_output</span> <span class="o">=</span> <span class="n">all_output</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">({</span><span class="sa">f</span><span class="s2">&quot;best_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">all_output</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">plots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">all_output</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span><span class="n">plots</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">all_output</span></div></div>
-
-
-<div class="viewcode-block" id="TrainerMPP"><a class="viewcode-back" href="../trainer.html#trainer.TrainerMPP">[docs]</a><span class="k">class</span> <span class="nc">TrainerMPP</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">problem</span><span class="p">:</span> <span class="n">Problem</span><span class="p">,</span>
-        <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
-        <span class="n">optimizer</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="p">,</span>
-        <span class="n">logger</span><span class="p">:</span> <span class="n">BasicLogger</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">visualizer</span><span class="o">=</span><span class="n">Visualizer</span><span class="p">(),</span>
-        <span class="n">epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-        <span class="n">eval_metric</span><span class="o">=</span><span class="s2">&quot;dev_loss&quot;</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">problem</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="o">=</span> <span class="n">visualizer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">eval_metric</span> <span class="o">=</span> <span class="n">eval_metric</span>
-
-    <span class="c1">########################################</span>
-    <span class="c1">############# TRAIN LOOP ###############</span>
-    <span class="c1">########################################</span>
-<div class="viewcode-block" id="TrainerMPP.train"><a class="viewcode-back" href="../trainer.html#trainer.TrainerMPP.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">best_devloss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
-        <span class="n">best_model</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
-        <span class="n">best_model_full</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_data</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;train_loss&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-
-            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-                <span class="n">dev_data_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">dev_data</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">({</span><span class="o">**</span><span class="n">dev_data_output</span><span class="p">,</span> <span class="o">**</span><span class="n">output</span><span class="p">},</span> <span class="n">step</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">dev_data_output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_metric</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">best_devloss</span><span class="p">:</span>
-                    <span class="n">best_model</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
-                    <span class="n">best_model_full</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
-                    <span class="n">best_devloss</span> <span class="o">=</span> <span class="n">dev_data_output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_metric</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">train_plot</span><span class="p">(</span><span class="n">dev_data_output</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-
-        <span class="n">plots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">train_output</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">({</span><span class="s2">&quot;best_model_stat_dict.pth&quot;</span><span class="p">:</span> <span class="n">best_model</span><span class="p">,</span> <span class="o">**</span><span class="n">plots</span><span class="p">})</span>
-        <span class="k">return</span> <span class="n">best_model</span><span class="p">,</span> <span class="n">best_model_full</span></div>
-
-    <span class="c1">########################################</span>
-    <span class="c1">########## EVALUATE MODEL ##############</span>
-    <span class="c1">########################################</span>
-<div class="viewcode-block" id="TrainerMPP.evaluate"><a class="viewcode-back" href="../trainer.html#trainer.TrainerMPP.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">best_model</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_model</span><span class="p">)</span>
-
-        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="c1">########################################</span>
-            <span class="c1">########### DATASET RESPONSE ###########</span>
-            <span class="c1">########################################</span>
-            <span class="n">all_output</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-            <span class="n">splits</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_data</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">dev_data</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="p">,</span>
-            <span class="p">]</span>
-            <span class="k">for</span> <span class="n">dset</span><span class="p">,</span> <span class="n">dname</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">splits</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;dev&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">]):</span>
-                <span class="n">all_output</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">all_output</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">dset</span><span class="p">)}</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">all_output</span> <span class="o">=</span> <span class="n">all_output</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">({</span><span class="sa">f</span><span class="s2">&quot;best_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">all_output</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">plots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">all_output</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span><span class="n">plots</span><span class="p">)</span></div></div>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is deprecated. Use self.test instead.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">best_model</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="freeze_weight"><a class="viewcode-back" href="../trainer.html#trainer.freeze_weight">[docs]</a><span class="k">def</span> <span class="nf">freeze_weight</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">module_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]):</span>

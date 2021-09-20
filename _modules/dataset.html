@@ -1,0 +1,779 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dataset &mdash; NeuroMANCER 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/tiny_dadaist.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NeuroMANCER
+          
+
+          
+            
+            <img src="../_static/dadaist.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dynamics.html">Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../activations.html">Activations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../blocks.html">Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estimators.html">Estimators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../loggers.html">Loggers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plot.html">Plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../problem.html">Problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rnn.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../signals.html">Signals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulators.html">Simulators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trainer.html">Trainer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visuals.html">Visuals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arg.html">Arg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../callbacks.html">Callbacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../component.html">Component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../constraint.html">Constraint</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NeuroMANCER</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>dataset</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dataset</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">loadmat</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data.dataloader</span> <span class="kn">import</span> <span class="n">default_collate</span>
+
+
+<span class="k">def</span> <span class="nf">_is_multisequence_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">_is_sequence_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">({</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">()})</span> <span class="o">==</span> <span class="mi">1</span>
+
+
+<span class="k">def</span> <span class="nf">_extract_var</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+    <span class="n">filtered</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="n">regex</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">return</span> <span class="n">filtered</span> <span class="k">if</span> <span class="n">filtered</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+
+
+<span class="n">SUPPORTED_EXTENSIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;.mat&quot;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="read_file"><a class="viewcode-back" href="../dataset.html#dataset.read_file">[docs]</a><span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">file_or_dir</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">file_or_dir</span><span class="p">):</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">file_or_dir</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">file_or_dir</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">SUPPORTED_EXTENSIONS</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">_read_file</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">files</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">_read_file</span><span class="p">(</span><span class="n">file_or_dir</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_read_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read data from MAT or CSV file into data dictionary.</span>
+
+<span class="sd">    :param file_path: (str) path to a MAT or CSV file to load.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">file_type</span> <span class="o">=</span> <span class="n">file_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s2">&quot;mat&quot;</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">loadmat</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># outputs</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># inputs</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># disturbances</span>
+        <span class="n">id_</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;exp_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># experiment run id</span>
+    <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s2">&quot;csv&quot;</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">_extract_var</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;^y[0-9]+$&quot;</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">_extract_var</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;^x[0-9]+$&quot;</span><span class="p">)</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="n">_extract_var</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;^u[0-9]+$&quot;</span><span class="p">)</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">_extract_var</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;^d[0-9]+$&quot;</span><span class="p">)</span>
+        <span class="n">id_</span> <span class="o">=</span> <span class="n">_extract_var</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;^exp_id&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;error: unsupported file type: </span><span class="si">{</span><span class="n">file_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">any</span><span class="p">([</span><span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">D</span><span class="p">]])</span>
+
+    <span class="k">if</span> <span class="n">id_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">D</span><span class="p">])</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="n">id_</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">D</span><span class="p">])</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">id_</span><span class="o">.</span><span class="n">flatten</span><span class="p">()))</span>
+        <span class="p">]</span>
+
+
+<div class="viewcode-block" id="batch_tensor"><a class="viewcode-back" href="../dataset.html#dataset.batch_tensor">[docs]</a><span class="k">def</span> <span class="nf">batch_tensor</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">mh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">unfold</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">mh</span> <span class="k">else</span> <span class="n">steps</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="unbatch_tensor"><a class="viewcode-back" href="../dataset.html#dataset.unbatch_tensor">[docs]</a><span class="k">def</span> <span class="nf">unbatch_tensor</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">mh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">:]),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mh</span>
+        <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_sequence_time_slices</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">seq_lens</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="n">seq_lens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">seq_lens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">seq_lens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">or</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="n">seq_lens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> \
+                <span class="s2">&quot;sequence lengths within a dictionary must be equal&quot;</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">seq_len</span> <span class="ow">in</span> <span class="n">seq_lens</span><span class="p">:</span>
+        <span class="n">slices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">seq_len</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="n">seq_len</span>
+    <span class="k">return</span> <span class="n">slices</span>
+
+
+<span class="k">def</span> <span class="nf">_validate_keys</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">other_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span> <span class="o">-</span> <span class="n">other_keys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">other_keys</span> <span class="o">-</span> <span class="n">keys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> \
+            <span class="s2">&quot;list of dictionaries must have matching keys across all dictionaries.&quot;</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">other_keys</span>
+    <span class="k">return</span> <span class="n">keys</span>
+
+
+<div class="viewcode-block" id="SequenceDataset"><a class="viewcode-back" href="../dataset.html#dataset.SequenceDataset">[docs]</a><span class="k">class</span> <span class="nc">SequenceDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">,</span>
+        <span class="n">nsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">moving_horizon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Dataset for handling sequential data and transforming it into the dictionary structure</span>
+<span class="sd">        used by NeuroMANCER models.</span>
+
+<span class="sd">        :param data: (dict str: np.array) dictionary mapping variable names to tensors of shape</span>
+<span class="sd">            (T, Dk), where T is number of time steps and Dk is dimensionality of variable k.</span>
+<span class="sd">        :param nsteps: (int) N-step prediction horizon for batching data.</span>
+<span class="sd">        :param moving_horizon: (bool) if True, generate batches using sliding window with stride 1;</span>
+<span class="sd">            else use stride N.</span>
+<span class="sd">        :param name: (str) name of dataset split.</span>
+
+<span class="sd">        .. note:: To generate train/dev/test datasets and DataLoaders for each, see the</span>
+<span class="sd">            `get_sequence_dataloaders` function.</span>
+
+<span class="sd">        .. warning:: This dataset class requires the use of a special collate function that must be</span>
+<span class="sd">            provided to PyTorch&#39;s DataLoader class; see the `collate_fn` method of this class.</span>
+
+<span class="sd">        .. todo:: Add support for categorical features.</span>
+<span class="sd">        .. todo:: Add support for memory-mapped and/or streaming data.</span>
+<span class="sd">        .. todo:: Add support for data augmentation?</span>
+<span class="sd">        .. todo:: Clean up data validation code.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">multisequence</span> <span class="o">=</span> <span class="n">_is_multisequence_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">_is_sequence_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">multisequence</span><span class="p">,</span> \
+            <span class="s2">&quot;data must be provided as a dictionary or list of dictionaries&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">]</span>
+
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">_validate_keys</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="c1"># _sslices used to slice out sequences from a multi-sequence dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sslices</span> <span class="o">=</span> <span class="n">_get_sequence_time_slices</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">nsteps</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">stop</span> <span class="o">-</span> <span class="n">sl</span><span class="o">.</span><span class="n">start</span><span class="p">)</span> <span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sslices</span><span class="p">]),</span> \
+            <span class="sa">f</span><span class="s2">&quot;length of time series data must be greater than nsteps&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span> <span class="o">=</span> <span class="n">nsteps</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full_data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">],</span>
+            <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nsim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsim</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:],)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
+
+        <span class="c1"># _vslices used to slice out sequences of individual variables from full_data and batched_data</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vslices</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vslices</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dims</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span>
+            <span class="o">**</span><span class="p">{</span><span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span>
+            <span class="o">**</span><span class="p">{</span><span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span>
+            <span class="s2">&quot;nsim&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsim</span><span class="p">,</span>
+            <span class="s2">&quot;nsteps&quot;</span><span class="p">:</span> <span class="n">nsteps</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">batched_data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">batch_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_data</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">mh</span><span class="o">=</span><span class="n">moving_horizon</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sslices</span><span class="p">],</span>
+            <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batched_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batched_data</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gives the number of N-step batches in the dataset.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batched_data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch a single N-step sequence from the dataset.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="o">**</span><span class="p">{</span>
+                <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">batched_data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vslices</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>
+            <span class="p">},</span>
+            <span class="o">**</span><span class="p">{</span>
+                <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">batched_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vslices</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_get_full_sequence_impl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the full sequence of data as a dictionary. Useful for open-loop evaluation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">end</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">end</span>
+        <span class="k">elif</span> <span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="o">**</span><span class="p">{</span>
+                <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_data</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">end</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vslices</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>
+            <span class="p">},</span>
+            <span class="o">**</span><span class="p">{</span>
+                <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_data</span><span class="p">[</span><span class="n">start</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span> <span class="p">:</span> <span class="n">end</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vslices</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;loop_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="SequenceDataset.get_full_sequence"><a class="viewcode-back" href="../dataset.html#dataset.SequenceDataset.get_full_sequence">[docs]</a>    <span class="k">def</span> <span class="nf">get_full_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_full_sequence_impl</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sslices</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">multisequence</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_full_sequence_impl</span><span class="p">()</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SequenceDataset.get_full_batch"><a class="viewcode-back" href="../dataset.html#dataset.SequenceDataset.get_full_batch">[docs]</a>    <span class="k">def</span> <span class="nf">get_full_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="o">**</span><span class="p">{</span>
+                <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">batched_data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vslices</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>
+            <span class="p">},</span>
+            <span class="o">**</span><span class="p">{</span>
+                <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">batched_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vslices</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;nstep_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="SequenceDataset.collate_fn"><a class="viewcode-back" href="../dataset.html#dataset.SequenceDataset.collate_fn">[docs]</a>    <span class="k">def</span> <span class="nf">collate_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Batch collation for dictionaries of samples generated by this dataset. This wraps the</span>
+<span class="sd">        default PyTorch batch collation function and does some light post-processing to transpose</span>
+<span class="sd">        the data for NeuroMANCER models and add a &quot;name&quot; field.</span>
+
+<span class="sd">        :param batch: (dict str: torch.Tensor) dataset sample.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">default_collate</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="o">**</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">batch</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;nstep_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">varinfo</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;nsteps&quot;</span><span class="p">,</span> <span class="s2">&quot;nsim&quot;</span><span class="p">}])</span>
+        <span class="n">seqinfo</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;    nsequences: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sslices</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">multisequence</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  multi-sequence: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">multisequence</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seqinfo</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  variables (shapes):</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">varinfo</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  nsim: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nsim</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  nsteps: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nsteps</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  batches: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="StaticDataset"><a class="viewcode-back" href="../dataset.html#dataset.StaticDataset">[docs]</a><span class="k">class</span> <span class="nc">StaticDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Dataset for handling static data and transforming it into the dictionary structure</span>
+<span class="sd">        used by NeuroMANCER models.</span>
+
+<span class="sd">        :param data: (dict str: np.array) dictionary mapping variable names to tensors of shape</span>
+<span class="sd">            (N, Dk), where N is the number of samples and Dk is dimensionality of variable k.</span>
+<span class="sd">        :param name: (str) name of dataset split.</span>
+
+<span class="sd">        .. warning:: This dataset class requires the use of a special collate function that must be</span>
+<span class="sd">            provided to PyTorch&#39;s DataLoader class; see the `collate_fn` method of this class.</span>
+
+<span class="sd">        .. todo:: Add support for categorical features.</span>
+<span class="sd">        .. todo:: Add support for memory-mapped and/or streaming data.</span>
+<span class="sd">        .. todo:: Add support for data augmentation?</span>
+<span class="sd">        .. todo:: Clean up data validation code.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full_data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nsamples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsamples</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:],)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
+
+        <span class="c1"># _vslices used to slice out sequences of individual variables from full_data</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vslices</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vslices</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dims</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span>
+            <span class="s2">&quot;nsamples&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsamples</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gives the number of samples in the dataset.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsamples</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch a single sample from the dataset.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vslices</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="StaticDataset.get_full_batch"><a class="viewcode-back" href="../dataset.html#dataset.StaticDataset.get_full_batch">[docs]</a>    <span class="k">def</span> <span class="nf">get_full_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_data</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vslices</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>
+        <span class="p">}</span>
+        <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="n">batch</span></div>
+
+<div class="viewcode-block" id="StaticDataset.collate_fn"><a class="viewcode-back" href="../dataset.html#dataset.StaticDataset.collate_fn">[docs]</a>    <span class="k">def</span> <span class="nf">collate_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Batch collation for dictionaries of samples generated by this dataset. This wraps the</span>
+<span class="sd">        default PyTorch batch collation function and simply adds a &quot;name&quot; field to a batch.</span>
+
+<span class="sd">        :param batch: (dict str: torch.Tensor) dataset sample.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">default_collate</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+        <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="n">batch</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">varinfo</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s2">&quot;nsamples&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  variables (shapes):</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">varinfo</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  nsamples: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nsamples</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="normalize_data"><a class="viewcode-back" href="../dataset.html#dataset.normalize_data">[docs]</a><span class="k">def</span> <span class="nf">normalize_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">norm_type</span><span class="p">,</span> <span class="n">stats</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Normalize data, optionally using arbitrary statistics (e.g. computed from train split).</span>
+
+<span class="sd">    :param data: (dict str: np.array) data dictionary.</span>
+<span class="sd">    :param norm_type: (str) type of normalization to use; can be &quot;zero-one&quot;, &quot;one-one&quot;, or &quot;zscore&quot;.</span>
+<span class="sd">    :param stats: (dict str: np.array) statistics to use for normalization. Default is None, in which</span>
+<span class="sd">        case stats are inferred by underlying normalization function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">multisequence</span> <span class="o">=</span> <span class="n">_is_multisequence_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">_is_sequence_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="ow">or</span> <span class="n">multisequence</span><span class="p">,</span> \
+        <span class="s2">&quot;data must be provided as a dictionary or list of dictionaries&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">multisequence</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">stats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">norm_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">norm_fns</span><span class="p">[</span><span class="n">norm_type</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">norm_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">norm_fns</span><span class="p">[</span><span class="n">norm_type</span><span class="p">](</span>
+            <span class="n">x</span><span class="p">,</span>
+            <span class="n">stats</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;_min&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">stats</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;_max&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="n">_get_sequence_time_slices</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">v</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">}</span>
+
+    <span class="n">norm_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">norm_fn</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+    <span class="n">norm_data</span><span class="p">,</span> <span class="n">stat0</span><span class="p">,</span> <span class="n">stat1</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">norm_data</span><span class="p">)</span>
+
+    <span class="n">stats</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="o">**</span><span class="p">{</span><span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;_min&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">stat0</span><span class="p">)},</span>
+        <span class="o">**</span><span class="p">{</span><span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;_max&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">stat1</span><span class="p">)},</span>
+    <span class="p">}</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">norm_data</span><span class="p">)}</span> <span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="n">slices</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">data</span> <span class="k">if</span> <span class="n">multisequence</span> <span class="k">else</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stats</span></div>
+
+
+<div class="viewcode-block" id="split_sequence_data"><a class="viewcode-back" href="../dataset.html#dataset.split_sequence_data">[docs]</a><span class="k">def</span> <span class="nf">split_sequence_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">moving_horizon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">split_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Split a data dictionary into train, development, and test sets. Splits data into thirds by</span>
+<span class="sd">    default, but arbitrary split ratios for train and development can be provided.</span>
+
+<span class="sd">    :param data: (dict str: np.array or list[str: np.array]) data dictionary.</span>
+<span class="sd">    :param nsteps: (int) N-step prediction horizon for batching data; used here to ensure split</span>
+<span class="sd">        lengths are evenly divisible by N.</span>
+<span class="sd">    :param moving_horizon: (bool) whether batches use a sliding window with stride 1; else stride of</span>
+<span class="sd">        N is assumed.</span>
+<span class="sd">    :param split_ratio: (list float) Two numbers indicating percentage of data included in train and</span>
+<span class="sd">        development sets (out of 100.0). Default is None, which splits data into thirds.</span>
+
+<span class="sd">    .. todo:: polymorphic split arg for supporting split percentages or indices for multiseq case</span>
+<span class="sd">        and determine best way to split given a dict of file names</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">multisequence</span> <span class="o">=</span> <span class="n">_is_multisequence_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">_is_sequence_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="ow">or</span> <span class="n">multisequence</span><span class="p">,</span> \
+        <span class="s2">&quot;data must be provided as a dictionary or list of dictionaries&quot;</span>
+
+    <span class="n">nsim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="k">if</span> <span class="n">multisequence</span> <span class="k">else</span> <span class="nb">min</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">split_mod</span> <span class="o">=</span> <span class="n">nsteps</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">multisequence</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">split_ratio</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">split_len</span> <span class="o">=</span> <span class="n">nsim</span> <span class="o">//</span> <span class="mi">3</span>
+        <span class="n">split_len</span> <span class="o">-=</span> <span class="n">split_len</span> <span class="o">%</span> <span class="n">split_mod</span>
+        <span class="n">train_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">split_len</span> <span class="o">+</span> <span class="n">nsteps</span> <span class="o">*</span> <span class="p">(</span><span class="ow">not</span> <span class="n">multisequence</span><span class="p">))</span>
+        <span class="n">dev_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">split_len</span><span class="p">,</span> <span class="n">split_len</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">nsteps</span> <span class="o">*</span> <span class="p">(</span><span class="ow">not</span> <span class="n">multisequence</span><span class="p">))</span>
+        <span class="n">test_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">split_len</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nsim</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dev_start</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">split_ratio</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span> <span class="o">*</span> <span class="n">nsim</span>
+        <span class="n">dev_start</span> <span class="o">-=</span> <span class="n">dev_start</span> <span class="o">%</span> <span class="n">split_mod</span>
+        <span class="n">test_start</span> <span class="o">=</span> <span class="n">dev_start</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">split_ratio</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span> <span class="o">*</span> <span class="n">nsim</span>
+        <span class="n">test_start</span> <span class="o">-=</span> <span class="n">test_start</span> <span class="o">%</span> <span class="n">split_mod</span>
+        <span class="n">train_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dev_start</span><span class="p">)</span>
+        <span class="n">dev_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">dev_start</span><span class="p">,</span> <span class="n">test_start</span><span class="p">)</span>
+        <span class="n">test_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">test_start</span><span class="p">,</span> <span class="n">nsim</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">multisequence</span><span class="p">:</span>
+        <span class="n">train_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="n">train_slice</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">dev_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="n">dev_slice</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="n">test_slice</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">train_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">train_slice</span><span class="p">]</span>
+        <span class="n">dev_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">dev_slice</span><span class="p">]</span>
+        <span class="n">test_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">test_slice</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">dev_data</span><span class="p">,</span> <span class="n">test_data</span></div>
+
+
+<div class="viewcode-block" id="split_static_data"><a class="viewcode-back" href="../dataset.html#dataset.split_static_data">[docs]</a><span class="k">def</span> <span class="nf">split_static_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">split_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Split a data dictionary into train, development, and test sets. Splits data into thirds by</span>
+<span class="sd">    default, but arbitrary split ratios for train and development can be provided.</span>
+
+<span class="sd">    :param data: (dict str: np.array or list[str: np.array]) data dictionary.</span>
+<span class="sd">    :param split_ratio: (list float) Two numbers indicating percentage of data included in train and</span>
+<span class="sd">        development sets (out of 100.0). Default is None, which splits data into thirds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">nsim</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">split_ratio</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">split_len</span> <span class="o">=</span> <span class="n">nsim</span> <span class="o">//</span> <span class="mi">3</span>
+        <span class="n">train_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">split_len</span><span class="p">)</span>
+        <span class="n">dev_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">split_len</span><span class="p">,</span> <span class="n">split_len</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">test_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">split_len</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nsim</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dev_start</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">split_ratio</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span> <span class="o">*</span> <span class="n">nsim</span>
+        <span class="n">test_start</span> <span class="o">=</span> <span class="n">dev_start</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">split_ratio</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span> <span class="o">*</span> <span class="n">nsim</span>
+        <span class="n">train_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dev_start</span><span class="p">)</span>
+        <span class="n">dev_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">dev_start</span><span class="p">,</span> <span class="n">test_start</span><span class="p">)</span>
+        <span class="n">test_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">test_start</span><span class="p">,</span> <span class="n">nsim</span><span class="p">)</span>
+
+    <span class="n">train_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="n">train_slice</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">dev_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="n">dev_slice</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="n">test_slice</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">return</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">dev_data</span><span class="p">,</span> <span class="n">test_data</span></div>
+
+
+<div class="viewcode-block" id="standardize"><a class="viewcode-back" href="../dataset.html#dataset.standardize">[docs]</a><span class="k">def</span> <span class="nf">standardize</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">mean</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">mean</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">std</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">std</span>
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+        <span class="n">M_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">M_norm</span><span class="p">),</span> <span class="n">mean</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">std</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="normalize_01"><a class="viewcode-back" href="../dataset.html#dataset.normalize_01">[docs]</a><span class="k">def</span> <span class="nf">normalize_01</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">Mmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Mmax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param M: (2-d np.array) Data to be normalized</span>
+<span class="sd">    :param Mmin: (int) Optional minimum. If not provided is inferred from data.</span>
+<span class="sd">    :param Mmax: (int) Optional maximum. If not provided is inferred from data.</span>
+<span class="sd">    :return: (2-d np.array) Min-max normalized data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Mmin</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">Mmin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">Mmin</span>
+    <span class="n">Mmax</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">Mmax</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">Mmax</span>
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+        <span class="n">M_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span> <span class="o">-</span> <span class="n">Mmin</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Mmax</span> <span class="o">-</span> <span class="n">Mmin</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">M_norm</span><span class="p">),</span> <span class="n">Mmin</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Mmax</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="normalize_11"><a class="viewcode-back" href="../dataset.html#dataset.normalize_11">[docs]</a><span class="k">def</span> <span class="nf">normalize_11</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">Mmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Mmax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param M: (2-d np.array) Data to be normalized</span>
+<span class="sd">    :param Mmin: (int) Optional minimum. If not provided is inferred from data.</span>
+<span class="sd">    :param Mmax: (int) Optional maximum. If not provided is inferred from data.</span>
+<span class="sd">    :return: (2-d np.array) Min-max normalized data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Mmin</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">Mmin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">Mmin</span>
+    <span class="n">Mmax</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">Mmax</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">Mmax</span>
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+        <span class="n">M_norm</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="n">M</span> <span class="o">-</span> <span class="n">Mmin</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Mmax</span> <span class="o">-</span> <span class="n">Mmin</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">M_norm</span><span class="p">),</span> <span class="n">Mmin</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Mmax</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="denormalize_01"><a class="viewcode-back" href="../dataset.html#dataset.denormalize_01">[docs]</a><span class="k">def</span> <span class="nf">denormalize_01</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">Mmin</span><span class="p">,</span> <span class="n">Mmax</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    denormalize min max norm</span>
+<span class="sd">    :param M: (2-d np.array) Data to be normalized</span>
+<span class="sd">    :param Mmin: (int) Minimum value</span>
+<span class="sd">    :param Mmax: (int) Maximum value</span>
+<span class="sd">    :return: (2-d np.array) Un-normalized data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M_denorm</span> <span class="o">=</span> <span class="n">M</span> <span class="o">*</span> <span class="p">(</span><span class="n">Mmax</span> <span class="o">-</span> <span class="n">Mmin</span><span class="p">)</span> <span class="o">+</span> <span class="n">Mmin</span>
+    <span class="k">return</span> <span class="n">M_denorm</span></div>
+
+
+<div class="viewcode-block" id="denormalize_11"><a class="viewcode-back" href="../dataset.html#dataset.denormalize_11">[docs]</a><span class="k">def</span> <span class="nf">denormalize_11</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">Mmin</span><span class="p">,</span> <span class="n">Mmax</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    denormalize min max norm</span>
+<span class="sd">    :param M: (2-d np.array) Data to be normalized</span>
+<span class="sd">    :param Mmin: (int) Minimum value</span>
+<span class="sd">    :param Mmax: (int) Maximum value</span>
+<span class="sd">    :return: (2-d np.array) Un-normalized data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M_denorm</span> <span class="o">=</span> <span class="p">((</span><span class="n">M</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">Mmax</span> <span class="o">-</span> <span class="n">Mmin</span><span class="p">)</span> <span class="o">+</span> <span class="n">Mmin</span>
+    <span class="k">return</span> <span class="n">M_denorm</span></div>
+
+
+<div class="viewcode-block" id="destandardize"><a class="viewcode-back" href="../dataset.html#dataset.destandardize">[docs]</a><span class="k">def</span> <span class="nf">destandardize</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">M</span> <span class="o">*</span> <span class="n">std</span> <span class="o">+</span> <span class="n">mean</span></div>
+
+
+<span class="n">norm_fns</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;zscore&quot;</span><span class="p">:</span> <span class="n">standardize</span><span class="p">,</span>
+    <span class="s2">&quot;zero-one&quot;</span><span class="p">:</span> <span class="n">normalize_01</span><span class="p">,</span>
+    <span class="s2">&quot;one-one&quot;</span><span class="p">:</span> <span class="n">normalize_11</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">denorm_fns</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;zscore&quot;</span><span class="p">:</span> <span class="n">destandardize</span><span class="p">,</span>
+    <span class="s2">&quot;zero-one&quot;</span><span class="p">:</span> <span class="n">denormalize_01</span><span class="p">,</span>
+    <span class="s2">&quot;one-one&quot;</span><span class="p">:</span> <span class="n">denormalize_11</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Aaron Tuor, Jan Drgona, Elliott Skomski, Soumya Vasisht.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

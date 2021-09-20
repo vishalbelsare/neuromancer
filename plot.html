@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -202,11 +202,69 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="plot.cl_simulate">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">cl_simulate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em>, <em class="sig-param"><span class="n">net</span></em>, <em class="sig-param"><span class="n">nstep</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">x0</span><span class="o">=</span><span class="default_value">array([[1.], [1.]])</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plot.html#cl_simulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plot.cl_simulate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – </p></li>
+<li><p><strong>B</strong> – </p></li>
+<li><p><strong>net</strong> – </p></li>
+<li><p><strong>nstep</strong> – </p></li>
+<li><p><strong>x0</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="plot.get_colors">
 <code class="sig-prename descclassname">plot.</code><code class="sig-name descname">get_colors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plot.html#get_colors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plot.get_colors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns k colors evenly spaced across the color wheel.
 :param k: (int) Number of colors you want.
 :return: (np.array, shape=[k, 3])</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="plot.lpv_batched">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">lpv_batched</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fx</span></em>, <em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plot.html#lpv_batched"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plot.lpv_batched" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="plot.plot_cl">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">plot_cl</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">U</span></em>, <em class="sig-param"><span class="n">nstep</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">save_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">trace_movie</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plot.html#plot_cl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plot.plot_cl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="plot.plot_cl_train">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">plot_cl_train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_list</span></em>, <em class="sig-param"><span class="n">U_list</span></em>, <em class="sig-param"><span class="n">nstep</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">save_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plot.html#plot_cl_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plot.plot_cl_train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="plot.plot_loss_DPC">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">plot_loss_DPC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">dataset</span></em>, <em class="sig-param"><span class="n">xmin</span><span class="o">=</span><span class="default_value">- 5</span></em>, <em class="sig-param"><span class="n">xmax</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">save_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plot.html#plot_loss_DPC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plot.plot_loss_DPC" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot loss function for trained DPC model
+:param model:
+:param dataset:
+:param xmin:
+:param xmax:
+:param save_path:
+:return:</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="plot.plot_loss_mpp">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">plot_loss_mpp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">dataset</span></em>, <em class="sig-param"><span class="n">xmin</span><span class="o">=</span><span class="default_value">- 2</span></em>, <em class="sig-param"><span class="n">xmax</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">save_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plot.html#plot_loss_mpp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plot.plot_loss_mpp" title="Permalink to this definition">¶</a></dt>
+<dd><p>plots loss function for multiparametric problem with 2 parameters
+:param model:
+:param dataset:
+:param xmin:
+:param xmax:
+:param save_path:
+:return:</p>
 </dd></dl>
 
 <dl class="py function">
@@ -229,6 +287,32 @@ Useful for inspecting layers of weights of neural networks.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot</span><span class="o">.</span><span class="n">plot_matrices</span><span class="p">(</span><span class="n">color_matrices</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="s1">&#39;matrix_grid.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="plot.plot_model_graph">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">plot_model_graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">data_keys</span></em>, <em class="sig-param"><span class="n">include_objectives</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">fname</span><span class="o">=</span><span class="default_value">'model_graph.png'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plot.html#plot_model_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plot.plot_model_graph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="plot.plot_policy">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">plot_policy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">net</span></em>, <em class="sig-param"><span class="n">xmin</span><span class="o">=</span><span class="default_value">- 5</span></em>, <em class="sig-param"><span class="n">xmax</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">save_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plot.html#plot_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plot.plot_policy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="plot.plot_policy_train">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">plot_policy_train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">B</span></em>, <em class="sig-param"><span class="n">policy</span></em>, <em class="sig-param"><span class="n">policy_list</span></em>, <em class="sig-param"><span class="n">xmin</span><span class="o">=</span><span class="default_value">- 5</span></em>, <em class="sig-param"><span class="n">xmax</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">save_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plot.html#plot_policy_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plot.plot_policy_train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="plot.plot_solution_mpp">
+<code class="sig-prename descclassname">plot.</code><code class="sig-name descname">plot_solution_mpp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">xmin</span><span class="o">=</span><span class="default_value">- 2</span></em>, <em class="sig-param"><span class="n">xmax</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">save_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/plot.html#plot_solution_mpp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plot.plot_solution_mpp" title="Permalink to this definition">¶</a></dt>
+<dd><p>plots solution landscape for problem with 2 parameters and 1 decision variable
+:param net:
+:param xmin:
+:param xmax:
+:param save_path:
+:return:</p>
 </dd></dl>
 
 <dl class="py function">

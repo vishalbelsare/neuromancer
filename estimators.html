@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -215,27 +215,46 @@
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt id="estimators.FullyObservable.training">
-<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#estimators.FullyObservable.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="estimators.FullyObservableAugmented">
+<em class="property">class </em><code class="sig-prename descclassname">estimators.</code><code class="sig-name descname">FullyObservableAugmented</code><span class="sig-paren">(</span><em class="sig-param">data_dims, nsteps=1, window_size=1, nd=1, d0=0.0, bias=False, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'torch.nn.modules.linear.Identity'&gt;, hsizes=[], input_keys=['Yp'], linargs={}, name='fully_observable_aug'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#FullyObservableAugmented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.FullyObservableAugmented" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="estimators.FullyObservableAugmented.features">
+<code class="sig-name descname">features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#FullyObservableAugmented.features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.FullyObservableAugmented.features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compile a feature vector using data features corresponding to self.input_keys</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – (dict {str: torch.Tensor})</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(torch.Tensor)</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt id="estimators.LinearEstimator">
 <em class="property">class </em><code class="sig-prename descclassname">estimators.</code><code class="sig-name descname">LinearEstimator</code><span class="sig-paren">(</span><em class="sig-param">data_dims, nsteps=1, window_size=1, bias=False, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'torch.nn.modules.linear.Identity'&gt;, hsizes=[], input_keys=['Yp'], linargs={}, name='linear_estim'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#LinearEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.LinearEstimator" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt id="estimators.LinearEstimator.training">
-<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#estimators.LinearEstimator.training" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-</dd></dl>
 
 <dl class="py class">
 <dt id="estimators.LinearKalmanFilter">
 <em class="property">class </em><code class="sig-prename descclassname">estimators.</code><code class="sig-name descname">LinearKalmanFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'kalman_estim'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#LinearKalmanFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.LinearKalmanFilter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="estimators.LinearKalmanFilter.DEFAULT_INPUT_KEYS">
+<code class="sig-name descname">DEFAULT_INPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['Yp', 'Up', 'Dp']</em><a class="headerlink" href="#estimators.LinearKalmanFilter.DEFAULT_INPUT_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="estimators.LinearKalmanFilter.DEFAULT_OUTPUT_KEYS">
+<code class="sig-name descname">DEFAULT_OUTPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['x0', 'reg_error']</em><a class="headerlink" href="#estimators.LinearKalmanFilter.DEFAULT_OUTPUT_KEYS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Time-Varying Linear Kalman Filter</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="estimators.LinearKalmanFilter.forward">
 <code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#LinearKalmanFilter.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.LinearKalmanFilter.forward" title="Permalink to this definition">¶</a></dt>
@@ -255,22 +274,12 @@ registered hooks while the latter silently ignores them.</p>
 <code class="sig-name descname">reg_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#LinearKalmanFilter.reg_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.LinearKalmanFilter.reg_error" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt id="estimators.LinearKalmanFilter.training">
-<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#estimators.LinearKalmanFilter.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt id="estimators.MLPEstimator">
 <em class="property">class </em><code class="sig-prename descclassname">estimators.</code><code class="sig-name descname">MLPEstimator</code><span class="sig-paren">(</span><em class="sig-param">data_dims, nsteps=1, window_size=1, bias=False, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'torch.nn.modules.activation.GELU'&gt;, hsizes=[64], input_keys=['Yp'], linargs={}, name='MLP_estim'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#MLPEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.MLPEstimator" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt id="estimators.MLPEstimator.training">
-<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#estimators.MLPEstimator.training" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-</dd></dl>
 
 <dl class="py class">
 <dt id="estimators.RNNEstimator">
@@ -288,27 +297,27 @@ registered hooks while the latter silently ignores them.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt id="estimators.RNNEstimator.training">
-<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#estimators.RNNEstimator.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt id="estimators.ResMLPEstimator">
 <em class="property">class </em><code class="sig-prename descclassname">estimators.</code><code class="sig-name descname">ResMLPEstimator</code><span class="sig-paren">(</span><em class="sig-param">data_dims, nsteps=1, window_size=1, bias=False, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'torch.nn.modules.activation.GELU'&gt;, hsizes=[64], input_keys=['Yp'], linargs={}, name='ResMLP_estim'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#ResMLPEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.ResMLPEstimator" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt id="estimators.ResMLPEstimator.training">
-<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#estimators.ResMLPEstimator.training" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-</dd></dl>
 
 <dl class="py class">
 <dt id="estimators.TimeDelayEstimator">
-<em class="property">class </em><code class="sig-prename descclassname">estimators.</code><code class="sig-name descname">TimeDelayEstimator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_dims</span></em>, <em class="sig-param"><span class="n">nsteps</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">window_size</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">input_keys</span><span class="o">=</span><span class="default_value">['Yp']</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'estimator'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#TimeDelayEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.TimeDelayEstimator" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<em class="property">class </em><code class="sig-prename descclassname">estimators.</code><code class="sig-name descname">TimeDelayEstimator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_dims</span></em>, <em class="sig-param"><span class="n">nsteps</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">window_size</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">input_keys</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'estimator'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#TimeDelayEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.TimeDelayEstimator" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="estimators.TimeDelayEstimator.DEFAULT_INPUT_KEYS">
+<code class="sig-name descname">DEFAULT_INPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['Yp']</em><a class="headerlink" href="#estimators.TimeDelayEstimator.DEFAULT_INPUT_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="estimators.TimeDelayEstimator.DEFAULT_OUTPUT_KEYS">
+<code class="sig-name descname">DEFAULT_OUTPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['x0', 'reg_error']</em><a class="headerlink" href="#estimators.TimeDelayEstimator.DEFAULT_OUTPUT_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="estimators.TimeDelayEstimator.features">
 <code class="sig-name descname">features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#TimeDelayEstimator.features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.TimeDelayEstimator.features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compile a feature vector using data features corresponding to self.input_keys</p>
@@ -345,25 +354,6 @@ registered hooks while the latter silently ignores them.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt id="estimators.TimeDelayEstimator.training">
-<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#estimators.TimeDelayEstimator.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt id="estimators.check_keys">
-<code class="sig-prename descclassname">estimators.</code><code class="sig-name descname">check_keys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k1</span></em>, <em class="sig-param"><span class="n">k2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#check_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.check_keys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that all elements in k1 are contained in k2</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>k1</strong> – iterable of str</p></li>
-<li><p><strong>k2</strong> – iterable of str</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py class">
@@ -422,7 +412,12 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt id="estimators.seq2seqTimeDelayEstimator">
 <em class="property">class </em><code class="sig-prename descclassname">estimators.</code><code class="sig-name descname">seq2seqTimeDelayEstimator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_dims</span></em>, <em class="sig-param"><span class="n">nsteps</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">window_size</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">input_keys</span><span class="o">=</span><span class="default_value">['Yp']</span></em>, <em class="sig-param"><span class="n">timedelay</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'estimator'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#seq2seqTimeDelayEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.seq2seqTimeDelayEstimator" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<dd><dl class="py attribute">
+<dt id="estimators.seq2seqTimeDelayEstimator.DEFAULT_OUTPUT_KEYS">
+<code class="sig-name descname">DEFAULT_OUTPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['Xtd', 'reg_error']</em><a class="headerlink" href="#estimators.seq2seqTimeDelayEstimator.DEFAULT_OUTPUT_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="estimators.seq2seqTimeDelayEstimator.forward">
 <code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/estimators.html#seq2seqTimeDelayEstimator.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#estimators.seq2seqTimeDelayEstimator.forward" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">

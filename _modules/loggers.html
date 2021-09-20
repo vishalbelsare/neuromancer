@@ -94,7 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../dynamics.html">Dynamics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../activations.html">Activations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../blocks.html">Blocks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../estimators.html">Estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../loggers.html">Loggers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../operators.html">Operators</a></li>
@@ -107,6 +107,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../visuals.html">Visuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../arg.html">Arg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../callbacks.html">Callbacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../component.html">Component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../constraint.html">Constraint</a></li>
 </ul>
 
             
@@ -180,6 +182,7 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">neuromancer.pnl_mlflow_secrets</span> <span class="kn">import</span> <span class="n">set_environment_variables</span>
 
 <span class="c1"># machine learning/data science imports</span>
 <span class="kn">import</span> <span class="nn">mlflow</span>
@@ -268,12 +271,20 @@
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        :param args: (Namespace) returned by argparse.ArgumentParser.parse_args()</span>
+<span class="sd">                                args.location (str): path to directory on file system to store experiment results via mlflow</span>
+<span class="sd">                                                     or if &#39;pnl_dadaist_store&#39; then will save to our instance of the pnl mlflow</span>
+<span class="sd">                                                     server. Must have copy of pnl_mlflow_secrets.py (containing a funtion to set</span>
+<span class="sd">                                                     necessary environment variables) located in neuromancer/neuromancer/</span>
+<span class="sd">                                                     where main modules are located.</span>
 <span class="sd">        :param savedir: Unique folder name to temporarily save artifacts</span>
 <span class="sd">        :param verbosity: (int) Print to stdout every verbosity steps</span>
 <span class="sd">        :param id: (int) Optional unique experiment ID for hyperparameter optimization</span>
 <span class="sd">        :param stdout: (list of str) Metrics to print to stdout. These should correspond to keys in the output dictionary of the Problem</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mlflow</span><span class="o">.</span><span class="n">set_tracking_uri</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">location</span> <span class="o">==</span> <span class="s1">&#39;pnl_dadaist_store&#39;</span><span class="p">:</span>
+            <span class="n">set_environment_variables</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mlflow</span><span class="o">.</span><span class="n">set_tracking_uri</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
         <span class="n">mlflow</span><span class="o">.</span><span class="n">set_experiment</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span>
         <span class="n">mlflow</span><span class="o">.</span><span class="n">start_run</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">run_id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">savedir</span><span class="o">=</span><span class="n">savedir</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">)</span>

@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>callbacks &mdash; NeuroMANCER 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/tiny_dadaist.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NeuroMANCER
+          
+
+          
+            
+            <img src="../_static/dadaist.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dynamics.html">Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../activations.html">Activations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../blocks.html">Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estimators.html">Estimators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../loggers.html">Loggers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plot.html">Plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../problem.html">Problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rnn.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../signals.html">Signals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulators.html">Simulators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trainer.html">Trainer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visuals.html">Visuals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arg.html">Arg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../callbacks.html">Callbacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../component.html">Component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../constraint.html">Constraint</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NeuroMANCER</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>callbacks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for callbacks</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Callback classes for versatile behavior in the Trainer object at specified checkpoints.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+
+
+<div class="viewcode-block" id="Callback"><a class="viewcode-back" href="../callbacks.html#callbacks.Callback">[docs]</a><span class="k">class</span> <span class="nc">Callback</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Callback base class which allows for bare functionality of Trainer</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Callback.begin_train"><a class="viewcode-back" href="../callbacks.html#callbacks.Callback.begin_train">[docs]</a>    <span class="k">def</span> <span class="nf">begin_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Callback.begin_epoch"><a class="viewcode-back" href="../callbacks.html#callbacks.Callback.begin_epoch">[docs]</a>    <span class="k">def</span> <span class="nf">begin_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Callback.begin_eval"><a class="viewcode-back" href="../callbacks.html#callbacks.Callback.begin_eval">[docs]</a>    <span class="k">def</span> <span class="nf">begin_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Callback.end_eval"><a class="viewcode-back" href="../callbacks.html#callbacks.Callback.end_eval">[docs]</a>    <span class="k">def</span> <span class="nf">end_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Callback.end_epoch"><a class="viewcode-back" href="../callbacks.html#callbacks.Callback.end_epoch">[docs]</a>    <span class="k">def</span> <span class="nf">end_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Callback.end_train"><a class="viewcode-back" href="../callbacks.html#callbacks.Callback.end_train">[docs]</a>    <span class="k">def</span> <span class="nf">end_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Callback.begin_test"><a class="viewcode-back" href="../callbacks.html#callbacks.Callback.begin_test">[docs]</a>    <span class="k">def</span> <span class="nf">begin_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Callback.end_test"><a class="viewcode-back" href="../callbacks.html#callbacks.Callback.end_test">[docs]</a>    <span class="k">def</span> <span class="nf">end_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="SysIDCallback"><a class="viewcode-back" href="../callbacks.html#callbacks.SysIDCallback">[docs]</a><span class="k">class</span> <span class="nc">SysIDCallback</span><span class="p">(</span><span class="n">Callback</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Callbacks for system ID training. Also works with control scripts. May refactor to put visualization and simulation</span>
+<span class="sd">    functionality directly in the callback at which point there will be separate sysID and control callbacks.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulator</span><span class="p">,</span> <span class="n">visualizer</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="o">=</span> <span class="n">simulator</span><span class="p">,</span> <span class="n">visualizer</span>
+
+<div class="viewcode-block" id="SysIDCallback.begin_eval"><a class="viewcode-back" href="../callbacks.html#callbacks.SysIDCallback.begin_eval">[docs]</a>    <span class="k">def</span> <span class="nf">begin_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">dev_eval</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="SysIDCallback.end_eval"><a class="viewcode-back" href="../callbacks.html#callbacks.SysIDCallback.end_eval">[docs]</a>    <span class="k">def</span> <span class="nf">end_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">train_plot</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">current_epoch</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SysIDCallback.end_train"><a class="viewcode-back" href="../callbacks.html#callbacks.SysIDCallback.end_train">[docs]</a>    <span class="k">def</span> <span class="nf">end_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="n">plots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">train_output</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="n">trainer</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span><span class="n">plots</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SysIDCallback.begin_test"><a class="viewcode-back" href="../callbacks.html#callbacks.SysIDCallback.begin_test">[docs]</a>    <span class="k">def</span> <span class="nf">begin_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">best_model</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SysIDCallback.end_test"><a class="viewcode-back" href="../callbacks.html#callbacks.SysIDCallback.end_test">[docs]</a>    <span class="k">def</span> <span class="nf">end_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">test_eval</span><span class="p">())</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+            <span class="n">trainer</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span><span class="n">plots</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ControlCallback"><a class="viewcode-back" href="../callbacks.html#callbacks.ControlCallback">[docs]</a><span class="k">class</span> <span class="nc">ControlCallback</span><span class="p">(</span><span class="n">Callback</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Callbacks for closed loop control training. May refactor to put visualization and simulation</span>
+<span class="sd">    functionality directly in the callback at which point there will be separate sysID and control callbacks.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visualizer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="o">=</span> <span class="n">simulator</span><span class="p">,</span> <span class="n">visualizer</span>
+
+<div class="viewcode-block" id="ControlCallback.end_test"><a class="viewcode-back" href="../callbacks.html#callbacks.ControlCallback.end_test">[docs]</a>    <span class="k">def</span> <span class="nf">end_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="n">plots</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># simulate closed-loop control of system model and emulator (if specified)</span>
+            <span class="n">out_model</span><span class="p">,</span> <span class="n">out_emul</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">test_eval</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># visualize closed-loop control of system model</span>
+                <span class="n">plots_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">out_model</span><span class="p">,</span> <span class="n">plot_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figname</span><span class="o">=</span><span class="s1">&#39;CL_model.png&#39;</span><span class="p">)</span>
+                <span class="n">plots</span><span class="p">[</span><span class="s2">&quot;plt_model&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plots_model</span>
+                <span class="k">if</span> <span class="n">out_emul</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># visualize closed-loop control of emulator</span>
+                    <span class="n">plots_emul</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">out_emul</span><span class="p">,</span> <span class="n">figname</span><span class="o">=</span><span class="s1">&#39;CL_emul.png&#39;</span><span class="p">)</span>
+                    <span class="n">plots</span><span class="p">[</span><span class="s2">&quot;plt_emul&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plots_emul</span>
+        <span class="n">trainer</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span><span class="n">plots</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DoubleIntegratorCallback"><a class="viewcode-back" href="../callbacks.html#callbacks.DoubleIntegratorCallback">[docs]</a><span class="k">class</span> <span class="nc">DoubleIntegratorCallback</span><span class="p">(</span><span class="n">Callback</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visualizer</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="o">=</span> <span class="n">visualizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epoch_model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epoch_policy</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DoubleIntegratorCallback.end_epoch"><a class="viewcode-back" href="../callbacks.html#callbacks.DoubleIntegratorCallback.end_epoch">[docs]</a>    <span class="k">def</span> <span class="nf">end_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="c1"># save current copies of the system model and control policy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epoch_model</span><span class="p">[</span><span class="n">trainer</span><span class="o">.</span><span class="n">current_epoch</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epoch_policy</span><span class="p">[</span><span class="n">trainer</span><span class="o">.</span><span class="n">current_epoch</span><span class="p">]</span> <span class="o">=</span> \
+            <span class="n">deepcopy</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="DoubleIntegratorCallback.end_train"><a class="viewcode-back" href="../callbacks.html#callbacks.DoubleIntegratorCallback.end_train">[docs]</a>    <span class="k">def</span> <span class="nf">end_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="n">plots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">train_output</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epoch_policy</span><span class="p">)</span> \
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">plots</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">trainer</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span><span class="n">plots</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DoubleIntegratorCallback.end_test"><a class="viewcode-back" href="../callbacks.html#callbacks.DoubleIntegratorCallback.end_test">[docs]</a>    <span class="k">def</span> <span class="nf">end_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">trainer</span><span class="p">)</span>
+            <span class="n">trainer</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span><span class="n">plots</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Aaron Tuor, Jan Drgona, Elliott Skomski, Soumya Vasisht.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

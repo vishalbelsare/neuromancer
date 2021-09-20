@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -197,7 +197,7 @@
 </ul>
 </dd>
 <dt>Block-structured dynamical models:</dt><dd><ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x_{t+1} = f_x(x_t) \odot f_u(u_t) \odot f_d(d_t) \odot f_e(x_t)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(x_{t+1} = f_x(x_t) \\odot f_u(u_t) \\odot f_d(d_t) \\odot f_e(x_t)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(y_t =  f_y(x_t)\)</span></p></li>
 </ul>
 </dd>
@@ -214,8 +214,18 @@
 </dl>
 <dl class="py class">
 <dt id="dynamics.BlackSSM">
-<em class="property">class </em><code class="sig-prename descclassname">dynamics.</code><code class="sig-name descname">BlackSSM</code><span class="sig-paren">(</span><em class="sig-param">fxud</em>, <em class="sig-param">fy</em>, <em class="sig-param">fe=None</em>, <em class="sig-param">fyu=None</em>, <em class="sig-param">xoe=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoyu=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">name='black_ssm'</em>, <em class="sig-param">input_keys={}</em>, <em class="sig-param">residual=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#BlackSSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.BlackSSM" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<em class="property">class </em><code class="sig-prename descclassname">dynamics.</code><code class="sig-name descname">BlackSSM</code><span class="sig-paren">(</span><em class="sig-param">fx</em>, <em class="sig-param">fy</em>, <em class="sig-param">fe=None</em>, <em class="sig-param">fyu=None</em>, <em class="sig-param">xoe=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoyu=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">name='black_ssm'</em>, <em class="sig-param">input_key_map={}</em>, <em class="sig-param">extra_inputs=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#BlackSSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.BlackSSM" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="dynamics.BlackSSM.DEFAULT_INPUT_KEYS">
+<code class="sig-name descname">DEFAULT_INPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['x0', 'Yf']</em><a class="headerlink" href="#dynamics.BlackSSM.DEFAULT_INPUT_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="dynamics.BlackSSM.DEFAULT_OUTPUT_KEYS">
+<code class="sig-name descname">DEFAULT_OUTPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['X_pred', 'Y_pred', 'reg_error']</em><a class="headerlink" href="#dynamics.BlackSSM.DEFAULT_OUTPUT_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="dynamics.BlackSSM.check_features">
 <code class="sig-name descname">check_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#BlackSSM.check_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.BlackSSM.check_features" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -235,17 +245,22 @@
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt id="dynamics.BlackSSM.training">
-<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#dynamics.BlackSSM.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt id="dynamics.BlockSSM">
-<em class="property">class </em><code class="sig-prename descclassname">dynamics.</code><code class="sig-name descname">BlockSSM</code><span class="sig-paren">(</span><em class="sig-param">fx</em>, <em class="sig-param">fy</em>, <em class="sig-param">fu=None</em>, <em class="sig-param">fd=None</em>, <em class="sig-param">fe=None</em>, <em class="sig-param">fyu=None</em>, <em class="sig-param">xou=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xod=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoe=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoyu=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">residual=False</em>, <em class="sig-param">name='block_ssm'</em>, <em class="sig-param">input_keys={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#BlockSSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.BlockSSM" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<em class="property">class </em><code class="sig-prename descclassname">dynamics.</code><code class="sig-name descname">BlockSSM</code><span class="sig-paren">(</span><em class="sig-param">fx</em>, <em class="sig-param">fy</em>, <em class="sig-param">fu=None</em>, <em class="sig-param">fd=None</em>, <em class="sig-param">fe=None</em>, <em class="sig-param">fyu=None</em>, <em class="sig-param">xou=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xod=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoe=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoyu=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">residual=False</em>, <em class="sig-param">name='block_ssm'</em>, <em class="sig-param">input_key_map={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#BlockSSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.BlockSSM" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="dynamics.BlockSSM.DEFAULT_INPUT_KEYS">
+<code class="sig-name descname">DEFAULT_INPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['x0', 'Yf']</em><a class="headerlink" href="#dynamics.BlockSSM.DEFAULT_INPUT_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="dynamics.BlockSSM.DEFAULT_OUTPUT_KEYS">
+<code class="sig-name descname">DEFAULT_OUTPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['X_pred', 'Y_pred', 'reg_error']</em><a class="headerlink" href="#dynamics.BlockSSM.DEFAULT_OUTPUT_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="dynamics.BlockSSM.check_features">
 <code class="sig-name descname">check_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#BlockSSM.check_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.BlockSSM.check_features" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -264,52 +279,29 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="dynamics.BlockSSM.keys">
-<em class="property">static </em><code class="sig-name descname">keys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_keys</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#BlockSSM.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.BlockSSM.keys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overwrite canonical expected input keys with alternate names</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>input_keys</strong> – (dict {str:str}) Mapping canonical expected input keys to alternate names</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>(list [str]) List of input keys</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt id="dynamics.BlockSSM.reg_error">
 <code class="sig-name descname">reg_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#BlockSSM.reg_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.BlockSSM.reg_error" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="dynamics.BlockSSM.training">
-<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#dynamics.BlockSSM.training" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt id="dynamics.TimeDelayBlackSSM">
-<em class="property">class </em><code class="sig-prename descclassname">dynamics.</code><code class="sig-name descname">TimeDelayBlackSSM</code><span class="sig-paren">(</span><em class="sig-param">fxud</em>, <em class="sig-param">fy</em>, <em class="sig-param">fe=None</em>, <em class="sig-param">xoe=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">name='black_ssm'</em>, <em class="sig-param">input_keys={}</em>, <em class="sig-param">timedelay=0</em>, <em class="sig-param">residual=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#TimeDelayBlackSSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.TimeDelayBlackSSM" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt id="dynamics.TimeDelayBlackSSM.forward">
-<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#TimeDelayBlackSSM.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.TimeDelayBlackSSM.forward" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dynamics.</code><code class="sig-name descname">TimeDelayBlackSSM</code><span class="sig-paren">(</span><em class="sig-param">fx</em>, <em class="sig-param">fy</em>, <em class="sig-param">fe=None</em>, <em class="sig-param">xoe=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">name='black_ssm'</em>, <em class="sig-param">input_key_map={}</em>, <em class="sig-param">timedelay=0</em>, <em class="sig-param">extra_inputs=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#TimeDelayBlackSSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.TimeDelayBlackSSM" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="dynamics.TimeDelayBlackSSM.DEFAULT_INPUT_KEYS">
+<code class="sig-name descname">DEFAULT_INPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['Xtd', 'Yf']</em><a class="headerlink" href="#dynamics.TimeDelayBlackSSM.DEFAULT_INPUT_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="dynamics.TimeDelayBlackSSM.DEFAULT_OUTPUT_KEYS">
+<code class="sig-name descname">DEFAULT_OUTPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['X_pred', 'Y_pred', 'reg_error']</em><a class="headerlink" href="#dynamics.TimeDelayBlackSSM.DEFAULT_OUTPUT_KEYS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="dynamics.TimeDelayBlackSSM.keys">
-<em class="property">static </em><code class="sig-name descname">keys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_keys</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#TimeDelayBlackSSM.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.TimeDelayBlackSSM.keys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overwrite canonical expected input keys with alternate names</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>input_keys</strong> – (dict {str:str}) Mapping canonical expected input keys to alternate names</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>(list [str]) List of input keys</p>
-</dd>
-</dl>
-</dd></dl>
+<dt id="dynamics.TimeDelayBlackSSM.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#TimeDelayBlackSSM.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.TimeDelayBlackSSM.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="dynamics.TimeDelayBlackSSM.training">
@@ -320,8 +312,18 @@
 
 <dl class="py class">
 <dt id="dynamics.TimeDelayBlockSSM">
-<em class="property">class </em><code class="sig-prename descclassname">dynamics.</code><code class="sig-name descname">TimeDelayBlockSSM</code><span class="sig-paren">(</span><em class="sig-param">fx</em>, <em class="sig-param">fy</em>, <em class="sig-param">fu=None</em>, <em class="sig-param">fd=None</em>, <em class="sig-param">fe=None</em>, <em class="sig-param">xou=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xod=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoe=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">residual=False</em>, <em class="sig-param">name='block_ssm'</em>, <em class="sig-param">input_keys={}</em>, <em class="sig-param">timedelay=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#TimeDelayBlockSSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.TimeDelayBlockSSM" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<em class="property">class </em><code class="sig-prename descclassname">dynamics.</code><code class="sig-name descname">TimeDelayBlockSSM</code><span class="sig-paren">(</span><em class="sig-param">fx</em>, <em class="sig-param">fy</em>, <em class="sig-param">fu=None</em>, <em class="sig-param">fd=None</em>, <em class="sig-param">fe=None</em>, <em class="sig-param">xou=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xod=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoe=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">residual=False</em>, <em class="sig-param">name='block_ssm'</em>, <em class="sig-param">input_key_map={}</em>, <em class="sig-param">timedelay=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#TimeDelayBlockSSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.TimeDelayBlockSSM" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="dynamics.TimeDelayBlockSSM.DEFAULT_INPUT_KEYS">
+<code class="sig-name descname">DEFAULT_INPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['Xtd', 'Yf']</em><a class="headerlink" href="#dynamics.TimeDelayBlockSSM.DEFAULT_INPUT_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="dynamics.TimeDelayBlockSSM.DEFAULT_OUTPUT_KEYS">
+<code class="sig-name descname">DEFAULT_OUTPUT_KEYS</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['X_pred', 'Y_pred', 'reg_error']</em><a class="headerlink" href="#dynamics.TimeDelayBlockSSM.DEFAULT_OUTPUT_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="dynamics.TimeDelayBlockSSM.check_features">
 <code class="sig-name descname">check_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#TimeDelayBlockSSM.check_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.TimeDelayBlockSSM.check_features" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -339,20 +341,6 @@
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dynamics.TimeDelayBlockSSM.keys">
-<em class="property">static </em><code class="sig-name descname">keys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_keys</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#TimeDelayBlockSSM.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.TimeDelayBlockSSM.keys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overwrite canonical expected input keys with alternate names</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>input_keys</strong> – (dict {str:str}) Mapping canonical expected input keys to alternate names</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>(list [str]) List of input keys</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py attribute">
 <dt id="dynamics.TimeDelayBlockSSM.training">
 <code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#dynamics.TimeDelayBlockSSM.training" title="Permalink to this definition">¶</a></dt>
@@ -362,13 +350,13 @@
 
 <dl class="py function">
 <dt id="dynamics.blackbox_model">
-<code class="sig-prename descclassname">dynamics.</code><code class="sig-name descname">blackbox_model</code><span class="sig-paren">(</span><em class="sig-param">datadims</em>, <em class="sig-param">linmap</em>, <em class="sig-param">nonlinmap</em>, <em class="sig-param">bias</em>, <em class="sig-param">n_layers=2</em>, <em class="sig-param">fe=None</em>, <em class="sig-param">fyu=None</em>, <em class="sig-param">activation=&lt;class 'torch.nn.modules.activation.GELU'&gt;</em>, <em class="sig-param">residual=False</em>, <em class="sig-param">timedelay=0</em>, <em class="sig-param">linargs={}</em>, <em class="sig-param">xoyu=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoe=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">input_keys={}</em>, <em class="sig-param">name='blackbox_model'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#blackbox_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.blackbox_model" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dynamics.</code><code class="sig-name descname">blackbox_model</code><span class="sig-paren">(</span><em class="sig-param">datadims</em>, <em class="sig-param">linmap</em>, <em class="sig-param">nonlinmap</em>, <em class="sig-param">bias</em>, <em class="sig-param">n_layers=2</em>, <em class="sig-param">fe=None</em>, <em class="sig-param">fyu=None</em>, <em class="sig-param">activation=&lt;class 'torch.nn.modules.activation.GELU'&gt;</em>, <em class="sig-param">timedelay=0</em>, <em class="sig-param">linargs={}</em>, <em class="sig-param">xoyu=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoe=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">input_key_map={}</em>, <em class="sig-param">name='blackbox_model'</em>, <em class="sig-param">extra_inputs=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#blackbox_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.blackbox_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Black box state space model.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="dynamics.block_model">
-<code class="sig-prename descclassname">dynamics.</code><code class="sig-name descname">block_model</code><span class="sig-paren">(</span><em class="sig-param">kind</em>, <em class="sig-param">datadims</em>, <em class="sig-param">linmap</em>, <em class="sig-param">nonlinmap</em>, <em class="sig-param">bias</em>, <em class="sig-param">n_layers=2</em>, <em class="sig-param">fe=None</em>, <em class="sig-param">fyu=None</em>, <em class="sig-param">activation=&lt;class 'torch.nn.modules.activation.GELU'&gt;</em>, <em class="sig-param">residual=False</em>, <em class="sig-param">linargs={}</em>, <em class="sig-param">timedelay=0</em>, <em class="sig-param">xou=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xod=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoe=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoyu=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">name='blockmodel'</em>, <em class="sig-param">input_keys={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#block_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.block_model" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dynamics.</code><code class="sig-name descname">block_model</code><span class="sig-paren">(</span><em class="sig-param">kind</em>, <em class="sig-param">datadims</em>, <em class="sig-param">linmap</em>, <em class="sig-param">nonlinmap</em>, <em class="sig-param">bias</em>, <em class="sig-param">n_layers=2</em>, <em class="sig-param">fe=None</em>, <em class="sig-param">fyu=None</em>, <em class="sig-param">activation=&lt;class 'torch.nn.modules.activation.GELU'&gt;</em>, <em class="sig-param">residual=False</em>, <em class="sig-param">linargs={}</em>, <em class="sig-param">timedelay=0</em>, <em class="sig-param">xou=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xod=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoe=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">xoyu=&lt;built-in method add of type object&gt;</em>, <em class="sig-param">name='blockmodel'</em>, <em class="sig-param">input_key_map={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dynamics.html#block_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dynamics.block_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a block-structured SSM with the same structure used across fx, fy, fu, and fd.</p>
 </dd></dl>
 

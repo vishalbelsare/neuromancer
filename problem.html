@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -181,7 +181,7 @@
 <span id="problem"></span><h1>Problem<a class="headerlink" href="#module-problem" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="problem.MSELoss">
-<em class="property">class </em><code class="sig-prename descclassname">problem.</code><code class="sig-name descname">MSELoss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">variable_names</span></em>, <em class="sig-param"><span class="n">weight</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'ref_loss'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/problem.html#MSELoss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#problem.MSELoss" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">problem.</code><code class="sig-name descname">MSELoss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">variable_names</span></em>, <em class="sig-param"><span class="n">weight</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'mse_loss'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/problem.html#MSELoss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#problem.MSELoss" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt id="problem.MSELoss.training">
 <code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#problem.MSELoss.training" title="Permalink to this definition">¶</a></dt>
@@ -190,31 +190,8 @@
 </dd></dl>
 
 <dl class="py class">
-<dt id="problem.Objective">
-<em class="property">class </em><code class="sig-prename descclassname">problem.</code><code class="sig-name descname">Objective</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">variable_names</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">loss</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span><span class="p">…</span><span class="p">]</span><span class="p">, </span>torch.Tensor<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">weight</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'objective'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/problem.html#Objective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#problem.Objective" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt id="problem.Objective.forward">
-<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">variables</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>torch.Tensor<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; torch.Tensor<a class="reference internal" href="_modules/problem.html#Objective.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#problem.Objective.forward" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>variables</strong> – (dict, {str: torch.Tensor}) Should contain keys corresponding to self.variable_names</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>0-dimensional torch.Tensor that can be cast as a floating point number</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="problem.Objective.training">
-<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#problem.Objective.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt id="problem.Problem">
-<em class="property">class </em><code class="sig-prename descclassname">problem.</code><code class="sig-name descname">Problem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">objectives</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="#problem.Objective" title="problem.Objective">problem.Objective</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">constraints</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="#problem.Objective" title="problem.Objective">problem.Objective</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">components</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Callable<span class="p">[</span><span class="p">[</span>Dict<span class="p">[</span>str<span class="p">, </span>torch.Tensor<span class="p">]</span><span class="p">]</span><span class="p">, </span>Dict<span class="p">[</span>str<span class="p">, </span>torch.Tensor<span class="p">]</span><span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/problem.html#Problem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#problem.Problem" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">problem.</code><code class="sig-name descname">Problem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">objectives</span><span class="p">:</span> <span class="n">List<span class="p">[</span>neuromancer.constraint.Loss<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">constraints</span><span class="p">:</span> <span class="n">List<span class="p">[</span>neuromancer.constraint.Loss<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">components</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Callable<span class="p">[</span><span class="p">[</span>Dict<span class="p">[</span>str<span class="p">, </span>torch.Tensor<span class="p">]</span><span class="p">]</span><span class="p">, </span>Dict<span class="p">[</span>str<span class="p">, </span>torch.Tensor<span class="p">]</span><span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/problem.html#Problem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#problem.Problem" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="problem.Problem.forward">
 <code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>torch.Tensor<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>torch.Tensor<span class="p">]</span><a class="reference internal" href="_modules/problem.html#Problem.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#problem.Problem.forward" title="Permalink to this definition">¶</a></dt>

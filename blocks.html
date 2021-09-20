@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -242,6 +242,88 @@ registered hooks while the latter silently ignores them.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt id="blocks.Dropout">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">Dropout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">at_train</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">at_test</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#Dropout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.Dropout" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="blocks.Dropout.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#Dropout.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.Dropout.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.Dropout.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.Dropout.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="blocks.InputConvexNN">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">InputConvexNN</code><span class="sig-paren">(</span><em class="sig-param">insize, outsize, bias=True, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'torch.nn.modules.activation.ReLU'&gt;, hsizes=[64], linargs={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#InputConvexNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.InputConvexNN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input convex neural network
+z1 =  sig(W0(x) + b0)
+z_i+1 = sig_i(Ui(zi) + Wi(x) + bi),  i = 1, …, k-1
+V = g(x) = zk</p>
+<p>Equation 11 from <a class="reference external" href="https://arxiv.org/abs/2001.06116">https://arxiv.org/abs/2001.06116</a></p>
+<dl class="py method">
+<dt id="blocks.InputConvexNN.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#InputConvexNN.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.InputConvexNN.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – (torch.Tensor, shape=[batchsize, insize])</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(torch.Tensor, shape=[batchsize, outsize])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.InputConvexNN.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.InputConvexNN.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="blocks.InteractionEmbeddingMLP">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">InteractionEmbeddingMLP</code><span class="sig-paren">(</span><em class="sig-param">insize, outsize, bias=True, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'neuromancer.activations.SoftExponential'&gt;, hsizes=[64], linargs={}, n_interactors=9</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#InteractionEmbeddingMLP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.InteractionEmbeddingMLP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multi-Layer Perceptron which is a hypernetwork hidden state embeddings decided by interaction type and concatenated
+to hidden state.</p>
+<dl class="py method">
+<dt id="blocks.InteractionEmbeddingMLP.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">j</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#InteractionEmbeddingMLP.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.InteractionEmbeddingMLP.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – (torch.Tensor, shape=[batchsize, insize])</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(torch.Tensor, shape=[batchsize, outsize])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="blocks.InteractionEmbeddingMLP.reg_error">
+<code class="sig-name descname">reg_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#InteractionEmbeddingMLP.reg_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.InteractionEmbeddingMLP.reg_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.InteractionEmbeddingMLP.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.InteractionEmbeddingMLP.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="blocks.Linear">
 <em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">Linear</code><span class="sig-paren">(</span><em class="sig-param">insize, outsize, bias=True, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'neuromancer.activations.SoftExponential'&gt;, hsizes=[64], linargs={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#Linear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.Linear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Linear map consistent with block interface</p>
@@ -300,6 +382,35 @@ registered hooks while the latter silently ignores them.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt id="blocks.MLPDropout">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">MLPDropout</code><span class="sig-paren">(</span><em class="sig-param">insize, outsize, bias=True, linear_map=&lt;class 'slim.linear.Linear'&gt;, nonlin=&lt;class 'neuromancer.activations.SoftExponential'&gt;, hsizes=[64], linargs={}, dropout=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#MLPDropout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.MLPDropout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multi-Layer Perceptron consistent with blocks interface</p>
+<dl class="py method">
+<dt id="blocks.MLPDropout.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#MLPDropout.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.MLPDropout.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – (torch.Tensor, shape=[batchsize, insize])</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(torch.Tensor, shape=[batchsize, outsize])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="blocks.MLPDropout.reg_error">
+<code class="sig-name descname">reg_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#MLPDropout.reg_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.MLPDropout.reg_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.MLPDropout.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.MLPDropout.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="blocks.Poly2">
 <em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">Poly2</code><a class="reference internal" href="_modules/blocks.html#Poly2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.Poly2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Feature expansion of network to include pairwise multiplications of features.</p>
@@ -322,6 +433,32 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py attribute">
 <dt id="blocks.Poly2.training">
 <code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.Poly2.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="blocks.PosDef">
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">PosDef</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">d</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#PosDef"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.PosDef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enforce positive-definiteness of lyapunov function ICNN, V = g(x)
+Equation 12 from <a class="reference external" href="https://arxiv.org/abs/2001.06116">https://arxiv.org/abs/2001.06116</a></p>
+<dl class="py method">
+<dt id="blocks.PosDef.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#PosDef.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.PosDef.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="blocks.PosDef.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#blocks.PosDef.training" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -419,6 +556,12 @@ to give output which is a linear map from final hidden state.</p>
 <dt id="blocks.get_modules">
 <code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">get_modules</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#get_modules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.get_modules" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt id="blocks.set_model_dropout_mode">
+<code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">set_model_dropout_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">at_train</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">at_test</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#set_model_dropout_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.set_model_dropout_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change dropout mode, useful for enabling MC sampling during inference time.</p>
+</dd></dl>
 
 </section>
 

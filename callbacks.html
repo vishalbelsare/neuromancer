@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -176,8 +176,119 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="callbacks">
-<h1>Callbacks<a class="headerlink" href="#callbacks" title="Permalink to this headline">¶</a></h1>
+  <section id="module-callbacks">
+<span id="callbacks"></span><h1>Callbacks<a class="headerlink" href="#module-callbacks" title="Permalink to this headline">¶</a></h1>
+<p>Callback classes for versatile behavior in the Trainer object at specified checkpoints.</p>
+<dl class="py class">
+<dt id="callbacks.Callback">
+<em class="property">class </em><code class="sig-prename descclassname">callbacks.</code><code class="sig-name descname">Callback</code><a class="reference internal" href="_modules/callbacks.html#Callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.Callback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback base class which allows for bare functionality of Trainer</p>
+<dl class="py method">
+<dt id="callbacks.Callback.begin_epoch">
+<code class="sig-name descname">begin_epoch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#Callback.begin_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.Callback.begin_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.Callback.begin_eval">
+<code class="sig-name descname">begin_eval</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#Callback.begin_eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.Callback.begin_eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.Callback.begin_test">
+<code class="sig-name descname">begin_test</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#Callback.begin_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.Callback.begin_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.Callback.begin_train">
+<code class="sig-name descname">begin_train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#Callback.begin_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.Callback.begin_train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.Callback.end_epoch">
+<code class="sig-name descname">end_epoch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#Callback.end_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.Callback.end_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.Callback.end_eval">
+<code class="sig-name descname">end_eval</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#Callback.end_eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.Callback.end_eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.Callback.end_test">
+<code class="sig-name descname">end_test</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#Callback.end_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.Callback.end_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.Callback.end_train">
+<code class="sig-name descname">end_train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#Callback.end_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.Callback.end_train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="callbacks.ControlCallback">
+<em class="property">class </em><code class="sig-prename descclassname">callbacks.</code><code class="sig-name descname">ControlCallback</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">simulator</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">visualizer</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#ControlCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.ControlCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callbacks for closed loop control training. May refactor to put visualization and simulation
+functionality directly in the callback at which point there will be separate sysID and control callbacks.</p>
+<dl class="py method">
+<dt id="callbacks.ControlCallback.end_test">
+<code class="sig-name descname">end_test</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#ControlCallback.end_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.ControlCallback.end_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="callbacks.DoubleIntegratorCallback">
+<em class="property">class </em><code class="sig-prename descclassname">callbacks.</code><code class="sig-name descname">DoubleIntegratorCallback</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">visualizer</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#DoubleIntegratorCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.DoubleIntegratorCallback" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="callbacks.DoubleIntegratorCallback.end_epoch">
+<code class="sig-name descname">end_epoch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#DoubleIntegratorCallback.end_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.DoubleIntegratorCallback.end_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.DoubleIntegratorCallback.end_test">
+<code class="sig-name descname">end_test</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#DoubleIntegratorCallback.end_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.DoubleIntegratorCallback.end_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.DoubleIntegratorCallback.end_train">
+<code class="sig-name descname">end_train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#DoubleIntegratorCallback.end_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.DoubleIntegratorCallback.end_train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="callbacks.SysIDCallback">
+<em class="property">class </em><code class="sig-prename descclassname">callbacks.</code><code class="sig-name descname">SysIDCallback</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">simulator</span></em>, <em class="sig-param"><span class="n">visualizer</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#SysIDCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.SysIDCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callbacks for system ID training. Also works with control scripts. May refactor to put visualization and simulation
+functionality directly in the callback at which point there will be separate sysID and control callbacks.</p>
+<dl class="py method">
+<dt id="callbacks.SysIDCallback.begin_eval">
+<code class="sig-name descname">begin_eval</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#SysIDCallback.begin_eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.SysIDCallback.begin_eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.SysIDCallback.begin_test">
+<code class="sig-name descname">begin_test</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#SysIDCallback.begin_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.SysIDCallback.begin_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.SysIDCallback.end_eval">
+<code class="sig-name descname">end_eval</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#SysIDCallback.end_eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.SysIDCallback.end_eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.SysIDCallback.end_test">
+<code class="sig-name descname">end_test</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#SysIDCallback.end_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.SysIDCallback.end_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="callbacks.SysIDCallback.end_train">
+<code class="sig-name descname">end_train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trainer</span></em>, <em class="sig-param"><span class="n">output</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/callbacks.html#SysIDCallback.end_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#callbacks.SysIDCallback.end_train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 
 

@@ -94,7 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../dynamics.html">Dynamics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../activations.html">Activations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../blocks.html">Blocks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../estimators.html">Estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../loggers.html">Loggers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../operators.html">Operators</a></li>
@@ -107,6 +107,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../visuals.html">Visuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../arg.html">Arg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../callbacks.html">Callbacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../component.html">Component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../constraint.html">Constraint</a></li>
 </ul>
 
             
@@ -673,7 +675,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="o">=</span><span class="s1">&#39;LorenzSystem&#39;</span><span class="p">,</span> <span class="n">nsim</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ninit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">batch_type</span><span class="o">=</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span>
                  <span class="n">nsteps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cpu&#39;</span><span class="p">,</span> <span class="n">sequences</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;openloop&#39;</span><span class="p">,</span>
-                 <span class="n">savedir</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">25</span><span class="p">],</span> <span class="n">nexp</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+                 <span class="n">savedir</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="p">[</span><span class="mf">.5</span><span class="p">,</span> <span class="mf">.25</span><span class="p">],</span> <span class="n">nexp</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param split: (2-tuple of float) First index is proportion of experiments from train, second is proportion from dev,</span>
 <span class="sd">                       leftover are for test set.</span>

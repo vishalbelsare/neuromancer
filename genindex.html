@@ -94,7 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="dynamics.html">Dynamics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="activations.html">Activations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="blocks.html">Blocks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="estimators.html">Estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loggers.html">Loggers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="operators.html">Operators</a></li>
@@ -107,6 +107,8 @@
 <li class="toctree-l1"><a class="reference internal" href="visuals.html">Visuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="arg.html">Arg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="callbacks.html">Callbacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="component.html">Component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constraint.html">Constraint</a></li>
 </ul>
 
             
@@ -186,7 +188,6 @@
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
- | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -203,8 +204,12 @@
 <h2 id="_">_</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="plot.html#plot.Animator.__call__">__call__() (plot.Animator method)</a>
+      <li><a href="constraint.html#constraint.Variable.__call__">__call__() (constraint.Variable method)</a>
+
+      <ul>
+        <li><a href="plot.html#plot.Animator.__call__">(plot.Animator method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -220,19 +225,17 @@
       </ul></li>
       <li><a href="arg.html#arg.add">add() (in module arg)</a>
 </li>
-      <li><a href="datasets.html#datasets.Dataset.add_data">add_data() (datasets.Dataset method)</a>
-</li>
-      <li><a href="datasets.html#datasets.Dataset.add_variable">add_variable() (datasets.Dataset method)</a>
-</li>
       <li><a href="signals.html#signals.AddGenerator">AddGenerator (class in signals)</a>
+</li>
+      <li><a href="simulators.html#simulators.MultiSequenceOpenLoopSimulator.agg">agg() (simulators.MultiSequenceOpenLoopSimulator method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="simulators.html#simulators.MultiSequenceOpenLoopSimulator.agg">agg() (simulators.MultiSequenceOpenLoopSimulator method)</a>
-</li>
       <li><a href="plot.html#plot.Animator">Animator (class in plot)</a>
 </li>
       <li><a href="activations.html#activations.APLU">APLU (class in activations)</a>
+</li>
+      <li><a href="simulators.html#simulators.ClosedLoopSimulator.append_data">append_data() (simulators.ClosedLoopSimulator method)</a>
 </li>
       <li>
     arg
@@ -253,14 +256,32 @@
 </li>
       <li><a href="blocks.html#blocks.BasisLinear">BasisLinear (class in blocks)</a>
 </li>
+      <li><a href="dataset.html#dataset.batch_tensor">batch_tensor() (in module dataset)</a>
+</li>
+      <li><a href="callbacks.html#callbacks.Callback.begin_epoch">begin_epoch() (callbacks.Callback method)</a>
+</li>
+      <li><a href="callbacks.html#callbacks.Callback.begin_eval">begin_eval() (callbacks.Callback method)</a>
+
+      <ul>
+        <li><a href="callbacks.html#callbacks.SysIDCallback.begin_eval">(callbacks.SysIDCallback method)</a>
+</li>
+      </ul></li>
+      <li><a href="callbacks.html#callbacks.Callback.begin_test">begin_test() (callbacks.Callback method)</a>
+
+      <ul>
+        <li><a href="callbacks.html#callbacks.SysIDCallback.begin_test">(callbacks.SysIDCallback method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="callbacks.html#callbacks.Callback.begin_train">begin_train() (callbacks.Callback method)</a>
+</li>
       <li><a href="blocks.html#blocks.BilinearTorch">BilinearTorch (class in blocks)</a>
 </li>
       <li><a href="dynamics.html#dynamics.blackbox_model">blackbox_model() (in module dynamics)</a>
 </li>
       <li><a href="dynamics.html#dynamics.BlackSSM">BlackSSM (class in dynamics)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dynamics.html#dynamics.block_model">block_model() (in module dynamics)</a>
 </li>
       <li>
@@ -280,6 +301,15 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="callbacks.html#callbacks.Callback">Callback (class in callbacks)</a>
+</li>
+      <li>
+    callbacks
+
+      <ul>
+        <li><a href="callbacks.html#module-callbacks">module</a>
+</li>
+      </ul></li>
       <li><a href="dynamics.html#dynamics.BlackSSM.check_features">check_features() (dynamics.BlackSSM method)</a>
 
       <ul>
@@ -290,9 +320,9 @@
       </ul></li>
       <li><a href="arg.html#arg.ArgParser.check_for_group">check_for_group() (arg.ArgParser method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="estimators.html#estimators.check_keys">check_keys() (in module estimators)</a>
+      <li><a href="component.html#component.check_key_subset">check_key_subset() (in module component)</a>
+</li>
+      <li><a href="plot.html#plot.cl_simulate">cl_simulate() (in module plot)</a>
 </li>
       <li><a href="loggers.html#loggers.BasicLogger.clean_up">clean_up() (loggers.BasicLogger method)</a>
 
@@ -300,7 +330,35 @@
         <li><a href="loggers.html#loggers.MLFlowLogger.clean_up">(loggers.MLFlowLogger method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulators.html#simulators.ClosedLoopSimulator">ClosedLoopSimulator (class in simulators)</a>
+</li>
+      <li><a href="dataset.html#dataset.SequenceDataset.collate_fn">collate_fn() (dataset.SequenceDataset method)</a>
+
+      <ul>
+        <li><a href="dataset.html#dataset.StaticDataset.collate_fn">(dataset.StaticDataset method)</a>
+</li>
+      </ul></li>
+      <li>
+    component
+
+      <ul>
+        <li><a href="component.html#module-component">module</a>
+</li>
+      </ul></li>
+      <li><a href="component.html#component.Component">Component (class in component)</a>
+</li>
+      <li>
+    constraint
+
+      <ul>
+        <li><a href="constraint.html#module-constraint">module</a>
+</li>
+      </ul></li>
+      <li><a href="constraint.html#constraint.Constraint">Constraint (class in constraint)</a>
+</li>
+      <li><a href="callbacks.html#callbacks.ControlCallback">ControlCallback (class in callbacks)</a>
 </li>
       <li><a href="arg.html#arg.ctrl_loss">ctrl_loss() (in module arg)</a>
 </li>
@@ -312,24 +370,84 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="arg.html#arg.data">data() (in module arg)</a>
 </li>
-      <li><a href="datasets.html#datasets.DataDict">DataDict (class in datasets)</a>
-</li>
-      <li><a href="datasets.html#datasets.Dataset">Dataset (class in datasets)</a>
-</li>
-      <li><a href="datasets.html#datasets.DatasetMPP">DatasetMPP (class in datasets)</a>
+      <li><a href="signals.html#signals.DataNoiseGenerator">DataNoiseGenerator (class in signals)</a>
 </li>
       <li>
-    datasets
+    dataset
 
       <ul>
-        <li><a href="datasets.html#module-datasets">module</a>
+        <li><a href="dataset.html#module-dataset">module</a>
+</li>
+      </ul></li>
+      <li><a href="component.html#component.Component.DEFAULT_INPUT_KEYS">DEFAULT_INPUT_KEYS (component.Component attribute)</a>
+
+      <ul>
+        <li><a href="component.html#component.Function.DEFAULT_INPUT_KEYS">(component.Function attribute)</a>
+</li>
+        <li><a href="dynamics.html#dynamics.BlackSSM.DEFAULT_INPUT_KEYS">(dynamics.BlackSSM attribute)</a>
+</li>
+        <li><a href="dynamics.html#dynamics.BlockSSM.DEFAULT_INPUT_KEYS">(dynamics.BlockSSM attribute)</a>
+</li>
+        <li><a href="dynamics.html#dynamics.TimeDelayBlackSSM.DEFAULT_INPUT_KEYS">(dynamics.TimeDelayBlackSSM attribute)</a>
+</li>
+        <li><a href="dynamics.html#dynamics.TimeDelayBlockSSM.DEFAULT_INPUT_KEYS">(dynamics.TimeDelayBlockSSM attribute)</a>
+</li>
+        <li><a href="estimators.html#estimators.LinearKalmanFilter.DEFAULT_INPUT_KEYS">(estimators.LinearKalmanFilter attribute)</a>
+</li>
+        <li><a href="estimators.html#estimators.TimeDelayEstimator.DEFAULT_INPUT_KEYS">(estimators.TimeDelayEstimator attribute)</a>
+</li>
+        <li><a href="signals.html#signals.AddGenerator.DEFAULT_INPUT_KEYS">(signals.AddGenerator attribute)</a>
+</li>
+        <li><a href="signals.html#signals.DataNoiseGenerator.DEFAULT_INPUT_KEYS">(signals.DataNoiseGenerator attribute)</a>
+</li>
+        <li><a href="signals.html#signals.PeriodicGenerator.DEFAULT_INPUT_KEYS">(signals.PeriodicGenerator attribute)</a>
+</li>
+        <li><a href="signals.html#signals.SequenceGenerator.DEFAULT_INPUT_KEYS">(signals.SequenceGenerator attribute)</a>
+</li>
+        <li><a href="signals.html#signals.WhiteNoiseGenerator.DEFAULT_INPUT_KEYS">(signals.WhiteNoiseGenerator attribute)</a>
+</li>
+        <li><a href="signals.html#signals.WhiteNoisePeriodicGenerator.DEFAULT_INPUT_KEYS">(signals.WhiteNoisePeriodicGenerator attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="component.html#component.Component.DEFAULT_OUTPUT_KEYS">DEFAULT_OUTPUT_KEYS (component.Component attribute)</a>
+
+      <ul>
+        <li><a href="component.html#component.Function.DEFAULT_OUTPUT_KEYS">(component.Function attribute)</a>
+</li>
+        <li><a href="dynamics.html#dynamics.BlackSSM.DEFAULT_OUTPUT_KEYS">(dynamics.BlackSSM attribute)</a>
+</li>
+        <li><a href="dynamics.html#dynamics.BlockSSM.DEFAULT_OUTPUT_KEYS">(dynamics.BlockSSM attribute)</a>
+</li>
+        <li><a href="dynamics.html#dynamics.TimeDelayBlackSSM.DEFAULT_OUTPUT_KEYS">(dynamics.TimeDelayBlackSSM attribute)</a>
+</li>
+        <li><a href="dynamics.html#dynamics.TimeDelayBlockSSM.DEFAULT_OUTPUT_KEYS">(dynamics.TimeDelayBlockSSM attribute)</a>
+</li>
+        <li><a href="estimators.html#estimators.LinearKalmanFilter.DEFAULT_OUTPUT_KEYS">(estimators.LinearKalmanFilter attribute)</a>
+</li>
+        <li><a href="estimators.html#estimators.seq2seqTimeDelayEstimator.DEFAULT_OUTPUT_KEYS">(estimators.seq2seqTimeDelayEstimator attribute)</a>
+</li>
+        <li><a href="estimators.html#estimators.TimeDelayEstimator.DEFAULT_OUTPUT_KEYS">(estimators.TimeDelayEstimator attribute)</a>
+</li>
+        <li><a href="signals.html#signals.AddGenerator.DEFAULT_OUTPUT_KEYS">(signals.AddGenerator attribute)</a>
+</li>
+        <li><a href="signals.html#signals.DataNoiseGenerator.DEFAULT_OUTPUT_KEYS">(signals.DataNoiseGenerator attribute)</a>
+</li>
+        <li><a href="signals.html#signals.PeriodicGenerator.DEFAULT_OUTPUT_KEYS">(signals.PeriodicGenerator attribute)</a>
+</li>
+        <li><a href="signals.html#signals.SequenceGenerator.DEFAULT_OUTPUT_KEYS">(signals.SequenceGenerator attribute)</a>
+</li>
+        <li><a href="signals.html#signals.WhiteNoiseGenerator.DEFAULT_OUTPUT_KEYS">(signals.WhiteNoiseGenerator attribute)</a>
+</li>
+        <li><a href="signals.html#signals.WhiteNoisePeriodicGenerator.DEFAULT_OUTPUT_KEYS">(signals.WhiteNoisePeriodicGenerator attribute)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="datasets.html#datasets.Dataset.del_data">del_data() (datasets.Dataset method)</a>
+      <li><a href="dataset.html#dataset.denormalize_01">denormalize_01() (in module dataset)</a>
 </li>
-      <li><a href="datasets.html#datasets.Dataset.del_variable">del_variable() (datasets.Dataset method)</a>
+      <li><a href="dataset.html#dataset.denormalize_11">denormalize_11() (in module dataset)</a>
+</li>
+      <li><a href="dataset.html#dataset.destandardize">destandardize() (in module dataset)</a>
 </li>
       <li><a href="simulators.html#simulators.MultiSequenceOpenLoopSimulator.dev_eval">dev_eval() (simulators.MultiSequenceOpenLoopSimulator method)</a>
 
@@ -337,6 +455,10 @@
         <li><a href="simulators.html#simulators.Simulator.dev_eval">(simulators.Simulator method)</a>
 </li>
       </ul></li>
+      <li><a href="callbacks.html#callbacks.DoubleIntegratorCallback">DoubleIntegratorCallback (class in callbacks)</a>
+</li>
+      <li><a href="blocks.html#blocks.Dropout">Dropout (class in blocks)</a>
+</li>
       <li>
     dynamics
 
@@ -350,7 +472,39 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="datasets.html#datasets.EmulatorDataset">EmulatorDataset (class in datasets)</a>
+      <li><a href="callbacks.html#callbacks.Callback.end_epoch">end_epoch() (callbacks.Callback method)</a>
+
+      <ul>
+        <li><a href="callbacks.html#callbacks.DoubleIntegratorCallback.end_epoch">(callbacks.DoubleIntegratorCallback method)</a>
+</li>
+      </ul></li>
+      <li><a href="callbacks.html#callbacks.Callback.end_eval">end_eval() (callbacks.Callback method)</a>
+
+      <ul>
+        <li><a href="callbacks.html#callbacks.SysIDCallback.end_eval">(callbacks.SysIDCallback method)</a>
+</li>
+      </ul></li>
+      <li><a href="callbacks.html#callbacks.Callback.end_test">end_test() (callbacks.Callback method)</a>
+
+      <ul>
+        <li><a href="callbacks.html#callbacks.ControlCallback.end_test">(callbacks.ControlCallback method)</a>
+</li>
+        <li><a href="callbacks.html#callbacks.DoubleIntegratorCallback.end_test">(callbacks.DoubleIntegratorCallback method)</a>
+</li>
+        <li><a href="callbacks.html#callbacks.SysIDCallback.end_test">(callbacks.SysIDCallback method)</a>
+</li>
+      </ul></li>
+      <li><a href="callbacks.html#callbacks.Callback.end_train">end_train() (callbacks.Callback method)</a>
+
+      <ul>
+        <li><a href="callbacks.html#callbacks.DoubleIntegratorCallback.end_train">(callbacks.DoubleIntegratorCallback method)</a>
+</li>
+        <li><a href="callbacks.html#callbacks.SysIDCallback.end_train">(callbacks.SysIDCallback method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="constraint.html#constraint.Eq">Eq (class in constraint)</a>
 </li>
       <li>
     estimators
@@ -364,21 +518,17 @@
       <ul>
         <li><a href="visuals.html#visuals.VisualizerClosedLoop.eval">(visuals.VisualizerClosedLoop method)</a>
 </li>
+        <li><a href="visuals.html#visuals.VisualizerDobleIntegrator.eval">(visuals.VisualizerDobleIntegrator method)</a>
+</li>
         <li><a href="visuals.html#visuals.VisualizerOpen.eval">(visuals.VisualizerOpen method)</a>
 </li>
         <li><a href="visuals.html#visuals.VisualizerTrajectories.eval">(visuals.VisualizerTrajectories method)</a>
 </li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="simulators.html#simulators.ClosedLoopSimulator.eval_metric">eval_metric() (simulators.ClosedLoopSimulator method)</a>
+        <li><a href="visuals.html#visuals.VisualizerUncertaintyOpen.eval">(visuals.VisualizerUncertaintyOpen method)</a>
 </li>
+      </ul></li>
       <li><a href="trainer.html#trainer.Trainer.evaluate">evaluate() (trainer.Trainer method)</a>
-
-      <ul>
-        <li><a href="trainer.html#trainer.TrainerMPP.evaluate">(trainer.TrainerMPP method)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -388,11 +538,11 @@
       <li><a href="estimators.html#estimators.FullyObservable.features">features() (estimators.FullyObservable method)</a>
 
       <ul>
+        <li><a href="estimators.html#estimators.FullyObservableAugmented.features">(estimators.FullyObservableAugmented method)</a>
+</li>
         <li><a href="estimators.html#estimators.TimeDelayEstimator.features">(estimators.TimeDelayEstimator method)</a>
 </li>
       </ul></li>
-      <li><a href="datasets.html#datasets.FileDataset">FileDataset (class in datasets)</a>
-</li>
       <li><a href="plot.html#plot.Animator.find_mat">find_mat() (plot.Animator method)</a>
 </li>
       <li><a href="activations.html#activations.APLU.forward">forward() (activations.APLU method)</a>
@@ -406,23 +556,49 @@
 </li>
         <li><a href="activations.html#activations.RectifiedSoftExp.forward">(activations.RectifiedSoftExp method)</a>
 </li>
+        <li><a href="activations.html#activations.SmoothedReLU.forward">(activations.SmoothedReLU method)</a>
+</li>
         <li><a href="activations.html#activations.SoftExponential.forward">(activations.SoftExponential method)</a>
 </li>
         <li><a href="blocks.html#blocks.BasisLinear.forward">(blocks.BasisLinear method)</a>
 </li>
         <li><a href="blocks.html#blocks.BilinearTorch.forward">(blocks.BilinearTorch method)</a>
 </li>
+        <li><a href="blocks.html#blocks.Dropout.forward">(blocks.Dropout method)</a>
+</li>
+        <li><a href="blocks.html#blocks.InputConvexNN.forward">(blocks.InputConvexNN method)</a>
+</li>
+        <li><a href="blocks.html#blocks.InteractionEmbeddingMLP.forward">(blocks.InteractionEmbeddingMLP method)</a>
+</li>
         <li><a href="blocks.html#blocks.Linear.forward">(blocks.Linear method)</a>
 </li>
         <li><a href="blocks.html#blocks.MLP.forward">(blocks.MLP method)</a>
 </li>
+        <li><a href="blocks.html#blocks.MLPDropout.forward">(blocks.MLPDropout method)</a>
+</li>
         <li><a href="blocks.html#blocks.Poly2.forward">(blocks.Poly2 method)</a>
+</li>
+        <li><a href="blocks.html#blocks.PosDef.forward">(blocks.PosDef method)</a>
 </li>
         <li><a href="blocks.html#blocks.PytorchRNN.forward">(blocks.PytorchRNN method)</a>
 </li>
         <li><a href="blocks.html#blocks.ResMLP.forward">(blocks.ResMLP method)</a>
 </li>
         <li><a href="blocks.html#blocks.RNN.forward">(blocks.RNN method)</a>
+</li>
+        <li><a href="component.html#component.Function.forward">(component.Function method)</a>
+</li>
+        <li><a href="constraint.html#constraint.Constraint.forward">(constraint.Constraint method)</a>
+</li>
+        <li><a href="constraint.html#constraint.Eq.forward">(constraint.Eq method)</a>
+</li>
+        <li><a href="constraint.html#constraint.GT.forward">(constraint.GT method)</a>
+</li>
+        <li><a href="constraint.html#constraint.Loss.forward">(constraint.Loss method)</a>
+</li>
+        <li><a href="constraint.html#constraint.LT.forward">(constraint.LT method)</a>
+</li>
+        <li><a href="constraint.html#constraint.Objective.forward">(constraint.Objective method)</a>
 </li>
         <li><a href="dynamics.html#dynamics.BlackSSM.forward">(dynamics.BlackSSM method)</a>
 </li>
@@ -444,34 +620,28 @@
 </li>
         <li><a href="operators.html#operators.InterpolateAddMultiply.forward">(operators.InterpolateAddMultiply method)</a>
 </li>
-        <li><a href="problem.html#problem.Objective.forward">(problem.Objective method)</a>
-</li>
         <li><a href="problem.html#problem.Problem.forward">(problem.Problem method)</a>
 </li>
         <li><a href="rnn.html#rnn.RNN.forward">(rnn.RNN method)</a>
 </li>
         <li><a href="rnn.html#rnn.RNNCell.forward">(rnn.RNNCell method)</a>
 </li>
-        <li><a href="signals.html#signals.NoiseGenerator.forward">(signals.NoiseGenerator method)</a>
+        <li><a href="signals.html#signals.DataNoiseGenerator.forward">(signals.DataNoiseGenerator method)</a>
 </li>
-        <li><a href="signals.html#signals.NonlinearExpansion.forward">(signals.NonlinearExpansion method)</a>
-</li>
-        <li><a href="signals.html#signals.SignalGenerator.forward">(signals.SignalGenerator method)</a>
-</li>
-        <li><a href="signals.html#signals.SignalGeneratorDynamics.forward">(signals.SignalGeneratorDynamics method)</a>
+        <li><a href="signals.html#signals.SequenceGenerator.forward">(signals.SequenceGenerator method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="arg.html#arg.freeze">freeze() (in module arg)</a>
 </li>
-      <li><a href="signals.html#signals.freeze_weight">freeze_weight() (in module signals)</a>
-
-      <ul>
-        <li><a href="trainer.html#trainer.freeze_weight">(in module trainer)</a>
+      <li><a href="trainer.html#trainer.freeze_weight">freeze_weight() (in module trainer)</a>
 </li>
-      </ul></li>
       <li><a href="estimators.html#estimators.FullyObservable">FullyObservable (class in estimators)</a>
+</li>
+      <li><a href="estimators.html#estimators.FullyObservableAugmented">FullyObservableAugmented (class in estimators)</a>
+</li>
+      <li><a href="component.html#component.Function">Function (class in component)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -481,21 +651,29 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="plot.html#plot.get_colors">get_colors() (in module plot)</a>
 </li>
-      <li><a href="datasets.html#datasets.MultiExperimentDataset.get_dims">get_dims() (datasets.MultiExperimentDataset method)</a>
+      <li><a href="dataset.html#dataset.SequenceDataset.get_full_batch">get_full_batch() (dataset.SequenceDataset method)</a>
+
+      <ul>
+        <li><a href="dataset.html#dataset.StaticDataset.get_full_batch">(dataset.StaticDataset method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataset.html#dataset.SequenceDataset.get_full_sequence">get_full_sequence() (dataset.SequenceDataset method)</a>
 </li>
       <li><a href="blocks.html#blocks.get_modules">get_modules() (in module blocks)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="signals.html#signals.SignalGenerator.get_xmax">get_xmax() (signals.SignalGenerator method)</a>
+      <li><a href="signals.html#signals.SequenceGenerator.get_xmax">get_xmax() (signals.SequenceGenerator method)</a>
 
       <ul>
         <li><a href="signals.html#signals.WhiteNoisePeriodicGenerator.get_xmax">(signals.WhiteNoisePeriodicGenerator method)</a>
 </li>
       </ul></li>
-      <li><a href="signals.html#signals.SignalGenerator.get_xmin">get_xmin() (signals.SignalGenerator method)</a>
+      <li><a href="signals.html#signals.SequenceGenerator.get_xmin">get_xmin() (signals.SequenceGenerator method)</a>
 </li>
       <li><a href="arg.html#arg.ArgParser.group">group() (arg.ArgParser method)</a>
+</li>
+      <li><a href="constraint.html#constraint.GT">GT (class in constraint)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -511,22 +689,14 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="operators.html#operators.InterpolateAddMultiply">InterpolateAddMultiply (class in operators)</a>
+      <li><a href="blocks.html#blocks.InputConvexNN">InputConvexNN (class in blocks)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="K">K</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="dynamics.html#dynamics.BlockSSM.keys">keys() (dynamics.BlockSSM static method)</a>
-
-      <ul>
-        <li><a href="dynamics.html#dynamics.TimeDelayBlackSSM.keys">(dynamics.TimeDelayBlackSSM static method)</a>
+      <li><a href="blocks.html#blocks.InteractionEmbeddingMLP">InteractionEmbeddingMLP (class in blocks)</a>
 </li>
-        <li><a href="dynamics.html#dynamics.TimeDelayBlockSSM.keys">(dynamics.TimeDelayBlockSSM static method)</a>
+      <li><a href="operators.html#operators.InterpolateAddMultiply">InterpolateAddMultiply (class in operators)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -541,24 +711,8 @@
 </li>
       <li><a href="estimators.html#estimators.LinearKalmanFilter">LinearKalmanFilter (class in estimators)</a>
 </li>
-      <li><a href="datasets.html#datasets.MultiExperimentDataset.listDict_to_dictTensor">listDict_to_dictTensor() (datasets.MultiExperimentDataset method)</a>
-</li>
-      <li><a href="datasets.html#datasets.Dataset.load_data">load_data() (datasets.Dataset method)</a>
-
-      <ul>
-        <li><a href="datasets.html#datasets.EmulatorDataset.load_data">(datasets.EmulatorDataset method)</a>
-</li>
-        <li><a href="datasets.html#datasets.FileDataset.load_data">(datasets.FileDataset method)</a>
-</li>
-        <li><a href="datasets.html#datasets.MultiExperimentEmulatorDataset.load_data">(datasets.MultiExperimentEmulatorDataset method)</a>
-</li>
-      </ul></li>
-      <li><a href="datasets.html#datasets.load_dataset">load_dataset() (in module datasets)</a>
-</li>
       <li><a href="arg.html#arg.log">log() (in module arg)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="loggers.html#loggers.BasicLogger.log_artifacts">log_artifacts() (loggers.BasicLogger method)</a>
 
       <ul>
@@ -571,6 +725,8 @@
         <li><a href="loggers.html#loggers.MLFlowLogger.log_metrics">(loggers.MLFlowLogger method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="loggers.html#loggers.BasicLogger.log_parameters">log_parameters() (loggers.BasicLogger method)</a>
 
       <ul>
@@ -590,7 +746,13 @@
         <li><a href="loggers.html#module-loggers">module</a>
 </li>
       </ul></li>
+      <li><a href="constraint.html#constraint.Loss">Loss (class in constraint)</a>
+</li>
       <li><a href="arg.html#arg.loss">loss() (in module arg)</a>
+</li>
+      <li><a href="plot.html#plot.lpv_batched">lpv_batched() (in module plot)</a>
+</li>
+      <li><a href="constraint.html#constraint.LT">LT (class in constraint)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -600,21 +762,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="plot.html#plot.Animator.make_and_save">make_and_save() (plot.Animator method)</a>
 </li>
-      <li><a href="datasets.html#datasets.Dataset.make_loop">make_loop() (datasets.Dataset method)</a>
-</li>
-      <li><a href="datasets.html#datasets.Dataset.make_nstep">make_nstep() (datasets.Dataset method)</a>
-</li>
-      <li><a href="datasets.html#datasets.MultiExperimentDataset.make_nstep_loop">make_nstep_loop() (datasets.MultiExperimentDataset method)</a>
-</li>
-      <li><a href="datasets.html#datasets.DatasetMPP.make_train_data">make_train_data() (datasets.DatasetMPP method)</a>
-</li>
-      <li><a href="datasets.html#datasets.MultiExperimentEmulatorDataset.merge_data">merge_data() (datasets.MultiExperimentEmulatorDataset method)</a>
-</li>
       <li><a href="simulators.html#simulators.MHOpenLoopSimulator">MHOpenLoopSimulator (class in simulators)</a>
+</li>
+      <li><a href="constraint.html#constraint.Variable.minimize">minimize() (constraint.Variable method)</a>
 </li>
       <li><a href="loggers.html#loggers.MLFlowLogger">MLFlowLogger (class in loggers)</a>
 </li>
       <li><a href="blocks.html#blocks.MLP">MLP (class in blocks)</a>
+</li>
+      <li><a href="blocks.html#blocks.MLPDropout">MLPDropout (class in blocks)</a>
 </li>
       <li><a href="estimators.html#estimators.MLPEstimator">MLPEstimator (class in estimators)</a>
 </li>
@@ -628,7 +784,13 @@
 </li>
         <li><a href="blocks.html#module-blocks">blocks</a>
 </li>
-        <li><a href="datasets.html#module-datasets">datasets</a>
+        <li><a href="callbacks.html#module-callbacks">callbacks</a>
+</li>
+        <li><a href="component.html#module-component">component</a>
+</li>
+        <li><a href="constraint.html#module-constraint">constraint</a>
+</li>
+        <li><a href="dataset.html#module-dataset">dataset</a>
 </li>
         <li><a href="dynamics.html#module-dynamics">dynamics</a>
 </li>
@@ -655,11 +817,9 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="trainer.html#trainer.move_batch_to_device">move_batch_to_device() (in module trainer)</a>
+</li>
       <li><a href="problem.html#problem.MSELoss">MSELoss (class in problem)</a>
-</li>
-      <li><a href="datasets.html#datasets.MultiExperimentDataset">MultiExperimentDataset (class in datasets)</a>
-</li>
-      <li><a href="datasets.html#datasets.MultiExperimentEmulatorDataset">MultiExperimentEmulatorDataset (class in datasets)</a>
 </li>
       <li><a href="simulators.html#simulators.MultiSequenceOpenLoopSimulator">MultiSequenceOpenLoopSimulator (class in simulators)</a>
 </li>
@@ -669,15 +829,13 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="datasets.html#datasets.MultiExperimentDataset.name_data">name_data() (datasets.MultiExperimentDataset method)</a>
-</li>
-      <li><a href="signals.html#signals.NoiseGenerator">NoiseGenerator (class in signals)</a>
+      <li><a href="dataset.html#dataset.normalize_01">normalize_01() (in module dataset)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="signals.html#signals.NonlinearExpansion">NonlinearExpansion (class in signals)</a>
+      <li><a href="dataset.html#dataset.normalize_11">normalize_11() (in module dataset)</a>
 </li>
-      <li><a href="datasets.html#datasets.Dataset.norm_data">norm_data() (datasets.Dataset method)</a>
+      <li><a href="dataset.html#dataset.normalize_data">normalize_data() (in module dataset)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -685,7 +843,7 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="problem.html#problem.Objective">Objective (class in problem)</a>
+      <li><a href="constraint.html#constraint.Objective">Objective (class in constraint)</a>
 </li>
       <li><a href="simulators.html#simulators.OpenLoopSimulator">OpenLoopSimulator (class in simulators)</a>
 </li>
@@ -719,6 +877,14 @@
         <li><a href="plot.html#module-plot">module</a>
 </li>
       </ul></li>
+      <li><a href="plot.html#plot.plot_cl">plot_cl() (in module plot)</a>
+</li>
+      <li><a href="plot.html#plot.plot_cl_train">plot_cl_train() (in module plot)</a>
+</li>
+      <li><a href="plot.html#plot.plot_loss_DPC">plot_loss_DPC() (in module plot)</a>
+</li>
+      <li><a href="plot.html#plot.plot_loss_mpp">plot_loss_mpp() (in module plot)</a>
+</li>
       <li><a href="plot.html#plot.plot_matrices">plot_matrices() (in module plot)</a>
 </li>
       <li><a href="visuals.html#visuals.VisualizerClosedLoop.plot_matrix">plot_matrix() (visuals.VisualizerClosedLoop method)</a>
@@ -727,16 +893,26 @@
         <li><a href="visuals.html#visuals.VisualizerOpen.plot_matrix">(visuals.VisualizerOpen method)</a>
 </li>
       </ul></li>
+      <li><a href="plot.html#plot.plot_model_graph">plot_model_graph() (in module plot)</a>
+</li>
+      <li><a href="plot.html#plot.plot_policy">plot_policy() (in module plot)</a>
+</li>
+      <li><a href="plot.html#plot.plot_policy_train">plot_policy_train() (in module plot)</a>
+</li>
+      <li><a href="plot.html#plot.plot_solution_mpp">plot_solution_mpp() (in module plot)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="plot.html#plot.plot_traj">plot_traj() (in module plot)</a>
 
       <ul>
         <li><a href="visuals.html#visuals.VisualizerOpen.plot_traj">(visuals.VisualizerOpen method)</a>
 </li>
+        <li><a href="visuals.html#visuals.VisualizerUncertaintyOpen.plot_traj">(visuals.VisualizerUncertaintyOpen method)</a>
+</li>
       </ul></li>
       <li><a href="plot.html#plot.plot_trajectories">plot_trajectories() (in module plot)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="plot.html#plot.pltCL">pltCL() (in module plot)</a>
 </li>
       <li><a href="plot.html#plot.pltCorrelate">pltCorrelate() (in module plot)</a>
@@ -750,6 +926,8 @@
       <li><a href="arg.html#arg.policy">policy() (in module arg)</a>
 </li>
       <li><a href="blocks.html#blocks.Poly2">Poly2 (class in blocks)</a>
+</li>
+      <li><a href="blocks.html#blocks.PosDef">PosDef (class in blocks)</a>
 </li>
       <li><a href="activations.html#activations.PReLU">PReLU (class in activations)</a>
 </li>
@@ -770,6 +948,8 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dataset.html#dataset.read_file">read_file() (in module dataset)</a>
+</li>
       <li><a href="activations.html#activations.RectifiedSoftExp">RectifiedSoftExp (class in activations)</a>
 </li>
       <li><a href="activations.html#activations.APLU.reg_error">reg_error() (activations.APLU method)</a>
@@ -779,9 +959,13 @@
 </li>
         <li><a href="blocks.html#blocks.BilinearTorch.reg_error">(blocks.BilinearTorch method)</a>
 </li>
+        <li><a href="blocks.html#blocks.InteractionEmbeddingMLP.reg_error">(blocks.InteractionEmbeddingMLP method)</a>
+</li>
         <li><a href="blocks.html#blocks.Linear.reg_error">(blocks.Linear method)</a>
 </li>
         <li><a href="blocks.html#blocks.MLP.reg_error">(blocks.MLP method)</a>
+</li>
+        <li><a href="blocks.html#blocks.MLPDropout.reg_error">(blocks.MLPDropout method)</a>
 </li>
         <li><a href="blocks.html#blocks.PytorchRNN.reg_error">(blocks.PytorchRNN method)</a>
 </li>
@@ -807,14 +991,12 @@
       <li><a href="problem.html#problem.RegularizationLoss">RegularizationLoss (class in problem)</a>
 </li>
       <li><a href="blocks.html#blocks.RNN.reset">reset() (blocks.RNN method)</a>
-
-      <ul>
-        <li><a href="trainer.html#trainer.reset">(in module trainer)</a>
 </li>
-      </ul></li>
       <li><a href="blocks.html#blocks.ResMLP">ResMLP (class in blocks)</a>
 </li>
       <li><a href="estimators.html#estimators.ResMLPEstimator">ResMLPEstimator (class in estimators)</a>
+</li>
+      <li><a href="simulators.html#simulators.ClosedLoopSimulator.rhc">rhc() (simulators.ClosedLoopSimulator method)</a>
 </li>
       <li>
     rnn
@@ -839,8 +1021,6 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="simulators.html#simulators.ClosedLoopSimulator.select_step_data">select_step_data() (simulators.ClosedLoopSimulator method)</a>
-</li>
       <li><a href="estimators.html#estimators.seq2seqLinearEstimator">seq2seqLinearEstimator (class in estimators)</a>
 </li>
       <li><a href="estimators.html#estimators.seq2seqMLPEstimator">seq2seqMLPEstimator (class in estimators)</a>
@@ -851,9 +1031,11 @@
 </li>
       <li><a href="estimators.html#estimators.seq2seqTimeDelayEstimator">seq2seqTimeDelayEstimator (class in estimators)</a>
 </li>
-      <li><a href="signals.html#signals.SignalGenerator">SignalGenerator (class in signals)</a>
+      <li><a href="dataset.html#dataset.SequenceDataset">SequenceDataset (class in dataset)</a>
 </li>
-      <li><a href="signals.html#signals.SignalGeneratorDynamics">SignalGeneratorDynamics (class in signals)</a>
+      <li><a href="signals.html#signals.SequenceGenerator">SequenceGenerator (class in signals)</a>
+</li>
+      <li><a href="blocks.html#blocks.set_model_dropout_mode">set_model_dropout_mode() (in module blocks)</a>
 </li>
       <li>
     signals
@@ -874,10 +1056,10 @@
         <li><a href="simulators.html#simulators.Simulator.simulate">(simulators.Simulator method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulators.html#simulators.Simulator">Simulator (class in simulators)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     simulators
 
@@ -885,21 +1067,33 @@
         <li><a href="simulators.html#module-simulators">module</a>
 </li>
       </ul></li>
+      <li><a href="activations.html#activations.SmoothedReLU">SmoothedReLU (class in activations)</a>
+</li>
       <li><a href="activations.html#activations.soft_exp">soft_exp() (in module activations)</a>
 </li>
       <li><a href="activations.html#activations.SoftExponential">SoftExponential (class in activations)</a>
 </li>
-      <li><a href="datasets.html#datasets.MultiExperimentDataset.split_data_by_experiment">split_data_by_experiment() (datasets.MultiExperimentDataset method)</a>
+      <li><a href="dataset.html#dataset.split_sequence_data">split_sequence_data() (in module dataset)</a>
 </li>
-      <li><a href="datasets.html#datasets.Dataset.split_train_test_dev">split_train_test_dev() (datasets.Dataset method)</a>
-
-      <ul>
-        <li><a href="datasets.html#datasets.MultiExperimentDataset.split_train_test_dev">(datasets.MultiExperimentDataset method)</a>
+      <li><a href="dataset.html#dataset.split_static_data">split_static_data() (in module dataset)</a>
 </li>
-      </ul></li>
       <li><a href="arg.html#arg.ssm">ssm() (in module arg)</a>
 </li>
+      <li><a href="dataset.html#dataset.standardize">standardize() (in module dataset)</a>
+</li>
+      <li><a href="dataset.html#dataset.StaticDataset">StaticDataset (class in dataset)</a>
+</li>
       <li><a href="problem.html#problem.Problem.step">step() (problem.Problem method)</a>
+</li>
+      <li><a href="simulators.html#simulators.ClosedLoopSimulator.step_data_estimator">step_data_estimator() (simulators.ClosedLoopSimulator method)</a>
+</li>
+      <li><a href="simulators.html#simulators.ClosedLoopSimulator.step_data_model">step_data_model() (simulators.ClosedLoopSimulator method)</a>
+</li>
+      <li><a href="simulators.html#simulators.ClosedLoopSimulator.step_data_policy">step_data_policy() (simulators.ClosedLoopSimulator method)</a>
+</li>
+      <li><a href="simulators.html#simulators.ClosedLoopSimulator.step_emulator">step_emulator() (simulators.ClosedLoopSimulator method)</a>
+</li>
+      <li><a href="callbacks.html#callbacks.SysIDCallback">SysIDCallback (class in callbacks)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -907,25 +1101,27 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="simulators.html#simulators.Simulator.test_eval">test_eval() (simulators.Simulator method)</a>
+      <li><a href="trainer.html#trainer.Trainer.test">test() (trainer.Trainer method)</a>
 </li>
+      <li><a href="simulators.html#simulators.ClosedLoopSimulator.test_eval">test_eval() (simulators.ClosedLoopSimulator method)</a>
+
+      <ul>
+        <li><a href="simulators.html#simulators.Simulator.test_eval">(simulators.Simulator method)</a>
+</li>
+      </ul></li>
       <li><a href="dynamics.html#dynamics.TimeDelayBlackSSM">TimeDelayBlackSSM (class in dynamics)</a>
 </li>
       <li><a href="dynamics.html#dynamics.TimeDelayBlockSSM">TimeDelayBlockSSM (class in dynamics)</a>
 </li>
       <li><a href="estimators.html#estimators.TimeDelayEstimator">TimeDelayEstimator (class in estimators)</a>
 </li>
-      <li><a href="datasets.html#datasets.MultiExperimentDataset.to_tensor">to_tensor() (datasets.MultiExperimentDataset method)</a>
-</li>
       <li><a href="trainer.html#trainer.Trainer.train">train() (trainer.Trainer method)</a>
-
-      <ul>
-        <li><a href="trainer.html#trainer.TrainerMPP.train">(trainer.TrainerMPP method)</a>
 </li>
-      </ul></li>
       <li><a href="visuals.html#visuals.Visualizer.train_output">train_output() (visuals.Visualizer method)</a>
 
       <ul>
+        <li><a href="visuals.html#visuals.VisualizerDobleIntegrator.train_output">(visuals.VisualizerDobleIntegrator method)</a>
+</li>
         <li><a href="visuals.html#visuals.VisualizerOpen.train_output">(visuals.VisualizerOpen method)</a>
 </li>
       </ul></li>
@@ -944,8 +1140,6 @@
       </ul></li>
       <li><a href="trainer.html#trainer.Trainer">Trainer (class in trainer)</a>
 </li>
-      <li><a href="trainer.html#trainer.TrainerMPP">TrainerMPP (class in trainer)</a>
-</li>
       <li><a href="activations.html#activations.APLU.training">training (activations.APLU attribute)</a>
 
       <ul>
@@ -957,17 +1151,29 @@
 </li>
         <li><a href="activations.html#activations.RectifiedSoftExp.training">(activations.RectifiedSoftExp attribute)</a>
 </li>
+        <li><a href="activations.html#activations.SmoothedReLU.training">(activations.SmoothedReLU attribute)</a>
+</li>
         <li><a href="activations.html#activations.SoftExponential.training">(activations.SoftExponential attribute)</a>
 </li>
         <li><a href="blocks.html#blocks.BasisLinear.training">(blocks.BasisLinear attribute)</a>
 </li>
         <li><a href="blocks.html#blocks.BilinearTorch.training">(blocks.BilinearTorch attribute)</a>
 </li>
+        <li><a href="blocks.html#blocks.Dropout.training">(blocks.Dropout attribute)</a>
+</li>
+        <li><a href="blocks.html#blocks.InputConvexNN.training">(blocks.InputConvexNN attribute)</a>
+</li>
+        <li><a href="blocks.html#blocks.InteractionEmbeddingMLP.training">(blocks.InteractionEmbeddingMLP attribute)</a>
+</li>
         <li><a href="blocks.html#blocks.Linear.training">(blocks.Linear attribute)</a>
 </li>
         <li><a href="blocks.html#blocks.MLP.training">(blocks.MLP attribute)</a>
 </li>
+        <li><a href="blocks.html#blocks.MLPDropout.training">(blocks.MLPDropout attribute)</a>
+</li>
         <li><a href="blocks.html#blocks.Poly2.training">(blocks.Poly2 attribute)</a>
+</li>
+        <li><a href="blocks.html#blocks.PosDef.training">(blocks.PosDef attribute)</a>
 </li>
         <li><a href="blocks.html#blocks.PytorchRNN.training">(blocks.PytorchRNN attribute)</a>
 </li>
@@ -975,25 +1181,25 @@
 </li>
         <li><a href="blocks.html#blocks.RNN.training">(blocks.RNN attribute)</a>
 </li>
-        <li><a href="dynamics.html#dynamics.BlackSSM.training">(dynamics.BlackSSM attribute)</a>
+        <li><a href="component.html#component.Function.training">(component.Function attribute)</a>
 </li>
-        <li><a href="dynamics.html#dynamics.BlockSSM.training">(dynamics.BlockSSM attribute)</a>
+        <li><a href="constraint.html#constraint.Constraint.training">(constraint.Constraint attribute)</a>
+</li>
+        <li><a href="constraint.html#constraint.Eq.training">(constraint.Eq attribute)</a>
+</li>
+        <li><a href="constraint.html#constraint.GT.training">(constraint.GT attribute)</a>
+</li>
+        <li><a href="constraint.html#constraint.Loss.training">(constraint.Loss attribute)</a>
+</li>
+        <li><a href="constraint.html#constraint.LT.training">(constraint.LT attribute)</a>
+</li>
+        <li><a href="constraint.html#constraint.Objective.training">(constraint.Objective attribute)</a>
+</li>
+        <li><a href="constraint.html#constraint.Variable.training">(constraint.Variable attribute)</a>
 </li>
         <li><a href="dynamics.html#dynamics.TimeDelayBlackSSM.training">(dynamics.TimeDelayBlackSSM attribute)</a>
 </li>
         <li><a href="dynamics.html#dynamics.TimeDelayBlockSSM.training">(dynamics.TimeDelayBlockSSM attribute)</a>
-</li>
-        <li><a href="estimators.html#estimators.FullyObservable.training">(estimators.FullyObservable attribute)</a>
-</li>
-        <li><a href="estimators.html#estimators.LinearEstimator.training">(estimators.LinearEstimator attribute)</a>
-</li>
-        <li><a href="estimators.html#estimators.LinearKalmanFilter.training">(estimators.LinearKalmanFilter attribute)</a>
-</li>
-        <li><a href="estimators.html#estimators.MLPEstimator.training">(estimators.MLPEstimator attribute)</a>
-</li>
-        <li><a href="estimators.html#estimators.ResMLPEstimator.training">(estimators.ResMLPEstimator attribute)</a>
-</li>
-        <li><a href="estimators.html#estimators.RNNEstimator.training">(estimators.RNNEstimator attribute)</a>
 </li>
         <li><a href="estimators.html#estimators.seq2seqLinearEstimator.training">(estimators.seq2seqLinearEstimator attribute)</a>
 </li>
@@ -1005,13 +1211,9 @@
 </li>
         <li><a href="estimators.html#estimators.seq2seqTimeDelayEstimator.training">(estimators.seq2seqTimeDelayEstimator attribute)</a>
 </li>
-        <li><a href="estimators.html#estimators.TimeDelayEstimator.training">(estimators.TimeDelayEstimator attribute)</a>
-</li>
         <li><a href="operators.html#operators.InterpolateAddMultiply.training">(operators.InterpolateAddMultiply attribute)</a>
 </li>
         <li><a href="problem.html#problem.MSELoss.training">(problem.MSELoss attribute)</a>
-</li>
-        <li><a href="problem.html#problem.Objective.training">(problem.Objective attribute)</a>
 </li>
         <li><a href="problem.html#problem.Problem.training">(problem.Problem attribute)</a>
 </li>
@@ -1020,18 +1222,6 @@
         <li><a href="rnn.html#rnn.RNN.training">(rnn.RNN attribute)</a>
 </li>
         <li><a href="rnn.html#rnn.RNNCell.training">(rnn.RNNCell attribute)</a>
-</li>
-        <li><a href="signals.html#signals.AddGenerator.training">(signals.AddGenerator attribute)</a>
-</li>
-        <li><a href="signals.html#signals.NoiseGenerator.training">(signals.NoiseGenerator attribute)</a>
-</li>
-        <li><a href="signals.html#signals.NonlinearExpansion.training">(signals.NonlinearExpansion attribute)</a>
-</li>
-        <li><a href="signals.html#signals.PeriodicGenerator.training">(signals.PeriodicGenerator attribute)</a>
-</li>
-        <li><a href="signals.html#signals.SignalGenerator.training">(signals.SignalGenerator attribute)</a>
-</li>
-        <li><a href="signals.html#signals.SignalGeneratorDynamics.training">(signals.SignalGeneratorDynamics attribute)</a>
 </li>
         <li><a href="signals.html#signals.WhiteNoiseGenerator.training">(signals.WhiteNoiseGenerator attribute)</a>
 </li>
@@ -1048,13 +1238,13 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="datasets.html#datasets.Dataset.unbatch">unbatch() (datasets.Dataset method)</a>
+      <li><a href="dataset.html#dataset.unbatch_tensor">unbatch_tensor() (in module dataset)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="datasets.html#datasets.Dataset.unbatch_mh">unbatch_mh() (datasets.Dataset method)</a>
-</li>
       <li><a href="trainer.html#trainer.unfreeze_weight">unfreeze_weight() (in module trainer)</a>
+</li>
+      <li><a href="simulators.html#simulators.ClosedLoopSimulator.update_sim_data">update_sim_data() (simulators.ClosedLoopSimulator method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1062,15 +1252,27 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="constraint.html#constraint.Variable">Variable (class in constraint)</a>
+</li>
+      <li><a href="constraint.html#constraint.Constraint.variable_names">variable_names() (constraint.Constraint property)</a>
+
+      <ul>
+        <li><a href="constraint.html#constraint.Objective.variable_names">(constraint.Objective property)</a>
+</li>
+      </ul></li>
       <li><a href="visuals.html#visuals.Visualizer">Visualizer (class in visuals)</a>
 </li>
       <li><a href="visuals.html#visuals.VisualizerClosedLoop">VisualizerClosedLoop (class in visuals)</a>
 </li>
-      <li><a href="visuals.html#visuals.VisualizerOpen">VisualizerOpen (class in visuals)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="visuals.html#visuals.VisualizerDobleIntegrator">VisualizerDobleIntegrator (class in visuals)</a>
+</li>
+      <li><a href="visuals.html#visuals.VisualizerOpen">VisualizerOpen (class in visuals)</a>
+</li>
       <li><a href="visuals.html#visuals.VisualizerTrajectories">VisualizerTrajectories (class in visuals)</a>
+</li>
+      <li><a href="visuals.html#visuals.VisualizerUncertaintyOpen">VisualizerUncertaintyOpen (class in visuals)</a>
 </li>
       <li>
     visuals
