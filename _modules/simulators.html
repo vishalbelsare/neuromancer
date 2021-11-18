@@ -109,6 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../callbacks.html">Callbacks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../component.html">Component</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../constraint.html">Constraint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gradients.html">Gradients</a></li>
 </ul>
 
             
@@ -176,18 +177,15 @@
             
   <h1>Source code for simulators</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">TODO: eval_metric - evaluate closed loop metric based on the simulation results</span>
 <span class="sd"># use the same interface for objectives as for the problem via _calculate_loss.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">psl</span> <span class="kn">import</span> <span class="n">EmulatorBase</span>
 
-<span class="kn">from</span> <span class="nn">neuromancer.dataset</span> <span class="kn">import</span> <span class="n">normalize_01</span> <span class="k">as</span> <span class="n">normalize</span><span class="p">,</span> <span class="n">denormalize_01</span> <span class="k">as</span> <span class="n">min_max_denorm</span>
 <span class="kn">from</span> <span class="nn">neuromancer.problem</span> <span class="kn">import</span> <span class="n">Problem</span>
 <span class="kn">from</span> <span class="nn">neuromancer.trainer</span> <span class="kn">import</span> <span class="n">move_batch_to_device</span>
 
@@ -380,8 +378,6 @@
         <span class="k">return</span> <span class="n">dev_loop_output</span></div></div>
 
 
-<span class="c1"># TODO: handle normalized data - for trained models need to denorm ideally within the component</span>
-<span class="c1"># TODO: support storing constraints and ref values for subsequent plotting</span>
 <div class="viewcode-block" id="ClosedLoopSimulator"><a class="viewcode-back" href="../simulators.html#simulators.ClosedLoopSimulator">[docs]</a><span class="k">class</span> <span class="nc">ClosedLoopSimulator</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -459,7 +455,6 @@
         <span class="n">step_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">input_keys</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="c1"># step_data[key] = data[key][k-self.estimator.window_size:k,:,:]</span>
                 <span class="n">step_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">k</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">nsteps</span><span class="p">:</span><span class="n">k</span><span class="p">,:,:]</span>
         <span class="k">return</span> <span class="n">step_data</span></div>
 
@@ -490,8 +485,8 @@
         <span class="n">emul_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">emulator</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">nsim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">U</span><span class="o">=</span><span class="n">U</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="n">D</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="n">x0</span><span class="p">)</span>
         <span class="c1"># transform to dict of torch tensors</span>
         <span class="n">emul_step</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">emul_step</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">emulator_output_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">emul_out</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">]])</span>
-        <span class="n">emul_step</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">emulator_output_keys</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">emul_out</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]])</span>
+        <span class="n">emul_step</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">emulator_output_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">emul_out</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">emul_step</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">emulator_output_keys</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">emul_out</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">emul_step</span></div>
 
 <div class="viewcode-block" id="ClosedLoopSimulator.update_sim_data"><a class="viewcode-back" href="../simulators.html#simulators.ClosedLoopSimulator.update_sim_data">[docs]</a>    <span class="k">def</span> <span class="nf">update_sim_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_data</span><span class="p">,</span> <span class="n">step_data</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
@@ -502,10 +497,8 @@
 <span class="sd">        :param k:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># TODO update U and Y automatically based on specified input output keys in arguments</span>
-        <span class="c1"># TODO we need to link history data e.g. &quot;Yp&quot; with future predictions &quot;Y_pred&quot; to close the loop</span>
-        <span class="n">sim_data</span><span class="p">[</span><span class="s1">&#39;Y_ctrl_p&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">step_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">system_model</span><span class="o">.</span><span class="n">output_keys</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-        <span class="n">sim_data</span><span class="p">[</span><span class="s1">&#39;Up&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">step_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">output_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">sim_data</span><span class="p">[</span><span class="s1">&#39;Yp&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;Y_pred_dynamics&#39;</span><span class="p">]</span>
+        <span class="n">sim_data</span><span class="p">[</span><span class="s1">&#39;Up&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;U_pred_policy&#39;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">sim_data</span></div>
 
 <div class="viewcode-block" id="ClosedLoopSimulator.rhc"><a class="viewcode-back" href="../simulators.html#simulators.ClosedLoopSimulator.rhc">[docs]</a>    <span class="k">def</span> <span class="nf">rhc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy_out</span><span class="p">):</span>
@@ -514,19 +507,24 @@
 <span class="sd">        :param policy_out:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">output_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;U_pred_policy&#39;</span>
         <span class="n">policy_out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">policy_out</span><span class="p">[</span><span class="n">key</span><span class="p">][[</span><span class="mi">0</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:]</span>
         <span class="k">return</span> <span class="n">policy_out</span></div>
 
 <div class="viewcode-block" id="ClosedLoopSimulator.append_data"><a class="viewcode-back" href="../simulators.html#simulators.ClosedLoopSimulator.append_data">[docs]</a>    <span class="k">def</span> <span class="nf">append_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_data</span><span class="p">,</span> <span class="n">step_data</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">sim_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">sim_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step_data</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">step_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">sim_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step_data</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">sim_data</span></div>
 
 <div class="viewcode-block" id="ClosedLoopSimulator.simulate"><a class="viewcode-back" href="../simulators.html#simulators.ClosedLoopSimulator.simulate">[docs]</a>    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsim</span><span class="p">,</span> <span class="n">use_emulator</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="c1"># set initial keys for closed loop simulation data</span>
-        <span class="n">cl_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">output_keys</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">output_keys</span><span class="o">+</span>\
-                  <span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">input_keys</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">system_model</span><span class="o">.</span><span class="n">output_keys</span>
+        <span class="n">cl_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">output_keys</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">output_keys</span> <span class="o">+</span> \
+                  <span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">input_keys</span>
+        <span class="k">if</span> <span class="n">use_emulator</span><span class="p">:</span>
+            <span class="n">cl_keys</span> <span class="o">=</span> <span class="n">cl_keys</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">emulator_output_keys</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cl_keys</span> <span class="o">=</span> <span class="n">cl_keys</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">system_model</span><span class="o">.</span><span class="n">output_keys</span>
         <span class="n">cl_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">cl_keys</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;reg_error&#39;</span><span class="p">)]</span>
         <span class="n">cl_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">cl_keys</span><span class="p">:</span>
@@ -556,9 +554,7 @@
             <span class="k">if</span> <span class="n">use_emulator</span><span class="p">:</span>
                 <span class="n">step_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_data_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_data</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">emulator_input_keys</span><span class="p">)</span>
                 <span class="n">step_data</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">step_data</span><span class="p">,</span> <span class="o">**</span><span class="n">estim_out</span><span class="p">,</span> <span class="o">**</span><span class="n">policy_out</span><span class="p">}</span>
-                <span class="c1"># TODO: denormalize here</span>
                 <span class="n">model_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_emulator</span><span class="p">(</span><span class="n">step_data</span><span class="p">)</span>
-                <span class="c1"># TODO: normalize here</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">step_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_data_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_data</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">system_model</span><span class="o">.</span><span class="n">input_keys</span><span class="p">)</span>
                 <span class="n">step_data</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">step_data</span><span class="p">,</span> <span class="o">**</span><span class="n">estim_out</span><span class="p">,</span> <span class="o">**</span><span class="n">policy_out</span><span class="p">}</span>
@@ -579,7 +575,6 @@
 
             <span class="c1"># append closed-loop step to simulation data</span>
             <span class="n">cl_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="n">cl_data</span><span class="p">,</span> <span class="n">cl_step_data</span><span class="p">)</span>
-
         <span class="c1"># concatenate step data in a single tensor</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">cl_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">cl_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">cl_data</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>

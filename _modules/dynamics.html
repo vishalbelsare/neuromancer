@@ -109,6 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../callbacks.html">Callbacks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../component.html">Component</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../constraint.html">Constraint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gradients.html">Gradients</a></li>
 </ul>
 
             
@@ -175,7 +176,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for dynamics</h1><div class="highlight"><pre>
-<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">State space models (SSMs) for dynamical modeling.</span>
 
 <span class="sd">Nomenclature:</span>
@@ -237,7 +238,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">fu</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_INPUT_KEYS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Uf&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_INPUT_KEYS</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_OUTPUT_KEYS</span> <span class="o">=</span>  <span class="p">[</span><span class="s1">&#39;fU&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_OUTPUT_KEYS</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_OUTPUT_KEYS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;fU&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_OUTPUT_KEYS</span>
         <span class="k">if</span> <span class="n">fd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_INPUT_KEYS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Df&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_INPUT_KEYS</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_OUTPUT_KEYS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;fD&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_OUTPUT_KEYS</span>

@@ -111,6 +111,8 @@
 <li class="toctree-l1"><a class="reference internal" href="arg.html">Arg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="callbacks.html">Callbacks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="component.html">Component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constraint.html">Constraint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradients.html">Gradients</a></li>
 </ul>
 
             
@@ -317,7 +319,7 @@ case stats are inferred by underlying normalization function.</p></li>
 
 <dl class="py function">
 <dt id="dataset.split_sequence_data">
-<code class="sig-prename descclassname">dataset.</code><code class="sig-name descname">split_sequence_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">nsteps</span></em>, <em class="sig-param"><span class="n">moving_horizon</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">split_ratio</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataset.html#split_sequence_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataset.split_sequence_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dataset.</code><code class="sig-name descname">split_sequence_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">nsteps</span></em>, <em class="sig-param"><span class="n">split_ratio</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataset.html#split_sequence_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataset.split_sequence_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split a data dictionary into train, development, and test sets. Splits data into thirds by
 default, but arbitrary split ratios for train and development can be provided.</p>
 <dl class="field-list simple">
@@ -326,8 +328,6 @@ default, but arbitrary split ratios for train and development can be provided.</
 <li><p><strong>data</strong> – (dict str: np.array or list[str: np.array]) data dictionary.</p></li>
 <li><p><strong>nsteps</strong> – (int) N-step prediction horizon for batching data; used here to ensure split
 lengths are evenly divisible by N.</p></li>
-<li><p><strong>moving_horizon</strong> – (bool) whether batches use a sliding window with stride 1; else stride of
-N is assumed.</p></li>
 <li><p><strong>split_ratio</strong> – (list float) Two numbers indicating percentage of data included in train and
 development sets (out of 100.0). Default is None, which splits data into thirds.</p></li>
 </ul>

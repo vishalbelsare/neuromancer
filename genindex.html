@@ -109,6 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="callbacks.html">Callbacks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="component.html">Component</a></li>
 <li class="toctree-l1"><a class="reference internal" href="constraint.html">Constraint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradients.html">Gradients</a></li>
 </ul>
 
             
@@ -188,6 +189,7 @@
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -204,12 +206,8 @@
 <h2 id="_">_</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="constraint.html#constraint.Variable.__call__">__call__() (constraint.Variable method)</a>
-
-      <ul>
-        <li><a href="plot.html#plot.Animator.__call__">(plot.Animator method)</a>
+      <li><a href="plot.html#plot.Animator.__call__">__call__() (plot.Animator method)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -301,6 +299,8 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="problem.html#problem.Problem.calculate_loss">calculate_loss() (problem.Problem method)</a>
+</li>
       <li><a href="callbacks.html#callbacks.Callback">Callback (class in callbacks)</a>
 </li>
       <li>
@@ -396,6 +396,8 @@
 </li>
         <li><a href="estimators.html#estimators.TimeDelayEstimator.DEFAULT_INPUT_KEYS">(estimators.TimeDelayEstimator attribute)</a>
 </li>
+        <li><a href="gradients.html#gradients.Gradient.DEFAULT_INPUT_KEYS">(gradients.Gradient attribute)</a>
+</li>
         <li><a href="signals.html#signals.AddGenerator.DEFAULT_INPUT_KEYS">(signals.AddGenerator attribute)</a>
 </li>
         <li><a href="signals.html#signals.DataNoiseGenerator.DEFAULT_INPUT_KEYS">(signals.DataNoiseGenerator attribute)</a>
@@ -427,6 +429,8 @@
         <li><a href="estimators.html#estimators.seq2seqTimeDelayEstimator.DEFAULT_OUTPUT_KEYS">(estimators.seq2seqTimeDelayEstimator attribute)</a>
 </li>
         <li><a href="estimators.html#estimators.TimeDelayEstimator.DEFAULT_OUTPUT_KEYS">(estimators.TimeDelayEstimator attribute)</a>
+</li>
+        <li><a href="gradients.html#gradients.Gradient.DEFAULT_OUTPUT_KEYS">(gradients.Gradient attribute)</a>
 </li>
         <li><a href="signals.html#signals.AddGenerator.DEFAULT_OUTPUT_KEYS">(signals.AddGenerator attribute)</a>
 </li>
@@ -472,6 +476,8 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="callbacks.html#callbacks.Callback.end_batch">end_batch() (callbacks.Callback method)</a>
+</li>
       <li><a href="callbacks.html#callbacks.Callback.end_epoch">end_epoch() (callbacks.Callback method)</a>
 
       <ul>
@@ -600,6 +606,8 @@
 </li>
         <li><a href="constraint.html#constraint.Objective.forward">(constraint.Objective method)</a>
 </li>
+        <li><a href="constraint.html#constraint.Variable.forward">(constraint.Variable method)</a>
+</li>
         <li><a href="dynamics.html#dynamics.BlackSSM.forward">(dynamics.BlackSSM method)</a>
 </li>
         <li><a href="dynamics.html#dynamics.BlockSSM.forward">(dynamics.BlockSSM method)</a>
@@ -617,6 +625,8 @@
         <li><a href="estimators.html#estimators.seq2seqTimeDelayEstimator.forward">(estimators.seq2seqTimeDelayEstimator method)</a>
 </li>
         <li><a href="estimators.html#estimators.TimeDelayEstimator.forward">(estimators.TimeDelayEstimator method)</a>
+</li>
+        <li><a href="gradients.html#gradients.Gradient.forward">(gradients.Gradient method)</a>
 </li>
         <li><a href="operators.html#operators.InterpolateAddMultiply.forward">(operators.InterpolateAddMultiply method)</a>
 </li>
@@ -659,10 +669,6 @@
       </ul></li>
       <li><a href="dataset.html#dataset.SequenceDataset.get_full_sequence">get_full_sequence() (dataset.SequenceDataset method)</a>
 </li>
-      <li><a href="blocks.html#blocks.get_modules">get_modules() (in module blocks)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="signals.html#signals.SequenceGenerator.get_xmax">get_xmax() (signals.SequenceGenerator method)</a>
 
       <ul>
@@ -671,6 +677,29 @@
       </ul></li>
       <li><a href="signals.html#signals.SequenceGenerator.get_xmin">get_xmin() (signals.SequenceGenerator method)</a>
 </li>
+      <li><a href="constraint.html#constraint.Constraint.grad">grad() (constraint.Constraint method)</a>
+
+      <ul>
+        <li><a href="constraint.html#constraint.Loss.grad">(constraint.Loss method)</a>
+</li>
+        <li><a href="constraint.html#constraint.Objective.grad">(constraint.Objective method)</a>
+</li>
+        <li><a href="constraint.html#constraint.Variable.grad">(constraint.Variable method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gradients.html#gradients.Gradient">Gradient (class in gradients)</a>
+</li>
+      <li><a href="gradients.html#gradients.gradient">gradient() (in module gradients)</a>
+</li>
+      <li>
+    gradients
+
+      <ul>
+        <li><a href="gradients.html#module-gradients">module</a>
+</li>
+      </ul></li>
       <li><a href="arg.html#arg.ArgParser.group">group() (arg.ArgParser method)</a>
 </li>
       <li><a href="constraint.html#constraint.GT">GT (class in constraint)</a>
@@ -696,6 +725,14 @@
       <li><a href="blocks.html#blocks.InteractionEmbeddingMLP">InteractionEmbeddingMLP (class in blocks)</a>
 </li>
       <li><a href="operators.html#operators.InterpolateAddMultiply">InterpolateAddMultiply (class in operators)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gradients.html#gradients.jacobian">jacobian() (in module gradients)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -795,6 +832,8 @@
         <li><a href="dynamics.html#module-dynamics">dynamics</a>
 </li>
         <li><a href="estimators.html#module-estimators">estimators</a>
+</li>
+        <li><a href="gradients.html#module-gradients">gradients</a>
 </li>
         <li><a href="loggers.html#module-loggers">loggers</a>
 </li>
@@ -1240,9 +1279,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dataset.html#dataset.unbatch_tensor">unbatch_tensor() (in module dataset)</a>
 </li>
+      <li><a href="trainer.html#trainer.unfreeze_weight">unfreeze_weight() (in module trainer)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="trainer.html#trainer.unfreeze_weight">unfreeze_weight() (in module trainer)</a>
+      <li><a href="component.html#component.Component.update_input_keys">update_input_keys() (component.Component method)</a>
 </li>
       <li><a href="simulators.html#simulators.ClosedLoopSimulator.update_sim_data">update_sim_data() (simulators.ClosedLoopSimulator method)</a>
 </li>

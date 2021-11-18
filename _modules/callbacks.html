@@ -109,6 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../callbacks.html">Callbacks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../component.html">Component</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../constraint.html">Constraint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gradients.html">Gradients</a></li>
 </ul>
 
             
@@ -186,6 +187,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Callback base class which allows for bare functionality of Trainer</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
@@ -196,6 +198,9 @@
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="Callback.begin_eval"><a class="viewcode-back" href="../callbacks.html#callbacks.Callback.begin_eval">[docs]</a>    <span class="k">def</span> <span class="nf">begin_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Callback.end_batch"><a class="viewcode-back" href="../callbacks.html#callbacks.Callback.end_batch">[docs]</a>    <span class="k">def</span> <span class="nf">end_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="Callback.end_eval"><a class="viewcode-back" href="../callbacks.html#callbacks.Callback.end_eval">[docs]</a>    <span class="k">def</span> <span class="nf">end_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>

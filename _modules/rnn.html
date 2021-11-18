@@ -109,6 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../callbacks.html">Callbacks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../component.html">Component</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../constraint.html">Constraint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gradients.html">Gradients</a></li>
 </ul>
 
             
@@ -266,30 +267,30 @@
         <span class="k">return</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">final_hiddens</span><span class="p">)</span></div></div>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">bias</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]:</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">linear_map</span> <span class="ow">in</span> <span class="n">slim</span><span class="o">.</span><span class="n">maps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="n">rnn</span> <span class="o">=</span> <span class="n">RNN</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">hsizes</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">,</span> <span class="n">linear_map</span><span class="o">=</span><span class="n">linear_map</span><span class="p">)</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">rnn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">out</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">linear_map</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">slim</span><span class="o">.</span><span class="n">maps</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">-</span> <span class="n">slim</span><span class="o">.</span><span class="n">square_maps</span><span class="p">:</span>
-            <span class="n">rnn</span> <span class="o">=</span> <span class="n">RNN</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">hsizes</span><span class="o">=</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">,</span> <span class="n">linear_map</span><span class="o">=</span><span class="n">linear_map</span><span class="p">)</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">rnn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">out</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">linear_map</span> <span class="ow">in</span> <span class="n">slim</span><span class="o">.</span><span class="n">maps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="n">rnn</span> <span class="o">=</span> <span class="n">RNN</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">hsizes</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">,</span> <span class="n">linear_map</span><span class="o">=</span><span class="n">linear_map</span><span class="p">)</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">rnn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">out</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">linear_map</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">slim</span><span class="o">.</span><span class="n">maps</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">-</span> <span class="n">slim</span><span class="o">.</span><span class="n">square_maps</span><span class="p">:</span>
-            <span class="n">rnn</span> <span class="o">=</span> <span class="n">RNN</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">hsizes</span><span class="o">=</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">,</span> <span class="n">linear_map</span><span class="o">=</span><span class="n">linear_map</span><span class="p">)</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">rnn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">out</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># if __name__ == &#39;__main__&#39;:</span>
+<span class="c1">#     x = torch.rand(20, 5, 8)</span>
+<span class="c1">#     for bias in [True, False]:</span>
+<span class="c1">#         for name, linear_map in slim.maps.items():</span>
+<span class="c1">#             print(name)</span>
+<span class="c1">#             rnn = RNN(8, hsizes=[8, 8], bias=bias, linear_map=linear_map)</span>
+<span class="c1">#             out = rnn(x)</span>
+<span class="c1">#             print(out[0].shape, out[1].shape)</span>
+<span class="c1">#</span>
+<span class="c1">#         for linear_map in set(slim.maps.values()) - slim.square_maps:</span>
+<span class="c1">#             rnn = RNN(8, hsizes=[16, 16], bias=bias, linear_map=linear_map)</span>
+<span class="c1">#             out = rnn(x)</span>
+<span class="c1">#             print(out[0].shape, out[1].shape)</span>
+<span class="c1">#</span>
+<span class="c1">#         for name, linear_map in slim.maps.items():</span>
+<span class="c1">#             print(name)</span>
+<span class="c1">#             rnn = RNN(8, hsizes=[8, 8], bias=bias, linear_map=linear_map)</span>
+<span class="c1">#             out = rnn(x)</span>
+<span class="c1">#             print(out[0].shape, out[1].shape)</span>
+<span class="c1">#</span>
+<span class="c1">#         for linear_map in set(slim.maps.values()) - slim.square_maps:</span>
+<span class="c1">#             rnn = RNN(8, hsizes=[16, 16], bias=bias, linear_map=linear_map)</span>
+<span class="c1">#             out = rnn(x)</span>
+<span class="c1">#             print(out[0].shape, out[1].shape)</span>
 </pre></div>
 
            </div>

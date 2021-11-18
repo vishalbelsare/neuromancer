@@ -109,6 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../callbacks.html">Callbacks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../component.html">Component</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../constraint.html">Constraint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gradients.html">Gradients</a></li>
 </ul>
 
             
@@ -195,6 +196,8 @@
 
 
 <span class="kn">import</span> <span class="nn">neuromancer.blocks</span> <span class="k">as</span> <span class="nn">blocks</span>
+
+
 <div class="viewcode-block" id="Visualizer"><a class="viewcode-back" href="../visuals.html#visuals.Visualizer">[docs]</a><span class="k">class</span> <span class="nc">Visualizer</span><span class="p">:</span>
 
 <div class="viewcode-block" id="Visualizer.train_plot"><a class="viewcode-back" href="../visuals.html#visuals.Visualizer.train_plot">[docs]</a>    <span class="k">def</span> <span class="nf">train_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">epochs</span><span class="p">):</span>
@@ -268,8 +271,6 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;dark_background&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">rows</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">eigax</span><span class="p">,</span> <span class="n">matax</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="c1"># eigax.set_ylim(-1.1, 1.1)</span>
-            <span class="c1"># eigax.set_xlim(-1.1, 1.1)</span>
             <span class="n">eigax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">matax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
             <span class="n">matax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;State Transition Weights&#39;</span><span class="p">)</span>

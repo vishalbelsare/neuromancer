@@ -43,7 +43,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Datasets" href="datasets.html" />
+    <link rel="next" title="Dataset" href="dataset.html" />
     <link rel="prev" title="Activations" href="activations.html" /> 
 </head>
 
@@ -97,7 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="dynamics.html">Dynamics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="activations.html">Activations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Blocks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="estimators.html">Estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loggers.html">Loggers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="operators.html">Operators</a></li>
@@ -110,6 +110,9 @@
 <li class="toctree-l1"><a class="reference internal" href="visuals.html">Visuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="arg.html">Arg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="callbacks.html">Callbacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="component.html">Component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constraint.html">Constraint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradients.html">Gradients</a></li>
 </ul>
 
             
@@ -439,7 +442,7 @@ to hidden state.</p>
 
 <dl class="py class">
 <dt id="blocks.PosDef">
-<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">PosDef</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">d</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#PosDef"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.PosDef" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">PosDef</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">d</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#PosDef"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.PosDef" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enforce positive-definiteness of lyapunov function ICNN, V = g(x)
 Equation 12 from <a class="reference external" href="https://arxiv.org/abs/2001.06116">https://arxiv.org/abs/2001.06116</a></p>
 <dl class="py method">
@@ -553,11 +556,6 @@ to give output which is a linear map from final hidden state.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="blocks.get_modules">
-<code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">get_modules</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#get_modules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.get_modules" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
 <dt id="blocks.set_model_dropout_mode">
 <code class="sig-prename descclassname">blocks.</code><code class="sig-name descname">set_model_dropout_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">at_train</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">at_test</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blocks.html#set_model_dropout_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blocks.set_model_dropout_mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change dropout mode, useful for enabling MC sampling during inference time.</p>
@@ -571,7 +569,7 @@ to give output which is a linear map from final hidden state.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="datasets.html" class="btn btn-neutral float-right" title="Datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dataset.html" class="btn btn-neutral float-right" title="Dataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="activations.html" class="btn btn-neutral float-left" title="Activations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

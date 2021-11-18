@@ -97,7 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="dynamics.html">Dynamics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="activations.html">Activations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="blocks.html">Blocks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="estimators.html">Estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loggers.html">Loggers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="operators.html">Operators</a></li>
@@ -110,6 +110,9 @@
 <li class="toctree-l1"><a class="reference internal" href="visuals.html">Visuals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="arg.html">Arg</a></li>
 <li class="toctree-l1"><a class="reference internal" href="callbacks.html">Callbacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="component.html">Component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constraint.html">Constraint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradients.html">Gradients</a></li>
 </ul>
 
             
@@ -179,8 +182,7 @@
             
   <section id="module-simulators">
 <span id="simulators"></span><h1>Simulators<a class="headerlink" href="#module-simulators" title="Permalink to this headline">¶</a></h1>
-<p>TODO: eval_metric - evaluate closed loop metric based on the simulation results
-# use the same interface for objectives as for the problem via _calculate_loss.</p>
+<p># use the same interface for objectives as for the problem via _calculate_loss.</p>
 <dl class="py class">
 <dt id="simulators.ClosedLoopSimulator">
 <em class="property">class </em><code class="sig-prename descclassname">simulators.</code><code class="sig-name descname">ClosedLoopSimulator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sim_data</span></em>, <em class="sig-param"><span class="n">policy</span><span class="p">:</span> <span class="n">torch.nn.modules.module.Module</span></em>, <em class="sig-param"><span class="n">system_model</span><span class="p">:</span> <span class="n">torch.nn.modules.module.Module</span></em>, <em class="sig-param"><span class="n">estimator</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>torch.nn.modules.module.Module<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">emulator</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>psl.emulator.EmulatorBase<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">emulator_output_keys</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">emulator_input_keys</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">nsim</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulators.html#ClosedLoopSimulator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulators.ClosedLoopSimulator" title="Permalink to this definition">¶</a></dt>
