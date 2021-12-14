@@ -10,7 +10,7 @@
 ```console
 
 user@machine:~$ mkdir ecosystem; cd ecosystem
-user@machine:~$ git clone https://gitlab.pnnl.gov/dadaist/neuromancer.git
+user@machine:~$ git clone https://github.com/pnnl/neuromancer.git
 user@machine:~$ git clone https://github.com/pnnl/psl.git
 user@machine:~$ git clone https://github.com/pnnl/slim.git
 
