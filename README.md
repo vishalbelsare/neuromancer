@@ -68,3 +68,12 @@ can be found in the examples folder.
 + Drgona, J., Skomski, E., Vasisht, S., Tuor, A., & Vrabie, D. (2020). Spectral Analysis and Stability of Deep Neural Dynamics. arXiv preprint arXiv:2011.13492.
 + Drgona, J., Tuor, A., & Vrabie, D. (2020). Constrained physics-informed deep learning for stable system identification and control of unknown linear systems. arXiv preprint arXiv:2004.11184.
 
+## Cite as
+```yaml
+@article{Neuromancer2022,
+  title={{NeuroMANCER: Neural Modules with Adaptive Nonlinear Constraints and Efficient Regularizations}},
+  author={Tuor, Aaron and Drgona, Jan and Skomski, Mia},
+  Url= {https://github.com/pnnl/neuromancer}, 
+  year={2022}
+}
+```
