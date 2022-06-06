@@ -5,7 +5,7 @@ import slim
 from slim.linear import square_maps, maps
 from neuromancer.activations import activations, PELU, SoftExponential
 
-rect_maps = [v for k, v in maps.items() if v not in square_maps and v is not slim.linear.TrivialNullSpaceLinear]
+rect_maps = [v for k, v in maps.items() if v not in square_maps]
 activations = [v for k, v in activations.items()]
 
 

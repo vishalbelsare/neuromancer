@@ -3,11 +3,11 @@ from hypothesis import given, settings, strategies as st
 import math
 
 from neuromancer.estimators import estimators, seq2seq_estimators
-from slim.linear import square_maps, maps, TrivialNullSpaceLinear
+from slim.linear import square_maps, maps
 from neuromancer.activations import activations
 import neuromancer.estimators as estim
 
-rect_maps = [v for k, v in maps.items() if v not in square_maps and v is not TrivialNullSpaceLinear]
+rect_maps = [v for k, v in maps.items() if v not in square_maps]
 activations = [v for k, v in activations.items()]
 estimators = [v for k, v in estimators.items() if k != 'fullobservable']
 seq2seq_estimators = [v for k, v in seq2seq_estimators.items()]

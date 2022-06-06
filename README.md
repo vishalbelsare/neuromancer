@@ -32,13 +32,13 @@ user@machine:~$ conda env create -f env.yml
 
 ```console
 user@machine:~$ conda config --add channels conda-forge pytorch
-user@machine:~$ conda creatcd e -n neuromancer python=3.7
+user@machine:~$ conda create -n neuromancer python=3.7
 user@machine:~$ source activate neuromancer
-(neuromancer) user@machine:~$ conda install pytorch torchvision -c pytorch
+(neuromancer) user@machine:~$ conda install pytorch -c pytorch
 (neuromancer) user@machine:~$ conda install scipy pandas matplotlib control pyts numba scikit-learn dill
-(neuromancer) user@machine:~$ conda install mlflow boto3
+(neuromancer) user@machine:~$ conda install mlflow boto3 seaborn
 (neuromancer) user@machine:~$ conda install -c powerai gym
-(neuromancer) user@machine:~$ conda install pytest hypothesis
+(neuromancer) user@machine:~$ conda install pytest hypothesis ipykernel cvxpy jupyter notebook 
 (neuromancer) user@machine:~$ conda install -c coecms celluloid
 
 ```
