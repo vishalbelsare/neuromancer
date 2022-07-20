@@ -75,7 +75,7 @@ can be found in the examples folder.
 ```yaml
 @article{Neuromancer2022,
   title={{NeuroMANCER: Neural Modules with Adaptive Nonlinear Constraints and Efficient Regularizations}},
-  author={Tuor, Aaron and Drgona, Jan and Skomski, Mia and Koch, James and Chen, Zhao and Vrabie, Draguna},
+  author={Tuor, Aaron and Drgona, Jan and Skomski, Mia and Koch, James and Chen, Zhao and Dernbach, Stefan and Legaard, Christian Møldrup and Vrabie, Draguna},
   Url= {https://github.com/pnnl/neuromancer}, 
   year={2022}
 }
